@@ -1,6 +1,6 @@
 ﻿namespace LiveSplit.UI.Components
 {
-	partial class CrashNSTLoadRemovalSettings
+	partial class CrashTWoCLoadRemovalSettings
 	{
 		/// <summary> 
 		/// Required designer variable.

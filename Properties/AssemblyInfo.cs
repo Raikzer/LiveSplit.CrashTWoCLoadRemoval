@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("LiveSplit.CrashNSTLoadRemoval")]
-[assembly: AssemblyDescription("Load Detection for Crash N Sane Trilogy")]
+[assembly: AssemblyTitle("LiveSplit.CrashTWoCLoadRemoval")]
+[assembly: AssemblyDescription("Load Detection for Crash The Wrath of Cortex")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LiveSplit.CrashNSTLoadRemoval")]
-[assembly: AssemblyCopyright("Copyright © Thomas Neff 2019")]
+[assembly: AssemblyProduct("LiveSplit.CrashTWoCLoadRemoval")]
+[assembly: AssemblyCopyright("Copyright © Raikzer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("5d6847c2-707f-4727-9942-ee14de5334ce")]
+[assembly: Guid("8293ba79-c925-46f5-b1e1-f9d4e376b7b6")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

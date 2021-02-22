@@ -79,9 +79,9 @@ namespace HighResolutionTimer
         public float Interval
         {
             get
-			{
-				return _interval;
-			}
+            {
+                return _interval;
+            }
             set
             {
                 if (value < 0f || Single.IsNaN(value))
