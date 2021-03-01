@@ -155,6 +155,7 @@ namespace CrashTWoCLoadDetector
             BitmapData captureData =
             capture.LockBits(rect, ImageLockMode.ReadWrite,
             capture.PixelFormat);
+
             // Get the address of the first line.
             IntPtr ptr = captureData.Scan0;
 
@@ -167,7 +168,7 @@ namespace CrashTWoCLoadDetector
             for (int i = 0; i < bytes - 3; i += 4)
             {
 
-                if (rgbValues[i] > 10 || rgbValues[i + 1] < 155 || rgbValues[i + 2] > 190)
+                if (rgbValues[i] > 30 || rgbValues[i + 1] < 110 || rgbValues[i + 2] > 190)
                 {
 
                     //Console.WriteLine(rgbValues[i]);
@@ -188,10 +189,9 @@ namespace CrashTWoCLoadDetector
 
         public static bool IsBlackScreen(ref Bitmap capture)
         {
-            int blacklevel = 0;
             Rectangle rect = new Rectangle(0, 0, capture.Width, capture.Height);
             BitmapData captureData =
-            capture.LockBits(rect, ImageLockMode.ReadWrite,
+            capture.LockBits(rect, ImageLockMode.ReadOnly,
             capture.PixelFormat);
             // Get the address of the first line.
             IntPtr ptr = captureData.Scan0;
@@ -202,14 +202,16 @@ namespace CrashTWoCLoadDetector
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-            for (int i = 0; i < bytes - 3; i += 4)
+            for (int i = bytes - 2; i >= 0; i -= 4)
             {
-                blacklevel += rgbValues[i];
-                blacklevel += rgbValues[i + 1];
-                blacklevel += rgbValues[i + 2];
+                if (rgbValues[i] != 0 || rgbValues[i - 1] != 0 || rgbValues[i - 2] != 0)
+                {
+                    capture.UnlockBits(captureData);
+                    return false;
+                }
             }
             capture.UnlockBits(captureData);
-            return blacklevel < 10;
+            return true;
         }
 
         //this is just for debugging

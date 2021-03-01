@@ -35,6 +35,9 @@ namespace LiveSplit.UI.Components
         private bool waitOnLoad = false;
         private bool isBlackScreen = false;
         private bool wasBlackScreen = false;
+        private bool testSaved = false;
+        private readonly int waitOnLoadFrames = 300;
+        private int waitFrames = 0;
         private string expectedResult = "LOADING";
 
         private TimerModel timer;
@@ -77,7 +80,7 @@ namespace LiveSplit.UI.Components
         private int framesSumRounded = 0;
         private int framesSinceLastManualSplit = 0;
         private bool LastSplitSkip = false;
-        TesseractEngine engine = new TesseractEngine(@"./Components/tessdata", "eng", EngineMode.Default);
+        TesseractEngine engine = new TesseractEngine(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Components/tessdata"), "eng", EngineMode.Default);
 
 
 
@@ -176,39 +179,62 @@ namespace LiveSplit.UI.Components
 
                     //Capture image using the settings defined for the component
                     Bitmap capture = settings.CaptureImage();
+                    if (!testSaved)
+                    {
+                        capture.Save("screenshot.bmp");
+                        testSaved = true;
+                    }
                     wasBlackScreen = isBlackScreen;
                     isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
-                    FeatureDetector.clearBackground(ref capture);
 
-                    //using (var img = Pix.LoadFromFile("./testimage.bmp"))
-                    BitmapToPixConverter btp = new BitmapToPixConverter();
-                    //Pix img = btp.Convert(capture);
-
-                    Pix img = btp.Convert(capture);
-                    string ResultText;
-                    using (var page = engine.Process(img))
+                    if (!isBlackScreen && waitOnLoad)
                     {
-                        ResultText = page.GetText();
-                    }
+                        capture = ImageCapture.CropImage(capture);
+                        FeatureDetector.clearBackground(ref capture);
+                        //using (var img = Pix.LoadFromFile("./testimage.bmp"))
+                        BitmapToPixConverter btp = new BitmapToPixConverter();
+                        //Pix img = btp.Convert(capture);
 
-                    List<int> max_per_patch;
-                    //Feed the image to the feature detection
-                    int black_level = 0;
-                    var features = FeatureDetector.featuresFromBitmap(capture, out max_per_patch, out black_level);
-                    bool wasLoading = isLoading;
+                        Pix img = btp.Convert(capture);
+                        string ResultText = "";
+                        using (var page = engine.Process(img))
+                        {
+                            ResultText = page.GetText();
+                        }
 
-                    //TODO: should we "learn" the black level automatically? we could do this during the first few transitions, by keeping track of the minimum histogram values, and dynamically adjusting the number of black bins?
-                    int counter = 0;
-                    foreach (char c in ResultText)
-                    {
-                        if (expectedResult.Contains(c))
-                            counter++;
-                    }
-                    if (counter > 3 && waitOnLoad)
-                    {
-                        isLoading = true;
-                    }
+                        //if (!testSaved)
+                        //{
+                        //    Bitmap testimage = new Bitmap("test.bmp");
+                        //    FeatureDetector.clearBackground(ref testimage);
+                        //    testimage.Save("testresult.bmp");
+                        //    Pix test = btp.Convert(testimage);
+                        //    Page page = engine.Process(test);
+                        //    string testResult = page.GetText();
+                        //    Console.WriteLine(testResult);
+                        //    testSaved = true;
+                        //    page.Dispose();
+                        //}
+                        int counter = 0;
+                        foreach (char c in expectedResult)
+                        {
+                            if (ResultText.Contains(c))
+                                counter++;
+                        }
+                        if (counter > 5 && ResultText.Length == 8)
+                        {
+                            isLoading = true;
+                        }
+                        else
+                        {
+                            waitFrames++;
+                            if (waitFrames == waitOnLoadFrames)
+                            {
+                                waitOnLoad = false;
+                                waitFrames = 0;
+                            }
+                        }
 
+                    }
 
                     /* if (isLoading && num_transitions < num_transitions_for_calibration)
                      {
@@ -246,8 +272,12 @@ namespace LiveSplit.UI.Components
                         TimeSpan delta = (DateTime.Now - transitionStart);
                         timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime - delta);
                         waitOnLoad = false;
+                        Console.WriteLine(waitFrames);
+                        waitFrames = 0;
                         waitOnFadeIn = true;
                     }
+
+                    
 
 
                     if (settings.AutoSplitterEnabled && !(settings.AutoSplitterDisableOnSkipUntilSplit && LastSplitSkip))
@@ -364,9 +394,10 @@ namespace LiveSplit.UI.Components
             waitOnLoad = false;
             isBlackScreen = false;
             wasBlackScreen = false;
+            waitFrames = 0;
 
-        //highResTimer.Stop(joinThread:false);
-        InitNumberOfLoadsFromState();
+            //highResTimer.Stop(joinThread:false);
+            InitNumberOfLoadsFromState();
 
             average_transition_max_level = 0.0f;
             last_transition_max_level = 0.0f;

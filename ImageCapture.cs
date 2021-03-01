@@ -16,6 +16,8 @@ namespace CrashTWoCLoadDetector
         public float featureVectorResolutionY;
         public int captureSizeX;
         public int captureSizeY;
+        public int resizeSizeX;
+        public int resizeSizeY;
         public float cropOffsetX;
         public float cropOffsetY;
         public float captureAspectRatio;
@@ -67,6 +69,12 @@ namespace CrashTWoCLoadDetector
             return destImage;
         }
 
+        public static Bitmap CropImage(Bitmap capture)
+        {
+            Rectangle cropRect = new Rectangle(0, 0, capture.Width, capture.Height / 2);
+            return capture.Clone(cropRect, capture.PixelFormat);
+        }
+
         //Should probably refactor this into some kind of struct, whatever...
         public static void SizeAdjustedCropAndOffset(int device_width, int device_height, ref ImageCaptureInfo info)
         {
@@ -87,32 +95,15 @@ namespace CrashTWoCLoadDetector
 
             //Scale offset and sizes depending on actual vs. needed aspect ratio
 
-            if (((float)device_width / (float)device_height) > (info.captureAspectRatio))
-            {
+            var image_region = (float)device_height / (1.0f / info.captureAspectRatio);
 
-                var image_region = (float)device_height / (1.0f / info.captureAspectRatio);
+            //Aspect ratio is larger than original
+            var black_bar_width_total = (float)device_width - image_region;
 
-                //Aspect ratio is larger than original
-                var black_bar_width_total = (float)device_width - image_region;
-
-                //Compute space occupied by black border relative to total width
-                var adjust_factor = ((float)(device_width - black_bar_width_total) / (float)device_width);
-                info.actual_crop_size_x *= adjust_factor;
-                info.actual_offset_x *= adjust_factor;
-            }
-            else
-            {
-
-                var image_region = (float)device_width / (info.captureAspectRatio);
-
-                //Aspect ratio is larger than original
-                var black_bar_height_total = (float)device_height - image_region;
-
-                //Compute space occupied by black border relative to total width
-                var adjust_factor = ((float)(device_height - black_bar_height_total) / (float)device_height);
-                info.actual_crop_size_y *= adjust_factor;
-                info.actual_offset_y *= adjust_factor;
-            }
+            //Compute space occupied by black border relative to total width
+            var adjust_factor = ((float)(device_width - black_bar_width_total) / (float)device_width);
+            info.actual_crop_size_x *= adjust_factor;
+            info.actual_offset_x *= adjust_factor;
 
 
 
@@ -121,7 +112,7 @@ namespace CrashTWoCLoadDetector
             info.center_of_frame_y = device_height / 2;
         }
 
-        public static Bitmap CaptureFromDisplay(ref ImageCaptureInfo info)
+        public static Bitmap CaptureFromDisplay(ref ImageCaptureInfo info, bool useResize = false)
         {
             Bitmap b = new Bitmap((int)info.actual_crop_size_x, (int)info.actual_crop_size_y);
 
@@ -132,7 +123,10 @@ namespace CrashTWoCLoadDetector
                 (int)(info.center_of_frame_y - info.actual_crop_size_y / 2 + info.actual_offset_y), 0, 0, new Size((int)info.actual_crop_size_x, (int)info.actual_crop_size_y), CopyPixelOperation.SourceCopy);
             }
 
-            b = ResizeImage(b, info.captureSizeX, info.captureSizeY);
+            if (useResize) 
+                b = ResizeImage(b, info.resizeSizeX, info.resizeSizeY);
+            else
+                b = ResizeImage(b, info.captureSizeX, info.captureSizeY);
 
             return b;
         }
@@ -181,7 +175,7 @@ namespace CrashTWoCLoadDetector
             }
         }
 
-        public static Bitmap PrintWindow(IntPtr hwnd, ref ImageCaptureInfo info, bool full = false, bool useCrop = false, float scalingValueFloat = 1.0f)
+        public static Bitmap PrintWindow(IntPtr hwnd, ref ImageCaptureInfo info, bool full = false, bool useCrop = false, float scalingValueFloat = 1.0f, bool useResize = false)
         {
             try
             {
@@ -258,8 +252,11 @@ namespace CrashTWoCLoadDetector
                 DLLImportStuff.DeleteObject(hbmp);
                 DLLImportStuff.ReleaseDC(hwnd, hdcwnd);
                 DLLImportStuff.DeleteDC(hdc);
-
-                return ResizeImage(ret, info.captureSizeX, info.captureSizeY);
+                if (useResize)
+                    ret = ResizeImage(ret, info.resizeSizeX, info.resizeSizeY);
+                else
+                    ret = ResizeImage(ret, info.captureSizeX, info.captureSizeY);
+                return ret;
             }
             catch (System.Runtime.InteropServices.ExternalException ex)
             {

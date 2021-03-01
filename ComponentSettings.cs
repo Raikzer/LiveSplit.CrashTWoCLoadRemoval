@@ -52,11 +52,13 @@ namespace LiveSplit.UI.Components
 
         private List<string> captureIDs = null;
 
-        private Size captureSize = new Size(550, 200);
+        private Size captureSize = new Size(800, 400);
 
-        private float cropOffsetX = 0.0f;
+        private Size resizeSize = new Size(150, 75);
 
-        private float cropOffsetY = -420.0f;
+        private float cropOffsetX = 100.0f;
+
+        private float cropOffsetY = -310.0f;
 
         private bool drawingPreview = false;
 
@@ -157,7 +159,7 @@ namespace LiveSplit.UI.Components
                 screenRect.Width = (int)(imageCaptureInfo.crop_coordinate_right - imageCaptureInfo.crop_coordinate_left);
                 screenRect.Height = (int)(imageCaptureInfo.crop_coordinate_bottom - imageCaptureInfo.crop_coordinate_top);
 
-                //Compute crop coordinates and width/ height based on resoution
+                //Compute crop coordinates and width/ height based on resolution
                 ImageCapture.SizeAdjustedCropAndOffset(screenRect.Width, screenRect.Height, ref imageCaptureInfo);
 
                 //Adjust for crop offset
@@ -168,7 +170,7 @@ namespace LiveSplit.UI.Components
                 imageCaptureInfo.center_of_frame_x += selected_screen.Bounds.X;
                 imageCaptureInfo.center_of_frame_y += selected_screen.Bounds.Y;
 
-                b = ImageCapture.CaptureFromDisplay(ref imageCaptureInfo);
+                b = ImageCapture.CaptureFromDisplay(ref imageCaptureInfo, useResize: true);
             }
             else
             {
@@ -186,7 +188,7 @@ namespace LiveSplit.UI.Components
                 if ((int)handle == 0)
                     return b;
 
-                b = ImageCapture.PrintWindow(handle, ref imageCaptureInfo, useCrop: true);
+                b = ImageCapture.PrintWindow(handle, ref imageCaptureInfo, useCrop: true, useResize: true);
             }
 
             return b;
@@ -767,6 +769,8 @@ namespace LiveSplit.UI.Components
             imageCaptureInfo.featureVectorResolutionY = featureVectorResolutionY;
             imageCaptureInfo.captureSizeX = captureSize.Width;
             imageCaptureInfo.captureSizeY = captureSize.Height;
+            imageCaptureInfo.resizeSizeX = resizeSize.Width;
+            imageCaptureInfo.resizeSizeY = resizeSize.Height;
             imageCaptureInfo.cropOffsetX = cropOffsetX;
             imageCaptureInfo.cropOffsetY = cropOffsetY;
             imageCaptureInfo.captureAspectRatio = captureAspectRatioX / captureAspectRatioY;
@@ -1040,6 +1044,13 @@ namespace LiveSplit.UI.Components
         {
             //RemoveFadeins = chkRemoveFadeIns.Checked;
             RemoveFadeins = chkRemoveTransitions.Checked;
+        }
+
+        private void saveCutout_Click(object sender, EventArgs e)
+        {
+            Bitmap Cutout = CaptureImage();
+            Cutout = ImageCapture.CropImage(Cutout);
+            Cutout.Save("cutout.bmp");
         }
     }
     public class AutoSplitData
