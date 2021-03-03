@@ -10,14 +10,22 @@ using System.Windows.Forms;
 
 namespace CrashTWoCLoadDetector
 {
+    public enum ResizeState
+    {
+        ENG,
+        JPN
+    }
     public struct ImageCaptureInfo
     {
         public float featureVectorResolutionX;
         public float featureVectorResolutionY;
         public int captureSizeX;
         public int captureSizeY;
-        public int resizeSizeX;
-        public int resizeSizeY;
+        public ResizeState resizeState;
+        public int resizeSizeXEng;
+        public int resizeSizeYEng;
+        public int resizeSizeXJpn;
+        public int resizeSizeYJpn;
         public float cropOffsetX;
         public float cropOffsetY;
         public float captureAspectRatio;
@@ -123,8 +131,15 @@ namespace CrashTWoCLoadDetector
                 (int)(info.center_of_frame_y - info.actual_crop_size_y / 2 + info.actual_offset_y), 0, 0, new Size((int)info.actual_crop_size_x, (int)info.actual_crop_size_y), CopyPixelOperation.SourceCopy);
             }
 
-            if (useResize) 
-                b = ResizeImage(b, info.resizeSizeX, info.resizeSizeY);
+            if (useResize)
+                if (info.resizeState == ResizeState.ENG)
+                {
+                    b = ResizeImage(b, info.resizeSizeXEng, info.resizeSizeYEng);
+                }
+                else
+                {
+                    b = ResizeImage(b, info.resizeSizeXJpn, info.resizeSizeYJpn);
+                }
             else
                 b = ResizeImage(b, info.captureSizeX, info.captureSizeY);
 
@@ -253,7 +268,14 @@ namespace CrashTWoCLoadDetector
                 DLLImportStuff.ReleaseDC(hwnd, hdcwnd);
                 DLLImportStuff.DeleteDC(hdc);
                 if (useResize)
-                    ret = ResizeImage(ret, info.resizeSizeX, info.resizeSizeY);
+                    if (info.resizeState == ResizeState.ENG)
+                    {
+                        ret = ResizeImage(ret, info.resizeSizeXEng, info.resizeSizeYEng);
+                    }
+                    else
+                    {
+                        ret = ResizeImage(ret, info.resizeSizeXJpn, info.resizeSizeYJpn);
+                    }
                 else
                     ret = ResizeImage(ret, info.captureSizeX, info.captureSizeY);
                 return ret;

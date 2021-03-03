@@ -20,6 +20,8 @@ namespace LiveSplit.UI.Components
     {
         #region Public Fields
 
+        public string platform = "ENG/PS2";
+
         public bool AutoSplitterEnabled = false;
 
         public bool AutoSplitterDisableOnSkipUntilSplit = false;
@@ -52,13 +54,15 @@ namespace LiveSplit.UI.Components
 
         private List<string> captureIDs = null;
 
-        private Size captureSize = new Size(800, 400);
+        private Size captureSize = new Size(800, 600);
 
-        private Size resizeSize = new Size(150, 75);
+        private Size resizeSizeEng = new Size(200, 150);
+
+        private Size resizeSizeJpn = new Size(320, 240);
 
         private float cropOffsetX = 100.0f;
 
-        private float cropOffsetY = -310.0f;
+        private float cropOffsetY = -200.0f;
 
         private bool drawingPreview = false;
 
@@ -111,11 +115,12 @@ namespace LiveSplit.UI.Components
             InitializeComponent();
 
             //RemoveFadeins = chkRemoveFadeIns.Checked;
-
-            RemoveFadeouts = chkRemoveTransitions.Checked;
-            RemoveFadeins = chkRemoveTransitions.Checked;
+            //if (language == "ENG")
+            //{
+            //    languageComboBox.SelectedIndex = languageComboBox.FindStringExact("ENG");
+            //} 
             SaveDetectionLog = chkSaveDetectionLog.Checked;
-
+            languageComboBox.SelectedItem = platform;
             AllGameAutoSplitSettings = new Dictionary<string, XmlElement>();
             dynamicAutoSplitterControls = new List<Control>();
             CreateAutoSplitControls(state);
@@ -134,14 +139,70 @@ namespace LiveSplit.UI.Components
 
         #region Public Methods
 
-        public void SetBlackLevel(int black_level)
-        {
-            AverageBlackLevel = black_level;
-            lblBlackLevel.Text = "Black-Level: " + AverageBlackLevel;
-        }
-
         public Bitmap CaptureImage()
         {
+            Bitmap b = new Bitmap(1, 1);
+
+            //Full screen capture
+            if (processCaptureIndex < 0)
+            {
+                Screen selected_screen = Screen.AllScreens[-processCaptureIndex - 1];
+                Rectangle screenRect = selected_screen.Bounds;
+
+                screenRect.Width = (int)(screenRect.Width * scalingValueFloat);
+                screenRect.Height = (int)(screenRect.Height * scalingValueFloat);
+
+                Point screenCenter = new Point(screenRect.Width / 2, screenRect.Height / 2);
+
+                //Change size according to selected crop
+                screenRect.Width = (int)(imageCaptureInfo.crop_coordinate_right - imageCaptureInfo.crop_coordinate_left);
+                screenRect.Height = (int)(imageCaptureInfo.crop_coordinate_bottom - imageCaptureInfo.crop_coordinate_top);
+
+                //Compute crop coordinates and width/ height based on resolution
+                ImageCapture.SizeAdjustedCropAndOffset(screenRect.Width, screenRect.Height, ref imageCaptureInfo);
+
+                //Adjust for crop offset
+                imageCaptureInfo.center_of_frame_x += imageCaptureInfo.crop_coordinate_left;
+                imageCaptureInfo.center_of_frame_y += imageCaptureInfo.crop_coordinate_top;
+
+                //Adjust for selected screen offset
+                imageCaptureInfo.center_of_frame_x += selected_screen.Bounds.X;
+                imageCaptureInfo.center_of_frame_y += selected_screen.Bounds.Y;
+
+                b = ImageCapture.CaptureFromDisplay(ref imageCaptureInfo, useResize: true);
+            }
+            else
+            {
+                IntPtr handle = new IntPtr(0);
+
+                if (processCaptureIndex >= processList.Length)
+                    return b;
+
+                if (processCaptureIndex != -1)
+                {
+                    handle = processList[processCaptureIndex].MainWindowHandle;
+                }
+                //Capture from specific process
+                processList[processCaptureIndex].Refresh();
+                if ((int)handle == 0)
+                    return b;
+
+                b = ImageCapture.PrintWindow(handle, ref imageCaptureInfo, useCrop: true, useResize: true);
+            }
+
+            return b;
+        }
+
+        public Bitmap CaptureImagePostLoad()
+        {
+            ImageCaptureInfo imageCaptureInfo = this.imageCaptureInfo;
+            imageCaptureInfo.cropOffsetX = 650.0f;
+            imageCaptureInfo.cropOffsetY = -420.0f;
+            imageCaptureInfo.captureSizeX = 600;
+            imageCaptureInfo.captureSizeY = 200;
+            imageCaptureInfo.resizeSizeXEng = 150;
+            imageCaptureInfo.resizeSizeYEng = 50;
+
             Bitmap b = new Bitmap(1, 1);
 
             //Full screen capture
@@ -367,7 +428,6 @@ namespace LiveSplit.UI.Components
 
             settingsNode.AppendChild(ToElement(document, "Version", Assembly.GetExecutingAssembly().GetName().Version.ToString(3)));
 
-            settingsNode.AppendChild(ToElement(document, "RequiredMatches", FeatureDetector.numberOfBinsCorrect));
 
             if (captureIDs != null)
             {
@@ -378,6 +438,11 @@ namespace LiveSplit.UI.Components
                     settingsNode.AppendChild(ToElement(document, "SelectedCaptureTitle", selectedCaptureTitle));
                 }
             }
+            if (languageComboBox.SelectedItem != null)
+            {
+                settingsNode.AppendChild(ToElement(document, "language", languageComboBox.SelectedItem.ToString()));
+            }
+            
 
             settingsNode.AppendChild(ToElement(document, "ScalingPercent", trackBar1.Value));
 
@@ -392,7 +457,6 @@ namespace LiveSplit.UI.Components
 
             settingsNode.AppendChild(ToElement(document, "AutoSplitEnabled", enableAutoSplitterChk.Checked));
             settingsNode.AppendChild(ToElement(document, "AutoSplitDisableOnSkipUntilSplit", chkAutoSplitterDisableOnSkip.Checked));
-            settingsNode.AppendChild(ToElement(document, "RemoveFadeouts", chkRemoveTransitions.Checked));
             //settingsNode.AppendChild(ToElement(document, "RemoveFadeins", chkRemoveFadeIns.Checked));
             settingsNode.AppendChild(ToElement(document, "SaveDetectionLog", chkSaveDetectionLog.Checked));
 
@@ -456,18 +520,26 @@ namespace LiveSplit.UI.Components
                     version = new Version(1, 0, 0);
                 }
 
-                if (element["RequiredMatches"] != null)
-                {
-                    FeatureDetector.numberOfBinsCorrect = Convert.ToInt32(element["RequiredMatches"].InnerText);
-                    requiredMatchesUpDown.Value = FeatureDetector.numberOfBinsCorrect;
-                }
-
                 if (element["SelectedCaptureTitle"] != null)
                 {
                     String selectedCaptureTitle = element["SelectedCaptureTitle"].InnerText;
                     selectedCaptureID = selectedCaptureTitle;
                     UpdateIndexToCaptureID();
                     RefreshCaptureWindowList();
+                }
+
+                if (element["language"] != null)
+                {
+                    languageComboBox.SelectedItem = element["language"].InnerText;
+                    platform = languageComboBox.SelectedItem.ToString();
+                    if (platform == "JPN/PS2")
+                    {
+                        imageCaptureInfo.resizeState = ResizeState.JPN;
+                    }
+                    else
+                    {
+                        imageCaptureInfo.resizeState = ResizeState.ENG;
+                    }
                 }
 
                 if (element["ScalingPercent"] != null)
@@ -512,17 +584,6 @@ namespace LiveSplit.UI.Components
                 {
                     chkAutoSplitterDisableOnSkip.Checked = Convert.ToBoolean(element["AutoSplitDisableOnSkipUntilSplit"].InnerText);
                 }
-
-                if (element["RemoveFadeouts"] != null)
-                {
-                    chkRemoveTransitions.Checked = Convert.ToBoolean(element["RemoveFadeouts"].InnerText);
-                }
-
-                //if (element["RemoveFadeins"] != null)
-                //{
-                //  chkRemoveFadeIns.Checked = Convert.ToBoolean(element["RemoveFadeins"].InnerText);
-                //}
-                chkRemoveFadeIns.Checked = chkRemoveTransitions.Checked;
 
                 if (element["SaveDetectionLog"] != null)
                 {
@@ -598,13 +659,6 @@ namespace LiveSplit.UI.Components
             }
         }
 
-        private void checkAutoReset_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-        }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -734,16 +788,6 @@ namespace LiveSplit.UI.Components
 
                 //Show matching bins for preview
                 var capture = CaptureImage();
-                List<int> dummy;
-                int black_level = 0;
-                var features = FeatureDetector.featuresFromBitmap(capture, out dummy, out black_level);
-                int tempMatchingBins = 0;
-                var isLoading = FeatureDetector.compareFeatureVector(features.ToArray(), FeatureDetector.listOfFeatureVectorsEng, out tempMatchingBins, -1.0f, false);
-
-                lastFeatures = features;
-                lastDiagnosticCapture = capture;
-                lastMatchingBins = tempMatchingBins;
-                matchDisplayLabel.Text = tempMatchingBins.ToString();
             }
             catch (Exception ex)
             {
@@ -763,14 +807,16 @@ namespace LiveSplit.UI.Components
             selectionTopLeft = new Point(0, 0);
             selectionBottomRight = new Point(previewPictureBox.Width, previewPictureBox.Height);
             selectionRectanglePreviewBox = new Rectangle(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X - selectionTopLeft.X, selectionBottomRight.Y - selectionTopLeft.Y);
-            requiredMatchesUpDown.Value = FeatureDetector.numberOfBinsCorrect;
 
             imageCaptureInfo.featureVectorResolutionX = featureVectorResolutionX;
             imageCaptureInfo.featureVectorResolutionY = featureVectorResolutionY;
             imageCaptureInfo.captureSizeX = captureSize.Width;
             imageCaptureInfo.captureSizeY = captureSize.Height;
-            imageCaptureInfo.resizeSizeX = resizeSize.Width;
-            imageCaptureInfo.resizeSizeY = resizeSize.Height;
+            imageCaptureInfo.resizeSizeXEng = resizeSizeEng.Width;
+            imageCaptureInfo.resizeSizeYEng = resizeSizeEng.Height;
+            imageCaptureInfo.resizeSizeXJpn = resizeSizeJpn.Width;
+            imageCaptureInfo.resizeSizeYJpn = resizeSizeJpn.Height;
+            imageCaptureInfo.resizeState = ResizeState.ENG;
             imageCaptureInfo.cropOffsetX = cropOffsetX;
             imageCaptureInfo.cropOffsetY = cropOffsetY;
             imageCaptureInfo.captureAspectRatio = captureAspectRatioX / captureAspectRatioY;
@@ -905,11 +951,6 @@ namespace LiveSplit.UI.Components
             return sbOutput.ToString();
         }
 
-        private void requiredMatchesUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            FeatureDetector.numberOfBinsCorrect = (int)requiredMatchesUpDown.Value;
-        }
-
         private void saveDiagnosticsButton_Click(object sender, EventArgs e)
         {
             try
@@ -1029,28 +1070,30 @@ namespace LiveSplit.UI.Components
             AutoSplitterDisableOnSkipUntilSplit = chkAutoSplitterDisableOnSkip.Checked;
         }
 
-        private void chkRemoveTransitions_CheckedChanged(object sender, EventArgs e)
-        {
-            RemoveFadeouts = chkRemoveTransitions.Checked;
-            RemoveFadeins = chkRemoveTransitions.Checked;
-        }
-
         private void chkSaveDetectionLog_CheckedChanged(object sender, EventArgs e)
         {
             SaveDetectionLog = chkSaveDetectionLog.Checked;
         }
 
-        private void chkRemoveFadeIns_CheckedChanged(object sender, EventArgs e)
-        {
-            //RemoveFadeins = chkRemoveFadeIns.Checked;
-            RemoveFadeins = chkRemoveTransitions.Checked;
-        }
 
         private void saveCutout_Click(object sender, EventArgs e)
         {
             Bitmap Cutout = CaptureImage();
             Cutout = ImageCapture.CropImage(Cutout);
             Cutout.Save("cutout.bmp");
+        }
+
+        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            platform = languageComboBox.SelectedItem.ToString();
+            if (platform == "ENG/PS2" || platform == "ENG/XBOX")
+            {
+                imageCaptureInfo.resizeState = ResizeState.ENG;
+            }
+            else
+            {
+                imageCaptureInfo.resizeState = ResizeState.JPN;
+            }
         }
     }
     public class AutoSplitData

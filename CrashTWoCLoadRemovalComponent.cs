@@ -35,17 +35,15 @@ namespace LiveSplit.UI.Components
         private bool waitOnLoad = false;
         private bool isBlackScreen = false;
         private bool wasBlackScreen = false;
+        private bool isFadeIn = false;
         private bool testSaved = false;
-        private readonly int waitOnLoadFrames = 300;
+        private readonly int WAIT_ON_LOAD_FRAMES = 300;
         private int waitFrames = 0;
-        private string expectedResult = "LOADING";
+        private string expectedResultEng = "LOADING";
+        private string expectedResultJpn = "リ~ド⑤ぅヽトー";
 
         private TimerModel timer;
         private bool timerStarted = false;
-        private bool postLoadTransition = false;
-        private bool first_frame_post_load_transition = false;
-        private double total_paused_time = 0.0f;
-        private string log_file_name = "";
         FileStream log_file_stream = null;
         StreamWriter log_file_writer = null;
 
@@ -62,33 +60,20 @@ namespace LiveSplit.UI.Components
         private string GameName = "";
         private string GameCategory = "";
         private int NumberOfSplits = 0;
-        private float average_transition_max_level = 0.0f;
-        private int num_transitions = 0;
-        private int num_transitions_for_calibration = 2; // How many pre-load screens are necessary to calibrate to the correct black level
-        private float sum_transitions_max_level = 0.0f;
-        private float last_transition_max_level = 0.0f;
-        private float max_transition_max_level = 0.0f;
         private List<string> SplitNames;
+        private DateTime timerStart;
         private DateTime lastTime;
         private DateTime transitionStart;
 
         private DateTime segmentTimeStart;
         private LiveSplitState liveSplitState;
         //private Thread captureThread;
-        private bool threadRunning = false;
-        private double framesSum = 0.0;
-        private int framesSumRounded = 0;
         private int framesSinceLastManualSplit = 0;
         private bool LastSplitSkip = false;
-        TesseractEngine engine = new TesseractEngine(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Components/tessdata"), "eng", EngineMode.Default);
-
-
-
-
-        private bool imageSaved = false;
-
-
-
+        private string curLanguage;
+        private string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Components/tessdata");
+        TesseractEngine engine;
+        //TesseractEngine engine = new TesseractEngine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Components/tessdata"), "eng", EngineMode.Default);
 
         //private HighResolutionTimer.HighResolutionTimer highResTimer;
         private List<int> NumberOfLoadsPerSplit;
@@ -108,8 +93,8 @@ namespace LiveSplit.UI.Components
             liveSplitState = state;
             NumberOfLoadsPerSplit = new List<int>();
             InitNumberOfLoadsFromState();
-
             settings = new CrashTWoCLoadRemovalSettings(state);
+            InitTesseract();
             lastTime = DateTime.Now;
             segmentTimeStart = DateTime.Now;
             timer = new TimerModel { CurrentState = state };
@@ -122,6 +107,19 @@ namespace LiveSplit.UI.Components
             timer.CurrentState.OnResume += timer_OnResume;
             //highResTimer = new HighResolutionTimer.HighResolutionTimer(16.0f);
             //highResTimer.Elapsed += (s, e) => { CaptureLoads(); };
+        }
+
+        private void InitTesseract()
+        {
+            curLanguage = settings.platform;
+            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX")
+            {
+                engine = new TesseractEngine(path, "eng", EngineMode.Default);
+            }
+            else if (settings.platform == "JPN/PS2")
+            {
+                engine = new TesseractEngine(path, "jpn", EngineMode.Default);
+            }
         }
 
         private void timer_OnResume(object sender, EventArgs e)
@@ -172,156 +170,59 @@ namespace LiveSplit.UI.Components
 
                 if (timerStarted)
                 {
-                    framesSinceLastManualSplit++;
-                    //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
-                    //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
-                    lastTime = DateTime.Now;
-
-                    //Capture image using the settings defined for the component
-                    Bitmap capture = settings.CaptureImage();
-                    if (!testSaved)
+                    if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2")
                     {
-                        capture.Save("screenshot.bmp");
-                        testSaved = true;
+                        CaptureLoadsPS2();
                     }
-                    wasBlackScreen = isBlackScreen;
-                    isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
-
-                    if (!isBlackScreen && waitOnLoad)
+                    else
                     {
-                        capture = ImageCapture.CropImage(capture);
-                        FeatureDetector.clearBackground(ref capture);
-                        //using (var img = Pix.LoadFromFile("./testimage.bmp"))
-                        BitmapToPixConverter btp = new BitmapToPixConverter();
-                        //Pix img = btp.Convert(capture);
-
-                        Pix img = btp.Convert(capture);
-                        string ResultText = "";
-                        using (var page = engine.Process(img))
-                        {
-                            ResultText = page.GetText();
-                        }
-
-                        //if (!testSaved)
-                        //{
-                        //    Bitmap testimage = new Bitmap("test.bmp");
-                        //    FeatureDetector.clearBackground(ref testimage);
-                        //    testimage.Save("testresult.bmp");
-                        //    Pix test = btp.Convert(testimage);
-                        //    Page page = engine.Process(test);
-                        //    string testResult = page.GetText();
-                        //    Console.WriteLine(testResult);
-                        //    testSaved = true;
-                        //    page.Dispose();
-                        //}
-                        int counter = 0;
-                        foreach (char c in expectedResult)
-                        {
-                            if (ResultText.Contains(c))
-                                counter++;
-                        }
-                        if (counter > 5 && ResultText.Length == 8)
-                        {
-                            isLoading = true;
-                        }
-                        else
-                        {
-                            waitFrames++;
-                            if (waitFrames == waitOnLoadFrames)
-                            {
-                                waitOnLoad = false;
-                                waitFrames = 0;
-                            }
-                        }
-
-                    }
-
-                    /* if (isLoading && num_transitions < num_transitions_for_calibration)
-                     {
-                       num_transitions++;
-                       sum_transitions_max_level += black_level;
-                       average_transition_max_level = sum_transitions_max_level / num_transitions;
-                       max_transition_max_level = Math.Max(black_level, max_transition_max_level);
-                       Console.WriteLine("pre-load black-level: Average transition {5}: num: {0}, sum: {1}, last: {2}, avg: {3}, max: {4}", num_transitions, sum_transitions_max_level, last_transition_max_level, average_transition_max_level, max_transition_max_level, SplitNames[Math.Max(Math.Min(liveSplitState.CurrentSplitIndex, SplitNames.Count - 1), 0)]);
-                       last_transition_max_level = 0.0f;
-                     }*/
-
-
-
-                    timer.CurrentState.IsGameTimePaused = isLoading || isBlackScreen;
-
-                    if (waitOnFadeIn && isBlackScreen)
-                    {
-                        waitOnFadeIn = false;
-                        isLoading = false;
-                    }
-
-                    if (wasBlackScreen && !isBlackScreen)
-                    {
-                        //This could be a pre-load transition, start timing it
-                        transitionStart = DateTime.Now;
-                        waitOnLoad = true;
+                        CaptureLoadsXbox();
                     }
 
 
-                    //Console.WriteLine("GAMETIMEPAUSETIME: {0}", timer.CurrentState.GameTimePauseTime);
 
-                    if (isLoading && waitOnLoad)
-                    {
-                        // This was a pre-load transition, subtract the gametime
-                        TimeSpan delta = (DateTime.Now - transitionStart);
-                        timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime - delta);
-                        waitOnLoad = false;
-                        Console.WriteLine(waitFrames);
-                        waitFrames = 0;
-                        waitOnFadeIn = true;
-                    }
+                    //if (settings.AutoSplitterEnabled && !(settings.AutoSplitterDisableOnSkipUntilSplit && LastSplitSkip))
+                    //{
+                    //    //This is just so that if the detection is not correct by a single frame, it still only splits if a few successive frames are loading
+                    //    if (isLoading && TWoCState == CrashTWoCState.RUNNING)
+                    //    {
+                    //        pausedFrames++;
+                    //        runningFrames = 0;
+                    //    }
+                    //    else if (!isLoading && TWoCState == CrashTWoCState.LOADING)
+                    //    {
+                    //        runningFrames++;
+                    //        pausedFrames = 0;
+                    //    }
 
-                    
+                    //    if (TWoCState == CrashTWoCState.RUNNING && pausedFrames >= settings.AutoSplitterJitterToleranceFrames)
+                    //    {
+                    //        runningFrames = 0;
+                    //        pausedFrames = 0;
+                    //        //We enter pause.
+                    //        TWoCState = CrashTWoCState.LOADING;
+                    //        if (framesSinceLastManualSplit >= settings.AutoSplitterManualSplitDelayFrames)
+                    //        {
+                    //            NumberOfLoadsPerSplit[liveSplitState.CurrentSplitIndex]++;
 
+                    //            if (CumulativeNumberOfLoadsForSplitIndex(liveSplitState.CurrentSplitIndex) >= settings.GetCumulativeNumberOfLoadsForSplit(liveSplitState.CurrentSplit.Name))
+                    //            {
 
-                    if (settings.AutoSplitterEnabled && !(settings.AutoSplitterDisableOnSkipUntilSplit && LastSplitSkip))
-                    {
-                        //This is just so that if the detection is not correct by a single frame, it still only splits if a few successive frames are loading
-                        if (isLoading && TWoCState == CrashTWoCState.RUNNING)
-                        {
-                            pausedFrames++;
-                            runningFrames = 0;
-                        }
-                        else if (!isLoading && TWoCState == CrashTWoCState.LOADING)
-                        {
-                            runningFrames++;
-                            pausedFrames = 0;
-                        }
-
-                        if (TWoCState == CrashTWoCState.RUNNING && pausedFrames >= settings.AutoSplitterJitterToleranceFrames)
-                        {
-                            runningFrames = 0;
-                            pausedFrames = 0;
-                            //We enter pause.
-                            TWoCState = CrashTWoCState.LOADING;
-                            if (framesSinceLastManualSplit >= settings.AutoSplitterManualSplitDelayFrames)
-                            {
-                                NumberOfLoadsPerSplit[liveSplitState.CurrentSplitIndex]++;
-
-                                if (CumulativeNumberOfLoadsForSplitIndex(liveSplitState.CurrentSplitIndex) >= settings.GetCumulativeNumberOfLoadsForSplit(liveSplitState.CurrentSplit.Name))
-                                {
-
-                                    timer.Split();
+                    //                timer.Split();
 
 
-                                }
-                            }
+                    //            }
+                    //        }
 
-                        }
-                        else if (TWoCState == CrashTWoCState.LOADING && runningFrames >= settings.AutoSplitterJitterToleranceFrames)
-                        {
-                            runningFrames = 0;
-                            pausedFrames = 0;
-                            //We enter runnning.
-                            TWoCState = CrashTWoCState.RUNNING;
-                        }
-                    }
+                    //    }
+                    //    else if (TWoCState == CrashTWoCState.LOADING && runningFrames >= settings.AutoSplitterJitterToleranceFrames)
+                    //    {
+                    //        runningFrames = 0;
+                    //        pausedFrames = 0;
+                    //        //We enter runnning.
+                    //        TWoCState = CrashTWoCState.RUNNING;
+                    //    }
+                    //}
 
 
                     //Console.WriteLine("TIME TAKEN FOR DETECTION: {0}", DateTime.Now - lastTime);
@@ -332,6 +233,199 @@ namespace LiveSplit.UI.Components
                 isLoading = false;
                 Console.WriteLine("Error: " + ex.ToString());
             }
+        }
+
+        private void CaptureLoadsXbox()
+        {
+            if ((timerStart.Ticks - liveSplitState.Run.Offset.Ticks) <= DateTime.Now.Ticks) {
+                framesSinceLastManualSplit++;
+                //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
+                //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
+                lastTime = DateTime.Now;
+
+                wasBlackScreen = isBlackScreen;
+                //Capture image using the settings defined for the component
+                Bitmap capture = settings.CaptureImage();
+                isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
+                BitmapToPixConverter btp = new BitmapToPixConverter();
+
+                if (!isBlackScreen && !waitOnFadeIn)
+                {
+                    capture = ImageCapture.CropImage(capture);
+                    FeatureDetector.clearBackground(ref capture);
+                    Pix img = btp.Convert(capture);
+                    string ResultText = "";
+                    using (var page = engine.Process(img, PageSegMode.SingleChar))
+                    {
+                        ResultText = page.GetText();
+                    }
+                    int counter = 0;
+                    foreach (char c in expectedResultEng)
+                    {
+                        if (ResultText.Contains(c))
+                            counter++;
+                    }
+                    if (counter > 5 && ResultText.Length == 8)
+                    {
+                        isLoading = true;
+                    }
+
+                }
+
+                timer.CurrentState.IsGameTimePaused = isLoading || isBlackScreen;
+
+                if (waitOnFadeIn)
+                {
+                    capture = settings.CaptureImagePostLoad();
+                    FeatureDetector.clearBackgroundPostLoad(ref capture);
+                    Pix img = btp.Convert(capture);
+                    using (var page = engine.Process(img, PageSegMode.SingleChar))
+                    {
+                        if (page.GetText().Any(char.IsDigit))
+                        {
+                            waitOnFadeIn = false;
+                            isLoading = false;
+                        }
+                    }
+                }
+
+                if (waitOnFadeIn && isBlackScreen)
+                {
+                    waitOnFadeIn = false;
+                    isLoading = false;
+                }
+
+                if (isLoading)
+                {
+                    waitOnFadeIn = true;
+                }
+            }
+
+        }
+
+        private void CaptureLoadsPS2()
+        {
+
+
+            framesSinceLastManualSplit++;
+            //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
+            //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
+            lastTime = DateTime.Now;
+
+            //Capture image using the settings defined for the component
+            Bitmap capture = settings.CaptureImage();
+            wasBlackScreen = isBlackScreen;
+            isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
+            //BitmapToPixConverter btp = new BitmapToPixConverter();
+            //if (!testSaved)
+            //{
+            //    Bitmap jpntestbmp = new Bitmap("screenshot_23.bmp");
+            //    FeatureDetector.clearBackground(ref jpntestbmp);
+            //    jpntestbmp.Save("jpntest.bmp");
+            //    Pix jpntest = btp.Convert(jpntestbmp);
+            //    using (var page = engine.Process(jpntest, PageSegMode.SingleChar))
+            //    {
+            //        Console.WriteLine(page.GetText());
+            //    }
+            //    testSaved = true;
+            //}
+
+            if (!isBlackScreen && waitOnLoad)
+            {
+                capture = ImageCapture.CropImage(capture);
+                FeatureDetector.clearBackground(ref capture);
+
+                BitmapToPixConverter btp = new BitmapToPixConverter();
+                Pix img = btp.Convert(capture);
+                string ResultText = "";
+                using (var page = engine.Process(img, PageSegMode.SingleChar))
+                {
+                    ResultText = page.GetText();
+                }
+                int counter = 0;
+                if (settings.platform == "ENG/PS2")
+                {
+                    foreach (char c in expectedResultEng)
+                    {
+                        if (ResultText.Contains(c))
+                            counter++;
+                    }
+                    if (counter > 5 && ResultText.Length == 8)
+                    {
+                        isLoading = true;
+                    }
+                    else
+                    {
+                        waitFrames++;
+                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
+                        {
+                            waitOnLoad = false;
+                            waitFrames = 0;
+                        }
+                    }
+                }
+                else if (settings.platform == "JPN/PS2")
+                {
+                    foreach (char c in expectedResultJpn)
+                    {
+                        if (ResultText.Contains(c))
+                            counter++;
+                    }
+                    if (counter > 3)
+                    {
+                        isLoading = true;
+                    }
+                    else
+                    {
+                        waitFrames++;
+                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
+                        {
+                            waitOnLoad = false;
+                            waitFrames = 0;
+                        }
+                    }
+                }
+            }
+
+            timer.CurrentState.IsGameTimePaused = isLoading || isBlackScreen;
+
+            if (waitOnFadeIn && isBlackScreen)
+            {
+                waitOnFadeIn = false;
+                isLoading = false;
+                isFadeIn = true;
+            }
+
+            if (wasBlackScreen && !isBlackScreen)
+            {
+                //if it's a fadeout after a loading screen, it won't search the screen for a loading text to improve performance
+                if (!isFadeIn)
+                {
+                    //This could be a pre-load transition, start timing it
+                    transitionStart = DateTime.Now;
+                    waitOnLoad = true;
+                }
+                else
+                {
+                    isFadeIn = false;
+                }
+            }
+
+
+
+            if (isLoading && waitOnLoad)
+            {
+                // This was a pre-load transition, subtract the gametime
+                TimeSpan delta = (DateTime.Now - transitionStart);
+                timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime - delta);
+                waitOnLoad = false;
+                Console.WriteLine(waitFrames);
+                waitFrames = 0;
+                waitOnFadeIn = true;
+            }
+
+
+
         }
 
         private void timer_OnUndoSplit(object sender, EventArgs e)
@@ -387,7 +481,6 @@ namespace LiveSplit.UI.Components
             runningFrames = 0;
             pausedFrames = 0;
             framesSinceLastManualSplit = 0;
-            threadRunning = false;
             LastSplitSkip = false;
             isLoading = false;
             waitOnFadeIn = false;
@@ -395,18 +488,10 @@ namespace LiveSplit.UI.Components
             isBlackScreen = false;
             wasBlackScreen = false;
             waitFrames = 0;
+            testSaved = false;
 
             //highResTimer.Stop(joinThread:false);
             InitNumberOfLoadsFromState();
-
-            average_transition_max_level = 0.0f;
-            last_transition_max_level = 0.0f;
-            num_transitions = 0;
-            sum_transitions_max_level = 0.0f;
-            max_transition_max_level = 0.0f;
-            first_frame_post_load_transition = false;
-            total_paused_time = 0.0f;
-
 
             if (log_file_writer != null)
             {
@@ -429,42 +514,11 @@ namespace LiveSplit.UI.Components
             framesSinceLastManualSplit = 0;
             pausedFrames = 0;
             timerStarted = true;
-            threadRunning = true;
-            average_transition_max_level = 0.0f;
-            last_transition_max_level = 0.0f;
-            num_transitions = 0;
-            sum_transitions_max_level = 0.0f;
-            max_transition_max_level = 0.0f;
-            first_frame_post_load_transition = false;
-            total_paused_time = 0.0f;
+            timerStart = DateTime.Now;
 
             ReloadLogFile();
             //StartCaptureThread();
             //highResTimer.Start();
-        }
-
-        void StartCaptureThread()
-        {
-            //captureThread = new Thread(() =>
-            //{
-            //	System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-            //	while (threadRunning)
-            //	{
-            //watch.Restart();
-            //		CaptureLoads();
-            //TODO: test rounding of framecounts in output, more importantly:
-            //TEST FINAL TIME TO SEE IF IT IS ACCURATE WITH THIS,
-            //THEN ADD SLEEPS FOR PERFORMANCE
-            //THEN ADJUST FOR BETTER PERFORMANCE
-
-            /*Thread.Sleep(Math.Max((int)(captureDelay - watch.Elapsed.TotalMilliseconds - 1), 0));
-            while(captureDelay - watch.Elapsed.TotalMilliseconds >= 0)
-            {
-              ;
-            }*/
-            //	}
-            //});
-            //captureThread.Start();*/
         }
 
         private void ReloadLogFile()
@@ -536,6 +590,11 @@ namespace LiveSplit.UI.Components
 
             return false;
         }
+
+        private bool LanguageIsDifferent()
+        {
+            return settings.platform != curLanguage;
+        }
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
             if (SplitsAreDifferent(state))
@@ -543,6 +602,10 @@ namespace LiveSplit.UI.Components
                 settings.ChangeAutoSplitSettingsToGameName(GameName, GameCategory);
 
                 ReloadLogFile();
+            }
+            if (LanguageIsDifferent())
+            {
+                InitTesseract();
             }
             liveSplitState = state;
             /*

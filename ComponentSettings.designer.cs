@@ -38,17 +38,14 @@
             this.croppedPreviewPictureBox = new System.Windows.Forms.PictureBox();
             this.scalingLabel = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.matchDisplayLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.requiredMatchesUpDown = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.saveCutout = new System.Windows.Forms.Button();
             this.updatePreviewButton = new System.Windows.Forms.Button();
+            this.languageComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lblBlackLevel = new System.Windows.Forms.Label();
-            this.chkRemoveFadeIns = new System.Windows.Forms.CheckBox();
             this.chkSaveDetectionLog = new System.Windows.Forms.CheckBox();
-            this.chkRemoveTransitions = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.chkAutoSplitterDisableOnSkip = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -56,11 +53,9 @@
             this.autoSplitNameLbl = new System.Windows.Forms.Label();
             this.autoSplitCategoryLbl = new System.Windows.Forms.Label();
             this.enableAutoSplitterChk = new System.Windows.Forms.CheckBox();
-            this.saveCutout = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.croppedPreviewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.requiredMatchesUpDown)).BeginInit();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -86,7 +81,7 @@
             this.processListComboBox.FormattingEnabled = true;
             this.processListComboBox.Items.AddRange(new object[] {
             "Full Display (Primary)"});
-            this.processListComboBox.Location = new System.Drawing.Point(86, 6);
+            this.processListComboBox.Location = new System.Drawing.Point(85, 6);
             this.processListComboBox.Name = "processListComboBox";
             this.processListComboBox.Size = new System.Drawing.Size(345, 21);
             this.processListComboBox.TabIndex = 22;
@@ -95,8 +90,9 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(28, 9);
+            this.label1.Location = new System.Drawing.Point(30, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 23;
@@ -105,9 +101,9 @@
             // previewPictureBox
             // 
             this.previewPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.previewPictureBox.Location = new System.Drawing.Point(31, 122);
+            this.previewPictureBox.Location = new System.Drawing.Point(30, 154);
             this.previewPictureBox.Name = "previewPictureBox";
-            this.previewPictureBox.Size = new System.Drawing.Size(400, 180);
+            this.previewPictureBox.Size = new System.Drawing.Size(400, 160);
             this.previewPictureBox.TabIndex = 24;
             this.previewPictureBox.TabStop = false;
             this.previewPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.previewPictureBox_MouseClick);
@@ -119,7 +115,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(27, 88);
+            this.label2.Location = new System.Drawing.Point(26, 112);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 16);
             this.label2.TabIndex = 25;
@@ -130,7 +126,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(28, 107);
+            this.label11.Location = new System.Drawing.Point(27, 131);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(304, 12);
             this.label11.TabIndex = 28;
@@ -140,7 +136,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(27, 305);
+            this.label4.Location = new System.Drawing.Point(28, 317);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(185, 16);
             this.label4.TabIndex = 30;
@@ -150,9 +146,9 @@
             // croppedPreviewPictureBox
             // 
             this.croppedPreviewPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.croppedPreviewPictureBox.Location = new System.Drawing.Point(31, 323);
+            this.croppedPreviewPictureBox.Location = new System.Drawing.Point(30, 336);
             this.croppedPreviewPictureBox.Name = "croppedPreviewPictureBox";
-            this.croppedPreviewPictureBox.Size = new System.Drawing.Size(400, 180);
+            this.croppedPreviewPictureBox.Size = new System.Drawing.Size(400, 160);
             this.croppedPreviewPictureBox.TabIndex = 29;
             this.croppedPreviewPictureBox.TabStop = false;
             // 
@@ -160,7 +156,7 @@
             // 
             this.scalingLabel.AutoSize = true;
             this.scalingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scalingLabel.Location = new System.Drawing.Point(148, 3);
+            this.scalingLabel.Location = new System.Drawing.Point(50, 7);
             this.scalingLabel.Name = "scalingLabel";
             this.scalingLabel.Size = new System.Drawing.Size(92, 16);
             this.scalingLabel.TabIndex = 32;
@@ -169,59 +165,17 @@
             // trackBar1
             // 
             this.trackBar1.LargeChange = 25;
-            this.trackBar1.Location = new System.Drawing.Point(134, 20);
+            this.trackBar1.Location = new System.Drawing.Point(18, 26);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 201;
             this.trackBar1.Minimum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(106, 45);
+            this.trackBar1.Size = new System.Drawing.Size(163, 45);
             this.trackBar1.SmallChange = 25;
             this.trackBar1.TabIndex = 31;
             this.trackBar1.TickFrequency = 25;
             this.trackBar1.Value = 100;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
-            // 
-            // matchDisplayLabel
-            // 
-            this.matchDisplayLabel.AutoSize = true;
-            this.matchDisplayLabel.Location = new System.Drawing.Point(21, 23);
-            this.matchDisplayLabel.Name = "matchDisplayLabel";
-            this.matchDisplayLabel.Size = new System.Drawing.Size(13, 13);
-            this.matchDisplayLabel.TabIndex = 33;
-            this.matchDisplayLabel.Text = "0";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(116, 16);
-            this.label5.TabIndex = 34;
-            this.label5.Text = "Current / Required";
-            // 
-            // requiredMatchesUpDown
-            // 
-            this.requiredMatchesUpDown.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.requiredMatchesUpDown.Location = new System.Drawing.Point(67, 21);
-            this.requiredMatchesUpDown.Maximum = new decimal(new int[] {
-            575,
-            0,
-            0,
-            0});
-            this.requiredMatchesUpDown.Name = "requiredMatchesUpDown";
-            this.requiredMatchesUpDown.Size = new System.Drawing.Size(42, 20);
-            this.requiredMatchesUpDown.TabIndex = 36;
-            this.requiredMatchesUpDown.Value = new decimal(new int[] {
-            520,
-            0,
-            0,
-            0});
-            this.requiredMatchesUpDown.ValueChanged += new System.EventHandler(this.requiredMatchesUpDown_ValueChanged);
             // 
             // panel1
             // 
@@ -229,26 +183,60 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.saveCutout);
             this.panel1.Controls.Add(this.updatePreviewButton);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.requiredMatchesUpDown);
             this.panel1.Controls.Add(this.scalingLabel);
-            this.panel1.Controls.Add(this.matchDisplayLabel);
             this.panel1.Controls.Add(this.trackBar1);
-            this.panel1.Location = new System.Drawing.Point(31, 33);
+            this.panel1.Location = new System.Drawing.Point(30, 57);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 52);
             this.panel1.TabIndex = 37;
             // 
+            // saveCutout
+            // 
+            this.saveCutout.AccessibleName = "";
+            this.saveCutout.Location = new System.Drawing.Point(290, 7);
+            this.saveCutout.Name = "saveCutout";
+            this.saveCutout.Size = new System.Drawing.Size(74, 33);
+            this.saveCutout.TabIndex = 39;
+            this.saveCutout.Text = "save Cutout";
+            this.saveCutout.UseVisualStyleBackColor = true;
+            this.saveCutout.Click += new System.EventHandler(this.saveCutout_Click);
+            // 
             // updatePreviewButton
             // 
             this.updatePreviewButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.updatePreviewButton.Location = new System.Drawing.Point(249, 8);
+            this.updatePreviewButton.Location = new System.Drawing.Point(203, 8);
             this.updatePreviewButton.Name = "updatePreviewButton";
-            this.updatePreviewButton.Size = new System.Drawing.Size(50, 33);
+            this.updatePreviewButton.Size = new System.Drawing.Size(70, 33);
             this.updatePreviewButton.TabIndex = 37;
             this.updatePreviewButton.Text = "Update Preview";
             this.updatePreviewButton.UseVisualStyleBackColor = true;
             this.updatePreviewButton.Click += new System.EventHandler(this.updatePreviewButton_Click);
+            // 
+            // languageComboBox
+            // 
+            this.languageComboBox.DisplayMember = "(none)";
+            this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.languageComboBox.FormattingEnabled = true;
+            this.languageComboBox.Items.AddRange(new object[] {
+            "ENG/PS2",
+            "JPN/PS2",
+            "ENG/XBOX"});
+            this.languageComboBox.Location = new System.Drawing.Point(85, 33);
+            this.languageComboBox.Name = "languageComboBox";
+            this.languageComboBox.Size = new System.Drawing.Size(128, 21);
+            this.languageComboBox.TabIndex = 40;
+            this.languageComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(29, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "Platform:";
             // 
             // tabControl1
             // 
@@ -263,10 +251,9 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.lblBlackLevel);
-            this.tabPage1.Controls.Add(this.chkRemoveFadeIns);
+            this.tabPage1.Controls.Add(this.languageComboBox);
             this.tabPage1.Controls.Add(this.chkSaveDetectionLog);
-            this.tabPage1.Controls.Add(this.chkRemoveTransitions);
+            this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.lblVersion);
             this.tabPage1.Controls.Add(this.label4);
@@ -283,54 +270,18 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Setup";
             // 
-            // lblBlackLevel
-            // 
-            this.lblBlackLevel.AutoSize = true;
-            this.lblBlackLevel.Location = new System.Drawing.Point(377, 90);
-            this.lblBlackLevel.Name = "lblBlackLevel";
-            this.lblBlackLevel.Size = new System.Drawing.Size(78, 13);
-            this.lblBlackLevel.TabIndex = 41;
-            this.lblBlackLevel.Text = "Black-Level: -1";
-            // 
-            // chkRemoveFadeIns
-            // 
-            this.chkRemoveFadeIns.AutoSize = true;
-            this.chkRemoveFadeIns.Checked = true;
-            this.chkRemoveFadeIns.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRemoveFadeIns.Location = new System.Drawing.Point(347, 104);
-            this.chkRemoveFadeIns.Name = "chkRemoveFadeIns";
-            this.chkRemoveFadeIns.Size = new System.Drawing.Size(109, 17);
-            this.chkRemoveFadeIns.TabIndex = 40;
-            this.chkRemoveFadeIns.Text = "Remove Fade-ins";
-            this.chkRemoveFadeIns.UseVisualStyleBackColor = true;
-            this.chkRemoveFadeIns.Visible = false;
-            this.chkRemoveFadeIns.CheckedChanged += new System.EventHandler(this.chkRemoveFadeIns_CheckedChanged);
-            // 
             // chkSaveDetectionLog
             // 
             this.chkSaveDetectionLog.AutoSize = true;
             this.chkSaveDetectionLog.Checked = true;
             this.chkSaveDetectionLog.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveDetectionLog.Location = new System.Drawing.Point(152, 89);
+            this.chkSaveDetectionLog.Location = new System.Drawing.Point(151, 113);
             this.chkSaveDetectionLog.Name = "chkSaveDetectionLog";
             this.chkSaveDetectionLog.Size = new System.Drawing.Size(93, 17);
             this.chkSaveDetectionLog.TabIndex = 39;
             this.chkSaveDetectionLog.Text = "Detection Log";
             this.chkSaveDetectionLog.UseVisualStyleBackColor = true;
             this.chkSaveDetectionLog.CheckedChanged += new System.EventHandler(this.chkSaveDetectionLog_CheckedChanged);
-            // 
-            // chkRemoveTransitions
-            // 
-            this.chkRemoveTransitions.AutoSize = true;
-            this.chkRemoveTransitions.Checked = true;
-            this.chkRemoveTransitions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRemoveTransitions.Location = new System.Drawing.Point(251, 89);
-            this.chkRemoveTransitions.Name = "chkRemoveTransitions";
-            this.chkRemoveTransitions.Size = new System.Drawing.Size(120, 17);
-            this.chkRemoveTransitions.TabIndex = 38;
-            this.chkRemoveTransitions.Text = "Remove Transitions";
-            this.chkRemoveTransitions.UseVisualStyleBackColor = true;
-            this.chkRemoveTransitions.CheckedChanged += new System.EventHandler(this.chkRemoveTransitions_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -415,17 +366,6 @@
             this.enableAutoSplitterChk.UseVisualStyleBackColor = true;
             this.enableAutoSplitterChk.CheckedChanged += new System.EventHandler(this.enableAutoSplitterChk_CheckedChanged);
             // 
-            // saveCutout
-            // 
-            this.saveCutout.AccessibleName = "";
-            this.saveCutout.Location = new System.Drawing.Point(314, 12);
-            this.saveCutout.Name = "saveCutout";
-            this.saveCutout.Size = new System.Drawing.Size(75, 23);
-            this.saveCutout.TabIndex = 39;
-            this.saveCutout.Text = "saveCutout";
-            this.saveCutout.UseVisualStyleBackColor = true;
-            this.saveCutout.Click += new System.EventHandler(this.saveCutout_Click);
-            // 
             // CrashTWoCLoadRemovalSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -437,7 +377,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.croppedPreviewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.requiredMatchesUpDown)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -460,9 +399,6 @@
 		private System.Windows.Forms.PictureBox croppedPreviewPictureBox;
 		private System.Windows.Forms.Label scalingLabel;
 		private System.Windows.Forms.TrackBar trackBar1;
-		private System.Windows.Forms.Label matchDisplayLabel;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.NumericUpDown requiredMatchesUpDown;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button updatePreviewButton;
 		private System.Windows.Forms.TabControl tabControl1;
@@ -474,10 +410,9 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.CheckBox chkAutoSplitterDisableOnSkip;
-		private System.Windows.Forms.CheckBox chkRemoveTransitions;
     private System.Windows.Forms.CheckBox chkSaveDetectionLog;
-    private System.Windows.Forms.CheckBox chkRemoveFadeIns;
-    private System.Windows.Forms.Label lblBlackLevel;
         private System.Windows.Forms.Button saveCutout;
+        private System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.Label label5;
     }
 }
