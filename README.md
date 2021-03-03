@@ -6,7 +6,7 @@ and from https://github.com/Maschell/LiveSplit.PokemonRedBlue for the base compo
 
 # Other Image/Video-Based AutoSplitters and/or Load Removers
 This component 
-*only removes and detects loading screens from the japanese and english PS2 as well as the english XBox version of rash Bandicoot: The Wrath of Cortex, nothing else!*
+*only removes and detects loading screens from the japanese and english PS2 as well as the english XBox version of Crash Bandicoot: The Wrath of Cortex, nothing else!*
 
 If you want to
 
@@ -20,11 +20,13 @@ Special thanks go to PeteThePlayer, DylWingo and various others from the Crash S
 
 # How does it work?
 *FOR PS2*
+
 The method works by taking a "screenshot" (currently 800x600, it needs to be this large to prevent some death animations from being incorrectly detected as a black screen, but will be downsized to save resources) from your selected capture at the top, where "LOADING" is displayed when playing TWoC. It will then first check if the "screenshot" (i will simply refer to it as image from here) is fully black and will pause the timer. When the blackscreen ends it will resume the timer and note the current time in case an actual load screen follows. After this it will actually be looking for the LOADING text at the top of the screen for 360 frames (6 seconds). 
 
 To do this it will first preprocess the image by comparing color values to color the actual loading text fully black while the background is fully white. This image will then be fed into the tesseract optical character recognition AI to extract the text within the image. If the extracted text equals LOADING the timer will revert back to the time that was noted at the end of predecessing black screen and pause the timer again. Finally it will unpause the timer as soon as the upcoming blackscreen ends.
 
 *FOR XBOX*
+
 Coming Soon™
 
 # Missing Features
