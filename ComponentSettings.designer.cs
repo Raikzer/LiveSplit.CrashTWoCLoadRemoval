@@ -41,7 +41,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.saveCutout = new System.Windows.Forms.Button();
             this.updatePreviewButton = new System.Windows.Forms.Button();
-            this.languageComboBox = new System.Windows.Forms.ComboBox();
+            this.platformComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -214,18 +214,18 @@
             // 
             // languageComboBox
             // 
-            this.languageComboBox.DisplayMember = "(none)";
-            this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.languageComboBox.FormattingEnabled = true;
-            this.languageComboBox.Items.AddRange(new object[] {
+            this.platformComboBox.DisplayMember = "(none)";
+            this.platformComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.platformComboBox.FormattingEnabled = true;
+            this.platformComboBox.Items.AddRange(new object[] {
             "ENG/PS2",
             "JPN/PS2",
             "ENG/XBOX"});
-            this.languageComboBox.Location = new System.Drawing.Point(85, 33);
-            this.languageComboBox.Name = "languageComboBox";
-            this.languageComboBox.Size = new System.Drawing.Size(128, 21);
-            this.languageComboBox.TabIndex = 40;
-            this.languageComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
+            this.platformComboBox.Location = new System.Drawing.Point(85, 33);
+            this.platformComboBox.Name = "languageComboBox";
+            this.platformComboBox.Size = new System.Drawing.Size(128, 21);
+            this.platformComboBox.TabIndex = 40;
+            this.platformComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -251,7 +251,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.languageComboBox);
+            this.tabPage1.Controls.Add(this.platformComboBox);
             this.tabPage1.Controls.Add(this.chkSaveDetectionLog);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.panel1);
@@ -412,7 +412,7 @@
 		private System.Windows.Forms.CheckBox chkAutoSplitterDisableOnSkip;
     private System.Windows.Forms.CheckBox chkSaveDetectionLog;
         private System.Windows.Forms.Button saveCutout;
-        private System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.ComboBox platformComboBox;
         private System.Windows.Forms.Label label5;
     }
 }

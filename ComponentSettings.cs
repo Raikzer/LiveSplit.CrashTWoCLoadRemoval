@@ -120,7 +120,7 @@ namespace LiveSplit.UI.Components
             //    languageComboBox.SelectedIndex = languageComboBox.FindStringExact("ENG");
             //} 
             SaveDetectionLog = chkSaveDetectionLog.Checked;
-            languageComboBox.SelectedItem = platform;
+            platformComboBox.SelectedItem = platform;
             AllGameAutoSplitSettings = new Dictionary<string, XmlElement>();
             dynamicAutoSplitterControls = new List<Control>();
             CreateAutoSplitControls(state);
@@ -438,9 +438,9 @@ namespace LiveSplit.UI.Components
                     settingsNode.AppendChild(ToElement(document, "SelectedCaptureTitle", selectedCaptureTitle));
                 }
             }
-            if (languageComboBox.SelectedItem != null)
+            if (platformComboBox.SelectedItem != null)
             {
-                settingsNode.AppendChild(ToElement(document, "language", languageComboBox.SelectedItem.ToString()));
+                settingsNode.AppendChild(ToElement(document, "platform", platformComboBox.SelectedItem.ToString()));
             }
             
 
@@ -530,8 +530,8 @@ namespace LiveSplit.UI.Components
 
                 if (element["language"] != null)
                 {
-                    languageComboBox.SelectedItem = element["language"].InnerText;
-                    platform = languageComboBox.SelectedItem.ToString();
+                    platformComboBox.SelectedItem = element["language"].InnerText;
+                    platform = platformComboBox.SelectedItem.ToString();
                     if (platform == "JPN/PS2")
                     {
                         imageCaptureInfo.resizeState = ResizeState.JPN;
@@ -1085,7 +1085,7 @@ namespace LiveSplit.UI.Components
 
         private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            platform = languageComboBox.SelectedItem.ToString();
+            platform = platformComboBox.SelectedItem.ToString();
             if (platform == "ENG/PS2" || platform == "ENG/XBOX")
             {
                 imageCaptureInfo.resizeState = ResizeState.ENG;
