@@ -40,5 +40,5 @@ The contents of the TWoCLoadRemoval.zip (once publicly available) go into your "
 
 Add this to LiveSplit by going into your Layout Editor -> Add -> Control -> CrashTWoCLoadRemoval.
 
-You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground. If you plan to use the load remover with PCSX2, I would refrain from capturing the actual screen the emulator is running on and recommend capturing an OBS window because instead. Otherwise the screen capture runs into weird issues, when the emu is using the software renderer.
+You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground. If you plan to use the load remover with PCSX2, I would refrain from capturing the actual screen the emulator is running on and recommend capturing an OBS window instead. Otherwise the screen capture runs into weird issues when the emu is using the software renderer.
 
