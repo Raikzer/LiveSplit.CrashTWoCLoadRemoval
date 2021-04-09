@@ -37,8 +37,11 @@ namespace LiveSplit.UI.Components
         private bool wasBlackScreen = false;
         private bool isFadeIn = false;
         private bool testSaved = false;
+        private bool specialLoad = false;
         private readonly int WAIT_ON_LOAD_FRAMES = 300;
         private int waitFrames = 0;
+        private int lowestBit = 0;
+        private bool isCmpFinished = false;
         private string expectedResultEng = "LOADING";
         private string expectedResultJpn = "リ~ド⑤ぅヽトー";
 
@@ -168,7 +171,7 @@ namespace LiveSplit.UI.Components
             {
 
 
-                if (timerStarted)
+                if (timerStarted && !settings.isCalibratingBlacklevel)
                 {
                     if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2")
                     {
@@ -176,7 +179,7 @@ namespace LiveSplit.UI.Components
                     }
                     else
                     {
-                        CaptureLoadsXbox();
+                        CaptureLoadsXBOX();
                     }
 
 
@@ -235,24 +238,43 @@ namespace LiveSplit.UI.Components
             }
         }
 
-        private void CaptureLoadsXbox()
+        private void CaptureLoadsXBOX()
         {
-            if ((timerStart.Ticks - liveSplitState.Run.Offset.Ticks) <= DateTime.Now.Ticks) {
+            if ((timerStart.Ticks - liveSplitState.Run.Offset.Ticks) <= DateTime.Now.Ticks)
+            {
                 framesSinceLastManualSplit++;
                 //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
                 //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
-                lastTime = DateTime.Now;
+                //lastTime = DateTime.Now;
 
                 wasBlackScreen = isBlackScreen;
                 //Capture image using the settings defined for the component
                 Bitmap capture = settings.CaptureImage();
                 isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
                 BitmapToPixConverter btp = new BitmapToPixConverter();
+                //if (!testSaved)
+                //{
+                //    Bitmap jpntestbmp = new Bitmap("cutout.bmp");
+                //    FeatureDetector.ClearBackgroundPostLoad(ref jpntestbmp);
+                //    jpntestbmp.Save("jpntest.bmp");
+                //    Pix jpntest = btp.Convert(jpntestbmp);
+                //    using (var page = engine.Process(jpntest, PageSegMode.SingleChar))
+                //    {
+                //        Console.WriteLine(page.GetText());
+                //    }
+                //    testSaved = true;
+                //}
 
-                if (!isBlackScreen && !waitOnFadeIn)
+                if (wasBlackScreen && !isBlackScreen)
                 {
-                    capture = ImageCapture.CropImage(capture);
-                    FeatureDetector.clearBackground(ref capture);
+                    //This could be a pre-load transition, start timing it
+                    transitionStart = DateTime.Now;
+                    waitOnLoad = true;
+                }
+
+                if (!isBlackScreen && !waitOnFadeIn && waitOnLoad)
+                {
+                    specialLoad = FeatureDetector.ClearBackground(ref capture);
                     Pix img = btp.Convert(capture);
                     string ResultText = "";
                     using (var page = engine.Process(img, PageSegMode.SingleChar))
@@ -274,29 +296,50 @@ namespace LiveSplit.UI.Components
 
                 timer.CurrentState.IsGameTimePaused = isLoading || isBlackScreen;
 
-                if (waitOnFadeIn)
+                if (waitOnFadeIn && !specialLoad)
                 {
                     capture = settings.CaptureImagePostLoad();
-                    FeatureDetector.clearBackgroundPostLoad(ref capture);
-                    Pix img = btp.Convert(capture);
-                    using (var page = engine.Process(img, PageSegMode.SingleChar))
+                    int lowestBitLast = lowestBit;
+                    lowestBit = FeatureDetector.ClearBackgroundPostLoad(ref capture);
+                    if (lowestBit == lowestBitLast && lowestBit != 0)
                     {
-                        if (page.GetText().Any(char.IsDigit))
+                        Pix img = btp.Convert(capture);
+                        using (var page = engine.Process(img, PageSegMode.SingleChar))
                         {
-                            waitOnFadeIn = false;
-                            isLoading = false;
+                            string result = page.GetText();
+                            if (result != "\n")
+                            {
+                                Console.WriteLine(page.GetText());
+                                waitOnFadeIn = false;
+                                isLoading = false;
+                                lowestBit = 0;
+                                //the lifecounter coming in from the top takes a quarter of a second to stop
+                                TimeSpan quarter = new TimeSpan(2500000);
+                                timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime + quarter);
+                            }
                         }
                     }
                 }
 
-                if (waitOnFadeIn && isBlackScreen)
+                if (waitOnFadeIn && isBlackScreen && !specialLoad)
                 {
                     waitOnFadeIn = false;
                     isLoading = false;
                 }
 
-                if (isLoading)
+                if (waitOnFadeIn && specialLoad && FeatureDetector.IsEndOfSpecialLoad(ref capture))
                 {
+                    specialLoad = false;
+                    waitOnFadeIn = false;
+                    isLoading = false;
+                }
+
+                if (isLoading && waitOnLoad)
+                {
+                    // This was a pre-load transition, subtract the gametime
+                    TimeSpan delta = (DateTime.Now - transitionStart);
+                    timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime - delta);
+                    waitOnLoad = false;
                     waitOnFadeIn = true;
                 }
             }
@@ -315,11 +358,11 @@ namespace LiveSplit.UI.Components
             //Capture image using the settings defined for the component
             Bitmap capture = settings.CaptureImage();
             wasBlackScreen = isBlackScreen;
-            isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
+            isBlackScreen = FeatureDetector.IsBlackScreen(ref capture, settings.blacklevel);
             //BitmapToPixConverter btp = new BitmapToPixConverter();
             //if (!testSaved)
             //{
-            //    Bitmap jpntestbmp = new Bitmap("screenshot_23.bmp");
+            //    Bitmap jpntestbmp = new Bitmap("screenshot_2.bmp");
             //    FeatureDetector.clearBackground(ref jpntestbmp);
             //    jpntestbmp.Save("jpntest.bmp");
             //    Pix jpntest = btp.Convert(jpntestbmp);
@@ -330,10 +373,10 @@ namespace LiveSplit.UI.Components
             //    testSaved = true;
             //}
 
+
             if (!isBlackScreen && waitOnLoad)
             {
-                capture = ImageCapture.CropImage(capture);
-                FeatureDetector.clearBackground(ref capture);
+                FeatureDetector.ClearBackground(ref capture);
 
                 BitmapToPixConverter btp = new BitmapToPixConverter();
                 Pix img = btp.Convert(capture);
@@ -396,6 +439,7 @@ namespace LiveSplit.UI.Components
                 isFadeIn = true;
             }
 
+
             if (wasBlackScreen && !isBlackScreen)
             {
                 //if it's a fadeout after a loading screen, it won't search the screen for a loading text to improve performance
@@ -419,13 +463,64 @@ namespace LiveSplit.UI.Components
                 TimeSpan delta = (DateTime.Now - transitionStart);
                 timer.CurrentState.SetGameTime(timer.CurrentState.GameTimePauseTime - delta);
                 waitOnLoad = false;
-                Console.WriteLine(waitFrames);
                 waitFrames = 0;
                 waitOnFadeIn = true;
             }
 
 
 
+        }
+
+        private void CalibrateBlacklevel()
+        {
+            Bitmap capture = settings.CaptureImage();
+            int tempBlacklevel = FeatureDetector.GetBlackLevel(ref capture);
+            if (tempBlacklevel != -1 && tempBlacklevel < settings.cmpBlackLevel)
+            {
+                settings.cmpBlackLevel = tempBlacklevel;
+            }
+            FeatureDetector.ClearBackground(ref capture);
+
+            BitmapToPixConverter btp = new BitmapToPixConverter();
+            Pix img = btp.Convert(capture);
+            string ResultText = "";
+            using (var page = engine.Process(img, PageSegMode.SingleChar))
+            {
+                ResultText = page.GetText();
+            }
+            int counter = 0;
+            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX")
+            {
+                foreach (char c in expectedResultEng)
+                {
+                    if (ResultText.Contains(c))
+                        counter++;
+                }
+                if (counter > 5 && ResultText.Length == 8)
+                {
+                    isCmpFinished = true;
+                }
+            }
+            else if (settings.platform == "JPN/PS2")
+            {
+                foreach (char c in expectedResultJpn)
+                {
+                    if (ResultText.Contains(c))
+                        counter++;
+                }
+                if (counter > 3)
+                {
+                    isCmpFinished = true;
+                }
+            }
+            if (isCmpFinished)
+            {
+                settings.blacklevel = settings.cmpBlackLevel;
+                isCmpFinished = false;
+                settings.isCalibratingBlacklevel = false;
+                settings.cmpBlackLevel = 100;
+                Console.WriteLine("BLACKLEVEL: {0}", settings.blacklevel);
+            }
         }
 
         private void timer_OnUndoSplit(object sender, EventArgs e)
@@ -480,6 +575,7 @@ namespace LiveSplit.UI.Components
             timerStarted = false;
             runningFrames = 0;
             pausedFrames = 0;
+            specialLoad = false;
             framesSinceLastManualSplit = 0;
             LastSplitSkip = false;
             isLoading = false;
@@ -488,6 +584,7 @@ namespace LiveSplit.UI.Components
             isBlackScreen = false;
             wasBlackScreen = false;
             waitFrames = 0;
+            lowestBit = 0;
             testSaved = false;
 
             //highResTimer.Stop(joinThread:false);
@@ -624,6 +721,10 @@ namespace LiveSplit.UI.Components
 
             CaptureLoads();
 
+            if (settings.isCalibratingBlacklevel)
+            {
+                CalibrateBlacklevel();
+            }
 
 
 

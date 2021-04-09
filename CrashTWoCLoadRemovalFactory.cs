@@ -1,11 +1,11 @@
 ﻿using LiveSplit.Model;
-using LiveSplit.PokemonRedBlue;
+using LiveSplit.CrashTWoCLoadRemover;
 using LiveSplit.UI.Components;
 using System;
 
 [assembly: ComponentFactory(typeof(CrashTWoCLoadRemovalFactory))]
 
-namespace LiveSplit.PokemonRedBlue
+namespace LiveSplit.CrashTWoCLoadRemover
 {
     public class CrashTWoCLoadRemovalFactory : IComponentFactory
     {

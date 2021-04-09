@@ -45,6 +45,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.calibrateBlacklevelButton = new System.Windows.Forms.Button();
             this.chkSaveDetectionLog = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.chkAutoSplitterDisableOnSkip = new System.Windows.Forms.CheckBox();
@@ -212,7 +213,7 @@
             this.updatePreviewButton.UseVisualStyleBackColor = true;
             this.updatePreviewButton.Click += new System.EventHandler(this.updatePreviewButton_Click);
             // 
-            // languageComboBox
+            // platformComboBox
             // 
             this.platformComboBox.DisplayMember = "(none)";
             this.platformComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -222,7 +223,7 @@
             "JPN/PS2",
             "ENG/XBOX"});
             this.platformComboBox.Location = new System.Drawing.Point(85, 33);
-            this.platformComboBox.Name = "languageComboBox";
+            this.platformComboBox.Name = "platformComboBox";
             this.platformComboBox.Size = new System.Drawing.Size(128, 21);
             this.platformComboBox.TabIndex = 40;
             this.platformComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
@@ -251,6 +252,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.calibrateBlacklevelButton);
             this.tabPage1.Controls.Add(this.platformComboBox);
             this.tabPage1.Controls.Add(this.chkSaveDetectionLog);
             this.tabPage1.Controls.Add(this.label5);
@@ -269,6 +271,16 @@
             this.tabPage1.Size = new System.Drawing.Size(468, 506);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Setup";
+            // 
+            // calibrateBlacklevelButton
+            // 
+            this.calibrateBlacklevelButton.Location = new System.Drawing.Point(346, 120);
+            this.calibrateBlacklevelButton.Name = "calibrateBlacklevelButton";
+            this.calibrateBlacklevelButton.Size = new System.Drawing.Size(75, 23);
+            this.calibrateBlacklevelButton.TabIndex = 40;
+            this.calibrateBlacklevelButton.Text = "calibrate";
+            this.calibrateBlacklevelButton.UseVisualStyleBackColor = true;
+            this.calibrateBlacklevelButton.Click += new System.EventHandler(this.CalibrateBlacklevelButton_Click);
             // 
             // chkSaveDetectionLog
             // 
@@ -414,5 +426,6 @@
         private System.Windows.Forms.Button saveCutout;
         private System.Windows.Forms.ComboBox platformComboBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button calibrateBlacklevelButton;
     }
 }

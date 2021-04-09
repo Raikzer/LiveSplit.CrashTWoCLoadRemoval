@@ -79,7 +79,7 @@ namespace CrashTWoCLoadDetector
 
         public static Bitmap CropImage(Bitmap capture)
         {
-            Rectangle cropRect = new Rectangle(0, 0, capture.Width, capture.Height / 2);
+            Rectangle cropRect = new Rectangle(0, 0, (int) (capture.Width / 1.2), capture.Height / 3);
             return capture.Clone(cropRect, capture.PixelFormat);
         }
 

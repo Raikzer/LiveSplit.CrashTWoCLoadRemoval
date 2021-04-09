@@ -26,6 +26,12 @@ namespace LiveSplit.UI.Components
 
         public bool AutoSplitterDisableOnSkipUntilSplit = false;
 
+        public bool isCalibratingBlacklevel = false;
+
+        public int blacklevel = 100;
+
+        public int cmpBlackLevel = 100;
+
         public bool RemoveFadeouts = false;
         public bool RemoveFadeins = false;
 
@@ -54,15 +60,15 @@ namespace LiveSplit.UI.Components
 
         private List<string> captureIDs = null;
 
-        private Size captureSize = new Size(800, 600);
+        private Size captureSize = new Size(800, 800);
 
-        private Size resizeSizeEng = new Size(200, 150);
+        private Size resizeSizeEng = new Size(100, 100);
 
-        private Size resizeSizeJpn = new Size(320, 240);
+        private Size resizeSizeJpn = new Size(300, 300);
 
         private float cropOffsetX = 100.0f;
 
-        private float cropOffsetY = -200.0f;
+        private float cropOffsetY = -100.0f;
 
         private bool drawingPreview = false;
 
@@ -196,11 +202,11 @@ namespace LiveSplit.UI.Components
         public Bitmap CaptureImagePostLoad()
         {
             ImageCaptureInfo imageCaptureInfo = this.imageCaptureInfo;
-            imageCaptureInfo.cropOffsetX = 650.0f;
+            imageCaptureInfo.cropOffsetX = 500.0f;
             imageCaptureInfo.cropOffsetY = -420.0f;
-            imageCaptureInfo.captureSizeX = 600;
+            imageCaptureInfo.captureSizeX = 400;
             imageCaptureInfo.captureSizeY = 200;
-            imageCaptureInfo.resizeSizeXEng = 150;
+            imageCaptureInfo.resizeSizeXEng = 100;
             imageCaptureInfo.resizeSizeYEng = 50;
 
             Bitmap b = new Bitmap(1, 1);
@@ -528,9 +534,9 @@ namespace LiveSplit.UI.Components
                     RefreshCaptureWindowList();
                 }
 
-                if (element["language"] != null)
+                if (element["platform"] != null)
                 {
-                    platformComboBox.SelectedItem = element["language"].InnerText;
+                    platformComboBox.SelectedItem = element["platform"].InnerText;
                     platform = platformComboBox.SelectedItem.ToString();
                     if (platform == "JPN/PS2")
                     {
@@ -1078,8 +1084,8 @@ namespace LiveSplit.UI.Components
 
         private void saveCutout_Click(object sender, EventArgs e)
         {
-            Bitmap Cutout = CaptureImage();
-            Cutout = ImageCapture.CropImage(Cutout);
+            Bitmap Cutout = CaptureImagePostLoad();
+            //Cutout = ImageCapture.CropImage(Cutout);
             Cutout.Save("cutout.bmp");
         }
 
@@ -1094,6 +1100,11 @@ namespace LiveSplit.UI.Components
             {
                 imageCaptureInfo.resizeState = ResizeState.JPN;
             }
+        }
+
+        private void CalibrateBlacklevelButton_Click(object sender, EventArgs e)
+        {
+            isCalibratingBlacklevel = true;
         }
     }
     public class AutoSplitData
