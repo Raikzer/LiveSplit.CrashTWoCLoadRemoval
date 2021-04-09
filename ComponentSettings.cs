@@ -127,6 +127,7 @@ namespace LiveSplit.UI.Components
             //} 
             SaveDetectionLog = chkSaveDetectionLog.Checked;
             platformComboBox.SelectedItem = platform;
+            UpdateBlacklevelLabel();
             AllGameAutoSplitSettings = new Dictionary<string, XmlElement>();
             dynamicAutoSplitterControls = new List<Control>();
             CreateAutoSplitControls(state);
@@ -448,7 +449,8 @@ namespace LiveSplit.UI.Components
             {
                 settingsNode.AppendChild(ToElement(document, "platform", platformComboBox.SelectedItem.ToString()));
             }
-            
+
+            settingsNode.AppendChild(ToElement(document, "blacklevel", blacklevel.ToString()));
 
             settingsNode.AppendChild(ToElement(document, "ScalingPercent", trackBar1.Value));
 
@@ -546,6 +548,11 @@ namespace LiveSplit.UI.Components
                     {
                         imageCaptureInfo.resizeState = ResizeState.ENG;
                     }
+                }
+
+                if (element["blacklevel"] != null)
+                {
+                    blacklevel = Convert.ToInt32(element["blacklevel"].InnerText);
                 }
 
                 if (element["ScalingPercent"] != null)
@@ -647,6 +654,7 @@ namespace LiveSplit.UI.Components
 
                 DrawPreview();
             }
+            UpdateBlacklevelLabel();
         }
 
         #endregion Public Methods
@@ -1105,7 +1113,24 @@ namespace LiveSplit.UI.Components
         private void CalibrateBlacklevelButton_Click(object sender, EventArgs e)
         {
             isCalibratingBlacklevel = true;
+            blacklevel = 100;
+            cmpBlackLevel = 100;
         }
+
+        private void UpdateBlacklevelLabel ()
+        {
+            if (blacklevel == 100)
+            {
+                blacklevelLabel.Text = "NOT SET";
+                blacklevelLabel.ForeColor = Color.Red;
+            }
+            else
+            {
+                blacklevelLabel.Text = blacklevel.ToString();
+                blacklevelLabel.ForeColor = Color.Black;
+            }
+        }
+
     }
     public class AutoSplitData
     {

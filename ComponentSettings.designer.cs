@@ -45,6 +45,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.blacklevelLabel = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.calibrateBlacklevelButton = new System.Windows.Forms.Button();
             this.chkSaveDetectionLog = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -224,7 +226,7 @@
             "ENG/XBOX"});
             this.platformComboBox.Location = new System.Drawing.Point(85, 33);
             this.platformComboBox.Name = "platformComboBox";
-            this.platformComboBox.Size = new System.Drawing.Size(128, 21);
+            this.platformComboBox.Size = new System.Drawing.Size(89, 21);
             this.platformComboBox.TabIndex = 40;
             this.platformComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
@@ -252,6 +254,8 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.blacklevelLabel);
+            this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.calibrateBlacklevelButton);
             this.tabPage1.Controls.Add(this.platformComboBox);
             this.tabPage1.Controls.Add(this.chkSaveDetectionLog);
@@ -272,13 +276,33 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Setup";
             // 
+            // blacklevelLabel
+            // 
+            this.blacklevelLabel.AutoSize = true;
+            this.blacklevelLabel.Location = new System.Drawing.Point(250, 37);
+            this.blacklevelLabel.Name = "blacklevelLabel";
+            this.blacklevelLabel.Size = new System.Drawing.Size(13, 13);
+            this.blacklevelLabel.TabIndex = 43;
+            this.blacklevelLabel.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(185, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 42;
+            this.label8.Text = "Blacklevel:";
+            // 
             // calibrateBlacklevelButton
             // 
-            this.calibrateBlacklevelButton.Location = new System.Drawing.Point(346, 120);
+            this.calibrateBlacklevelButton.Location = new System.Drawing.Point(304, 33);
             this.calibrateBlacklevelButton.Name = "calibrateBlacklevelButton";
-            this.calibrateBlacklevelButton.Size = new System.Drawing.Size(75, 23);
+            this.calibrateBlacklevelButton.Size = new System.Drawing.Size(126, 21);
             this.calibrateBlacklevelButton.TabIndex = 40;
-            this.calibrateBlacklevelButton.Text = "calibrate";
+            this.calibrateBlacklevelButton.Text = "calibrate blacklevel";
             this.calibrateBlacklevelButton.UseVisualStyleBackColor = true;
             this.calibrateBlacklevelButton.Click += new System.EventHandler(this.CalibrateBlacklevelButton_Click);
             // 
@@ -427,5 +451,7 @@
         private System.Windows.Forms.ComboBox platformComboBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button calibrateBlacklevelButton;
+        private System.Windows.Forms.Label blacklevelLabel;
+        private System.Windows.Forms.Label label8;
     }
 }

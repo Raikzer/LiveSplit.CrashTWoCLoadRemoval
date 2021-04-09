@@ -250,7 +250,7 @@ namespace LiveSplit.UI.Components
                 wasBlackScreen = isBlackScreen;
                 //Capture image using the settings defined for the component
                 Bitmap capture = settings.CaptureImage();
-                isBlackScreen = FeatureDetector.IsBlackScreen(ref capture);
+                isBlackScreen = FeatureDetector.IsBlackScreen(ref capture, settings.blacklevel);
                 BitmapToPixConverter btp = new BitmapToPixConverter();
                 //if (!testSaved)
                 //{
@@ -327,7 +327,7 @@ namespace LiveSplit.UI.Components
                     isLoading = false;
                 }
 
-                if (waitOnFadeIn && specialLoad && FeatureDetector.IsEndOfSpecialLoad(ref capture))
+                if (waitOnFadeIn && specialLoad && FeatureDetector.IsEndOfSpecialLoad(ref capture, settings.blacklevel))
                 {
                     specialLoad = false;
                     waitOnFadeIn = false;
@@ -520,6 +520,7 @@ namespace LiveSplit.UI.Components
                 settings.isCalibratingBlacklevel = false;
                 settings.cmpBlackLevel = 100;
                 Console.WriteLine("BLACKLEVEL: {0}", settings.blacklevel);
+                settings.Update();
             }
         }
 
