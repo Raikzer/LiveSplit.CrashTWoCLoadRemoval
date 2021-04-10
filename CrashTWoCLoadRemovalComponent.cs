@@ -169,66 +169,36 @@ namespace LiveSplit.UI.Components
         {
             try
             {
-
+                bool isLoad;
 
                 if (timerStarted && !settings.isCalibratingBlacklevel)
                 {
                     if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2")
                     {
-                        CaptureLoadsPS2();
+                        isLoad = CaptureLoadsPS2();
                     }
                     else
                     {
-                        CaptureLoadsXBOX();
+                        isLoad = CaptureLoadsXBOX();
                     }
 
 
 
-                    //if (settings.AutoSplitterEnabled && !(settings.AutoSplitterDisableOnSkipUntilSplit && LastSplitSkip))
-                    //{
-                    //    //This is just so that if the detection is not correct by a single frame, it still only splits if a few successive frames are loading
-                    //    if (isLoading && TWoCState == CrashTWoCState.RUNNING)
-                    //    {
-                    //        pausedFrames++;
-                    //        runningFrames = 0;
-                    //    }
-                    //    else if (!isLoading && TWoCState == CrashTWoCState.LOADING)
-                    //    {
-                    //        runningFrames++;
-                    //        pausedFrames = 0;
-                    //    }
+                    if (settings.AutoSplitterEnabled && !(settings.AutoSplitterDisableOnSkipUntilSplit && LastSplitSkip))
+                    {
+                        if (isLoad && framesSinceLastManualSplit >= settings.AutoSplitterManualSplitDelayFrames)
+                        {
+                            NumberOfLoadsPerSplit[liveSplitState.CurrentSplitIndex]++;
 
-                    //    if (TWoCState == CrashTWoCState.RUNNING && pausedFrames >= settings.AutoSplitterJitterToleranceFrames)
-                    //    {
-                    //        runningFrames = 0;
-                    //        pausedFrames = 0;
-                    //        //We enter pause.
-                    //        TWoCState = CrashTWoCState.LOADING;
-                    //        if (framesSinceLastManualSplit >= settings.AutoSplitterManualSplitDelayFrames)
-                    //        {
-                    //            NumberOfLoadsPerSplit[liveSplitState.CurrentSplitIndex]++;
+                            if (CumulativeNumberOfLoadsForSplitIndex(liveSplitState.CurrentSplitIndex) >= settings.GetCumulativeNumberOfLoadsForSplit(liveSplitState.CurrentSplit.Name))
+                            {
 
-                    //            if (CumulativeNumberOfLoadsForSplitIndex(liveSplitState.CurrentSplitIndex) >= settings.GetCumulativeNumberOfLoadsForSplit(liveSplitState.CurrentSplit.Name))
-                    //            {
-
-                    //                timer.Split();
+                                timer.Split();
 
 
-                    //            }
-                    //        }
-
-                    //    }
-                    //    else if (TWoCState == CrashTWoCState.LOADING && runningFrames >= settings.AutoSplitterJitterToleranceFrames)
-                    //    {
-                    //        runningFrames = 0;
-                    //        pausedFrames = 0;
-                    //        //We enter runnning.
-                    //        TWoCState = CrashTWoCState.RUNNING;
-                    //    }
-                    //}
-
-
-                    //Console.WriteLine("TIME TAKEN FOR DETECTION: {0}", DateTime.Now - lastTime);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -238,8 +208,9 @@ namespace LiveSplit.UI.Components
             }
         }
 
-        private void CaptureLoadsXBOX()
+        private bool CaptureLoadsXBOX()
         {
+            bool isLoad = false;
             if ((timerStart.Ticks - liveSplitState.Run.Offset.Ticks) <= DateTime.Now.Ticks)
             {
                 framesSinceLastManualSplit++;
@@ -290,6 +261,7 @@ namespace LiveSplit.UI.Components
                     if (counter > 5 && ResultText.Length == 8)
                     {
                         isLoading = true;
+                        isLoad = true;
                     }
 
                 }
@@ -343,13 +315,12 @@ namespace LiveSplit.UI.Components
                     waitOnFadeIn = true;
                 }
             }
-
+            return isLoad;
         }
 
-        private void CaptureLoadsPS2()
+        private bool CaptureLoadsPS2()
         {
-
-
+            bool isLoad = false;
             framesSinceLastManualSplit++;
             //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
             //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
@@ -396,6 +367,7 @@ namespace LiveSplit.UI.Components
                     if (counter > 5 && ResultText.Length == 8)
                     {
                         isLoading = true;
+                        isLoad = true;
                     }
                     else
                     {
@@ -417,6 +389,7 @@ namespace LiveSplit.UI.Components
                     if (counter > 3)
                     {
                         isLoading = true;
+                        isLoad = true;
                     }
                     else
                     {
@@ -466,9 +439,7 @@ namespace LiveSplit.UI.Components
                 waitFrames = 0;
                 waitOnFadeIn = true;
             }
-
-
-
+            return isLoad;
         }
 
         private void CalibrateBlacklevel()
