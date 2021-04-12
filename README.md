@@ -1,41 +1,50 @@
-# LiveSplit.CrashNSTLoadRemoval
-LiveSplit component to automatically detect and remove loads from the Crash N Sane Trilogy.
+# LiveSplit.CrashTWoCLoadRemoval
+LiveSplit component to automatically detect and remove loads from Crash Bandicoot: The Wrath of Cortex.
 
-This is adapted from my standalone detection tool https://github.com/thomasneff/CrashNSaneTrilogyLoadDetector
+This is adapted from the NST load remover https://github.com/thomasneff/LiveSplit.CrashNSTLoadRemoval
 and from https://github.com/Maschell/LiveSplit.PokemonRedBlue for the base component code.
 
+# How to use:
+- Extract *all* the contents of the TWoCLoadRemover.zip into the Components Folder of your LiveSplit folder.
+- Open LiveSplit -> Edit Layout -> Click the plus icon -> Control -> Crash TWoC Load Removal
+- You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground
+- Select the appropriate platform
+- Under preview crop the actual part of the recorded area the game will be displayed on (left click sets upper-left corner, right click sets bottom-right corner)
+- the cropped area should not overlap, but if it underlaps a bit it shouldn't be an issue
+- Now click the calibrate blacklevel button, start the timer and go into the loading screen of Arctic Antics
+- After the loading screen ends a value for blacklevel should be displayed under settings (this can theoretically range from 1 to 255 but should be close to 1)
+- Don't forget to set your timing method to gametime
+
 # Other Image/Video-Based AutoSplitters and/or Load Removers
-This component *only removes and detects loading screens from the english version of the Crash N. Sane Trilogy, nothing else!*
+This component 
+*only removes and detects loading screens from the japanese and english PS2 as well as the english XBox version of Crash Bandicoot: The Wrath of Cortex, nothing else!*
 
 If you want to
 
  * Auto-split based on a folder of split images: https://github.com/Toufool/Auto-Split by https://github.com/Toufool
  * Auto-split and remove loads based on scriptable events from a video feed: https://github.com/ROMaster2/LiveSplit.VideoAutoSplit by https://github.com/ROMaster2
  * Auto-split and remove loads from only the black screens: https://github.com/thomasneff/LiveSplit.BlackScreenDetector by https://github.com/thomasneff/.
+ * Detect text within an image: https://github.com/tesseract-ocr/tesseract
 
 # Special Thanks
-Special thanks go to McCrodi from the Crash Speedrunning Discord, who helped me by providing 1080p/720p captured data and general feedback regarding the functionality.
+Special thanks go to PeteThePlayer, DylWingo, Alaapo and various others from the Crash Speedrunning Community, who helped me with testing/debugging.
 
 # How does it work?
-The method works by taking a small "screenshot" (currently 300x100) from your selected capture at the center, where "LOADING" is displayed when playing the Crash NST. It then cuts this 300x100 image into patches (currently of size 50x50). From these patches, a color histogram is computed (currently using 16 histogram bins -> [0-15, 16-31, 32-47, ..., 240-255]) of the red, green and blue color channels. These histograms are put into a large vector, which describes our image (feature vector).
+*FOR PS2*
 
-To detect if a screen is "LOADING" or not, we compute this feature vector every ~4-16ms (depending on capture modes, fast enough for real-time load detection) and compare it to a precomputed list of feature vectors. This list has currently been precomputed for the english version of the NST using different VODs and Remote Play footage. The precomputed vectors are simply snapshots during the "LOADING" screen (also during animation, when Aku Aku flies over "LOADING", different quality settings...).
-We detect a "LOADING" screen if our current feature vector has similar enough histogram bins to any of the precomputed vectors. Comparing against multiple vectors allows for more robust detection in settings where "LOADING" is partially occluded or different video quality settings.
+The method works by taking a "screenshot" (currently 800x600, it needs to be this large to prevent some death animations from being incorrectly detected as a black screen, but will be downsized to save resources) from your selected capture at the top, where "LOADING" is displayed when playing TWoC. It will then first check if the "screenshot" (i will simply refer to it as image from here) is fully black and will pause the timer. When the blackscreen ends it will resume the timer and note the current time in case an actual load screen follows. After this it will actually be looking for the LOADING text at the top of the screen for 360 frames (6 seconds). 
 
-I decided to go for this simplistic approach (rather than e.g. computing SIFT features, histogram of gradients, deep learning detection...) as it doesn't have any external dependencies (which e.g. deep learning would have) and allows for real-time detection.
+To do this it will first preprocess the image by comparing color values to color the actual loading text fully black while the background is fully white. This image will then be fed into the tesseract optical character recognition AI to extract the text within the image. If the extracted text equals LOADING the timer will revert back to the time that was noted at the end of predecessing black screen and pause the timer again. Finally it will unpause the timer as soon as the upcoming blackscreen ends.
+
+*FOR XBOX*
+
+Coming Soon™
 
 # Missing Features
-If you do full trilogy run, you'll still need to time your title screen loads. Sorry, that's just because the title screen loads are different than the ingame loads. I might tinker around with also detecting those, but since there are so few of them, I'm not sure if that would be worth it.
+Support for Autosplit still needs to be reconfigured.
 
 # Known Issues
-If you want to use the AutoSplitter functionality, **all your Splits need to have different names!**. If you have Splits that share the same name, the AutoSplitter is not able to differentiate between them.
+If you want to use the AutoSplitter functionality (when it's available), **all your Splits need to have different names!**. If you have Splits that share the same name, the AutoSplitter is not able to differentiate between them.
 
-# Settings
-The LiveSplit.CrashNSTLoadRemoval.dll goes into your "Components" folder in your LiveSplit folder.
-
-Add this to LiveSplit by going into your Layout Editor -> Add -> Control -> CrashNSTLoadRemoval.
-
-You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground.
-
-This might not work for windows with DirectX/OpenGL surfaces, nothing I can do about that. (Use Display capture for those cases, sorry, although even that might not work in some cases). In those cases, you will probably get a black image in the capture preview in the component settings.
-
+# Note for Runs on Emulator
+If you plan to use the load remover with PCSX2, I would refrain from capturing the actual screen the emulator is running on and recommend capturing an OBS window instead. Otherwise the screen capture runs into weird issues when the emu is using the software renderer.
