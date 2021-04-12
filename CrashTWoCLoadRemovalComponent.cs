@@ -409,23 +409,14 @@ namespace LiveSplit.UI.Components
             {
                 waitOnFadeIn = false;
                 isLoading = false;
-                isFadeIn = true;
             }
 
 
             if (wasBlackScreen && !isBlackScreen)
             {
-                //if it's a fadeout after a loading screen, it won't search the screen for a loading text to improve performance
-                if (!isFadeIn)
-                {
-                    //This could be a pre-load transition, start timing it
-                    transitionStart = DateTime.Now;
-                    waitOnLoad = true;
-                }
-                else
-                {
-                    isFadeIn = false;
-                }
+                //This could be a pre-load transition, start timing it
+                transitionStart = DateTime.Now;
+                waitOnLoad = true;
             }
 
 
@@ -491,7 +482,8 @@ namespace LiveSplit.UI.Components
                 settings.isCalibratingBlacklevel = false;
                 settings.cmpBlackLevel = 100;
                 Console.WriteLine("BLACKLEVEL: {0}", settings.blacklevel);
-                settings.Update();
+                settings.UpdateBlacklevelLabel();
+                settings.Refresh();
             }
         }
 

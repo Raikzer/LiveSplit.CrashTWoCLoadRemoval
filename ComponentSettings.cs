@@ -1115,9 +1115,10 @@ namespace LiveSplit.UI.Components
             isCalibratingBlacklevel = true;
             blacklevel = 100;
             cmpBlackLevel = 100;
+            UpdateBlacklevelLabel();
         }
 
-        private void UpdateBlacklevelLabel ()
+        public void UpdateBlacklevelLabel ()
         {
             if (blacklevel == 100)
             {
