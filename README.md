@@ -5,6 +5,8 @@ This is adapted from the NST load remover https://github.com/thomasneff/LiveSpli
 and from https://github.com/Maschell/LiveSplit.PokemonRedBlue for the base component code.
 
 # How to use:
+*A video setup guide can be found [here](https://www.youtube.com/watch?v=shP9JsmuY5c)*
+
 - Extract *all* the contents of the TWoCLoadRemover.zip into the Components Folder of your LiveSplit folder.
 - Open LiveSplit -> Edit Layout -> Click the plus icon -> Control -> Crash TWoC Load Removal
 - You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground
