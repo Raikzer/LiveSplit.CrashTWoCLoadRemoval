@@ -43,7 +43,7 @@ namespace LiveSplit.UI.Components
         private int lowestBit = 0;
         private bool isCmpFinished = false;
         private string expectedResultEng = "LOADING";
-        private string expectedResultJpn = "リ~ド⑤ぅヽトー";
+        private string expectedResultJpn = "リ~ド⑤④ぅヽトー";
 
         private TimerModel timer;
         private bool timerStarted = false;
@@ -333,8 +333,9 @@ namespace LiveSplit.UI.Components
             //BitmapToPixConverter btp = new BitmapToPixConverter();
             //if (!testSaved)
             //{
-            //    Bitmap jpntestbmp = new Bitmap("screenshot_2.bmp");
-            //    FeatureDetector.clearBackground(ref jpntestbmp);
+            //    Bitmap jpntestbmp = new Bitmap("cutout.bmp");
+            //    FeatureDetector.GetBlackLevel(ref jpntestbmp);
+            //    FeatureDetector.ClearBackground(ref jpntestbmp);
             //    jpntestbmp.Save("jpntest.bmp");
             //    Pix jpntest = btp.Convert(jpntestbmp);
             //    using (var page = engine.Process(jpntest, PageSegMode.SingleChar))
@@ -355,6 +356,7 @@ namespace LiveSplit.UI.Components
                 using (var page = engine.Process(img, PageSegMode.SingleChar))
                 {
                     ResultText = page.GetText();
+                    //Console.WriteLine(ResultText);
                 }
                 int counter = 0;
                 if (settings.platform == "ENG/PS2")
@@ -463,7 +465,7 @@ namespace LiveSplit.UI.Components
                     isCmpFinished = true;
                 }
             }
-            else if (settings.platform == "JPN/PS2")
+            else
             {
                 foreach (char c in expectedResultJpn)
                 {

@@ -64,11 +64,11 @@ namespace LiveSplit.UI.Components
 
         private Size resizeSizeEng = new Size(100, 100);
 
-        private Size resizeSizeJpn = new Size(300, 300);
+        private Size resizeSizeJpn = new Size(800, 800);
 
         private float cropOffsetX = 100.0f;
 
-        private float cropOffsetY = -100.0f;
+        private float cropOffsetY = -115.0f;
 
         private bool drawingPreview = false;
 
@@ -1092,7 +1092,7 @@ namespace LiveSplit.UI.Components
 
         private void saveCutout_Click(object sender, EventArgs e)
         {
-            Bitmap Cutout = CaptureImagePostLoad();
+            Bitmap Cutout = CaptureImage();
             //Cutout = ImageCapture.CropImage(Cutout);
             Cutout.Save("cutout.bmp");
         }

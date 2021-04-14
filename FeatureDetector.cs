@@ -32,7 +32,7 @@ namespace CrashTWoCLoadDetector
             for (int i = 0; i < bytes - 3; i += 4)
             {
 
-                if (rgbValues[i] > 45 || rgbValues[i + 1] < 110)
+                if (rgbValues[i] > 80 || rgbValues[i + 1] < 110)
                 {
 
                     //Console.WriteLine(rgbValues[i]);
@@ -125,16 +125,26 @@ namespace CrashTWoCLoadDetector
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+            int jitter = 0;
             for (int i = bytes - 2; i >= 0; i -= 4)
             {
                 if (rgbValues[i] > blacklevel || rgbValues[i - 1] > blacklevel || rgbValues[i - 2] > blacklevel)
                 {
-                    capture.UnlockBits(captureData);
-                    return false;
+                    jitter++;
+                    if (jitter > 20000)
+                    {
+                        capture.UnlockBits(captureData);
+                        return false;
+                    }
                 }
             }
             capture.UnlockBits(captureData);
             return true;
+        }
+
+        private static bool IsGreyscale(byte b, byte g, byte r)
+        {
+            return b == g && b == r;
         }
 
         public static int GetBlackLevel(ref Bitmap capture)
@@ -153,12 +163,21 @@ namespace CrashTWoCLoadDetector
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             int blacklevel = rgbValues[bytes - 2] + 1;
+            int jitter = 0;
             for (int i = bytes - 2; i >= 0; i -= 4)
             {
-                if (rgbValues[i] > blacklevel || rgbValues[i - 1] > blacklevel || rgbValues[i - 2] > blacklevel)
+                if (!IsGreyscale(rgbValues[i], rgbValues[i - 1], rgbValues[i - 2]))
                 {
-                    capture.UnlockBits(captureData);
-                    return -1;
+                    jitter++;
+                    if (jitter > 20000)
+                    {
+                        capture.UnlockBits(captureData);
+                        return -1;
+                    }
+                }
+                else if (rgbValues[i] > blacklevel)
+                {
+                    blacklevel = rgbValues[i];
                 }
             }
             capture.UnlockBits(captureData);
