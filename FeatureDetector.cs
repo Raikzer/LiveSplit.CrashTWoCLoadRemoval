@@ -131,7 +131,7 @@ namespace CrashTWoCLoadDetector
                 if (rgbValues[i] > blacklevel || rgbValues[i - 1] > blacklevel || rgbValues[i - 2] > blacklevel)
                 {
                     jitter++;
-                    if (jitter > 20000)
+                    if (jitter > (int) bytes * 0.01)
                     {
                         capture.UnlockBits(captureData);
                         return false;
@@ -169,7 +169,7 @@ namespace CrashTWoCLoadDetector
                 if (!IsGreyscale(rgbValues[i], rgbValues[i - 1], rgbValues[i - 2]))
                 {
                     jitter++;
-                    if (jitter > 20000)
+                    if (jitter > (int)bytes * 0.01)
                     {
                         capture.UnlockBits(captureData);
                         return -1;
