@@ -245,7 +245,7 @@ namespace LiveSplit.UI.Components
 
                 if (!isBlackScreen && !waitOnFadeIn && waitOnLoad)
                 {
-                    specialLoad = FeatureDetector.ClearBackground(ref capture);
+                    specialLoad = FeatureDetector.ClearBackground(ref capture, settings.blacklevel);
                     Pix img = btp.Convert(capture);
                     string ResultText = "";
                     using (var page = engine.Process(img, PageSegMode.SingleChar))
@@ -272,7 +272,7 @@ namespace LiveSplit.UI.Components
                 {
                     capture = settings.CaptureImagePostLoad();
                     int lowestBitLast = lowestBit;
-                    lowestBit = FeatureDetector.ClearBackgroundPostLoad(ref capture);
+                    lowestBit = FeatureDetector.ClearBackgroundPostLoad(ref capture, settings.blacklevel);
                     if (lowestBit == lowestBitLast && lowestBit != 0)
                     {
                         Pix img = btp.Convert(capture);
@@ -348,7 +348,7 @@ namespace LiveSplit.UI.Components
 
             if (!isBlackScreen && waitOnLoad)
             {
-                FeatureDetector.ClearBackground(ref capture);
+                FeatureDetector.ClearBackground(ref capture, settings.blacklevel);
 
                 BitmapToPixConverter btp = new BitmapToPixConverter();
                 Pix img = btp.Convert(capture);
@@ -443,7 +443,7 @@ namespace LiveSplit.UI.Components
             {
                 settings.cmpBlackLevel = tempBlacklevel;
             }
-            FeatureDetector.ClearBackground(ref capture);
+            FeatureDetector.ClearBackground(ref capture, settings.cmpBlackLevel);
 
             BitmapToPixConverter btp = new BitmapToPixConverter();
             Pix img = btp.Convert(capture);

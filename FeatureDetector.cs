@@ -12,7 +12,7 @@ namespace CrashTWoCLoadDetector
     {
         #region Public Methods
 
-        public static bool ClearBackground(ref Bitmap capture)
+        public static bool ClearBackground(ref Bitmap capture, int blacklevel = 1)
         {
             bool special = false;
             Rectangle rect = new Rectangle(0, 0, capture.Width, capture.Height);
@@ -29,10 +29,12 @@ namespace CrashTWoCLoadDetector
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+            int BValue = 65 + blacklevel;
+            int GValue = 110 + blacklevel;
             for (int i = 0; i < bytes - 3; i += 4)
             {
 
-                if (rgbValues[i] > 80 || rgbValues[i + 1] < 110)
+                if (rgbValues[i] > BValue || rgbValues[i + 1] < GValue)
                 {
 
                     //Console.WriteLine(rgbValues[i]);
@@ -64,7 +66,7 @@ namespace CrashTWoCLoadDetector
             return special;
         }
 
-        public static int ClearBackgroundPostLoad(ref Bitmap capture)
+        public static int ClearBackgroundPostLoad(ref Bitmap capture, int blacklevel = 1)
         {
             int lowestBit = 0;
             Rectangle rect = new Rectangle(0, 0, capture.Width, capture.Height);
@@ -81,10 +83,13 @@ namespace CrashTWoCLoadDetector
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+            int BValue = 65 + blacklevel;
+            int GValue = 110 + blacklevel;
+            int RValue = 190 + blacklevel;
             for (int i = 0; i < bytes - 3; i += 4)
             {
 
-                if (rgbValues[i] > 40 || rgbValues[i + 1] < 50 || rgbValues[i + 2] < 190)
+                if (rgbValues[i] > BValue || rgbValues[i + 1] < GValue || rgbValues[i + 2] < RValue)
                 {
                     //Console.WriteLine(rgbValues[i]);
                     //Console.WriteLine(rgbValues[i + 1]);
@@ -126,12 +131,13 @@ namespace CrashTWoCLoadDetector
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             int jitter = 0;
+            int jitter_max = (int) (bytes * 0.01);
             for (int i = bytes - 2; i >= 0; i -= 4)
             {
                 if (rgbValues[i] > blacklevel || rgbValues[i - 1] > blacklevel || rgbValues[i - 2] > blacklevel)
                 {
                     jitter++;
-                    if (jitter > (int) bytes * 0.01)
+                    if (jitter > jitter_max)
                     {
                         capture.UnlockBits(captureData);
                         return false;
@@ -164,12 +170,13 @@ namespace CrashTWoCLoadDetector
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             int blacklevel = rgbValues[bytes - 2] + 1;
             int jitter = 0;
+            int jitter_max = (int)(bytes * 0.01);
             for (int i = bytes - 2; i >= 0; i -= 4)
             {
                 if (!IsGreyscale(rgbValues[i], rgbValues[i - 1], rgbValues[i - 2]))
                 {
                     jitter++;
-                    if (jitter > (int)bytes * 0.01)
+                    if (jitter > jitter_max)
                     {
                         capture.UnlockBits(captureData);
                         return -1;
