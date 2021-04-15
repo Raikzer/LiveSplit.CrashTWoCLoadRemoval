@@ -29,7 +29,7 @@ namespace CrashTWoCLoadDetector
 
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-            int BValue = 65 + blacklevel;
+            int BValue = 80 + blacklevel;
             int GValue = 110 + blacklevel;
             for (int i = 0; i < bytes - 3; i += 4)
             {
