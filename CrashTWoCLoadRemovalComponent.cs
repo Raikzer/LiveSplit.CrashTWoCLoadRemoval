@@ -44,6 +44,7 @@ namespace LiveSplit.UI.Components
         private bool isCmpFinished = false;
         private string expectedResultEng = "LOADING";
         private string expectedResultJpn = "リ~ド⑤④ぅヽトー";
+        private string expectedResultKrn = "로드숭중";
 
         private TimerModel timer;
         private bool timerStarted = false;
@@ -123,6 +124,10 @@ namespace LiveSplit.UI.Components
             {
                 engine = new TesseractEngine(path, "jpn", EngineMode.Default);
             }
+            else
+            {
+                engine = new TesseractEngine(path, "kor", EngineMode.Default);
+            }
         }
 
         private void timer_OnResume(object sender, EventArgs e)
@@ -173,7 +178,7 @@ namespace LiveSplit.UI.Components
 
                 if (timerStarted && !settings.isCalibratingBlacklevel)
                 {
-                    if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2")
+                    if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2" || settings.platform == "KRN/PS2")
                     {
                         isLoad = CaptureLoadsPS2();
                     }
@@ -322,7 +327,7 @@ namespace LiveSplit.UI.Components
         {
             bool isLoad = false;
             framesSinceLastManualSplit++;
-            //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);
+            //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);13
             //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
             lastTime = DateTime.Now;
 
@@ -403,6 +408,29 @@ namespace LiveSplit.UI.Components
                         }
                     }
                 }
+                //TODO: add korean
+                else
+                {
+                    foreach (char c in expectedResultKrn)
+                    {
+                        if (ResultText.Contains(c))
+                            counter++;
+                    }
+                    if (counter > 1)
+                    {
+                        isLoading = true;
+                        isLoad = true;
+                    }
+                    else
+                    {
+                        waitFrames++;
+                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
+                        {
+                            waitOnLoad = false;
+                            waitFrames = 0;
+                        }
+                    }
+                }
             }
 
             timer.CurrentState.IsGameTimePaused = isLoading || isBlackScreen;
@@ -465,7 +493,7 @@ namespace LiveSplit.UI.Components
                     isCmpFinished = true;
                 }
             }
-            else
+            else if (settings.platform == "JPN/PS2")
             {
                 foreach (char c in expectedResultJpn)
                 {
@@ -473,6 +501,18 @@ namespace LiveSplit.UI.Components
                         counter++;
                 }
                 if (counter > 3)
+                {
+                    isCmpFinished = true;
+                }
+            }
+            else
+            {
+                foreach (char c in expectedResultKrn)
+                {
+                    if (ResultText.Contains(c))
+                        counter++;
+                }
+                if (counter > 2)
                 {
                     isCmpFinished = true;
                 }

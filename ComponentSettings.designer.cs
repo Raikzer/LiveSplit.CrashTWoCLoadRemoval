@@ -223,6 +223,7 @@
             this.platformComboBox.Items.AddRange(new object[] {
             "ENG/PS2",
             "JPN/PS2",
+            "KRN/PS2",
             "ENG/XBOX"});
             this.platformComboBox.Location = new System.Drawing.Point(85, 33);
             this.platformComboBox.Name = "platformComboBox";

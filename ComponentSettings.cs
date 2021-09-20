@@ -540,7 +540,7 @@ namespace LiveSplit.UI.Components
                 {
                     platformComboBox.SelectedItem = element["platform"].InnerText;
                     platform = platformComboBox.SelectedItem.ToString();
-                    if (platform == "JPN/PS2")
+                    if (platform == "JPN/PS2" || platform == "KRN/PS2")
                     {
                         imageCaptureInfo.resizeState = ResizeState.JPN;
                     }
