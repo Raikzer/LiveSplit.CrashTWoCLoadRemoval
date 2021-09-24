@@ -116,7 +116,7 @@ namespace LiveSplit.UI.Components
         private void InitTesseract()
         {
             curLanguage = settings.platform;
-            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX")
+            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX&GC")
             {
                 engine = new TesseractEngine(path, "eng", EngineMode.Default);
             }
@@ -481,7 +481,7 @@ namespace LiveSplit.UI.Components
                 ResultText = page.GetText();
             }
             int counter = 0;
-            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX")
+            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX&GC")
             {
                 foreach (char c in expectedResultEng)
                 {

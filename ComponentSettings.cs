@@ -64,7 +64,7 @@ namespace LiveSplit.UI.Components
 
         private Size resizeSizeEng = new Size(100, 100);
 
-        private Size resizeSizeJpn = new Size(800, 800);
+        private Size resizeSizeJpn = new Size(400, 400);
 
         private float cropOffsetX = 100.0f;
 
@@ -1100,7 +1100,7 @@ namespace LiveSplit.UI.Components
         private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             platform = platformComboBox.SelectedItem.ToString();
-            if (platform == "ENG/PS2" || platform == "ENG/XBOX")
+            if (platform == "ENG/PS2" || platform == "ENG/XBOX&GX")
             {
                 imageCaptureInfo.resizeState = ResizeState.ENG;
             }

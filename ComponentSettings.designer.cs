@@ -224,10 +224,10 @@
             "ENG/PS2",
             "JPN/PS2",
             "KRN/PS2",
-            "ENG/XBOX"});
+            "ENG/XBOX&GC"});
             this.platformComboBox.Location = new System.Drawing.Point(85, 33);
             this.platformComboBox.Name = "platformComboBox";
-            this.platformComboBox.Size = new System.Drawing.Size(89, 21);
+            this.platformComboBox.Size = new System.Drawing.Size(103, 21);
             this.platformComboBox.TabIndex = 40;
             this.platformComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
@@ -280,7 +280,7 @@
             // blacklevelLabel
             // 
             this.blacklevelLabel.AutoSize = true;
-            this.blacklevelLabel.Location = new System.Drawing.Point(250, 37);
+            this.blacklevelLabel.Location = new System.Drawing.Point(259, 37);
             this.blacklevelLabel.Name = "blacklevelLabel";
             this.blacklevelLabel.Size = new System.Drawing.Size(13, 13);
             this.blacklevelLabel.TabIndex = 43;
@@ -291,7 +291,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(185, 37);
+            this.label8.Location = new System.Drawing.Point(194, 37);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(59, 13);
             this.label8.TabIndex = 42;
