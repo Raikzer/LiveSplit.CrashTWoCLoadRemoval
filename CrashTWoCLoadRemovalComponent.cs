@@ -447,6 +447,7 @@ namespace LiveSplit.UI.Components
                 //This could be a pre-load transition, start timing it
                 transitionStart = DateTime.Now;
                 waitOnLoad = true;
+                waitFrames = 0;
             }
 
 
