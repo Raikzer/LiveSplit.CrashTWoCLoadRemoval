@@ -269,6 +269,10 @@ paket-files/
 .cr/
 
 # Python Tools for Visual Studio (PTVS)
+.venv/
+native/build/
+ml/data/
+ml/samples/
 __pycache__/
 *.pyc
 

@@ -1,0 +1,6 @@
+LIBRARY TwocLoadingVulkan
+EXPORTS
+    TwmCreate
+    TwmPredict
+    TwmGetDeviceName
+    TwmDestroy

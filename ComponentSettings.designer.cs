@@ -13,6 +13,7 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
+            if (disposing) DisposeTrainingMode();
 			if (disposing && (components != null))
 			{
 				components.Dispose();
@@ -71,7 +72,7 @@
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblVersion.Location = new System.Drawing.Point(431, 490);
+            this.lblVersion.Location = new System.Drawing.Point(431, 516);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(37, 13);
             this.lblVersion.TabIndex = 21;
@@ -104,7 +105,7 @@
             // previewPictureBox
             // 
             this.previewPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.previewPictureBox.Location = new System.Drawing.Point(30, 154);
+            this.previewPictureBox.Location = new System.Drawing.Point(30, 180);
             this.previewPictureBox.Name = "previewPictureBox";
             this.previewPictureBox.Size = new System.Drawing.Size(400, 160);
             this.previewPictureBox.TabIndex = 24;
@@ -118,7 +119,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(26, 112);
+            this.label2.Location = new System.Drawing.Point(26, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 16);
             this.label2.TabIndex = 25;
@@ -129,7 +130,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(27, 131);
+            this.label11.Location = new System.Drawing.Point(27, 157);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(304, 12);
             this.label11.TabIndex = 28;
@@ -139,7 +140,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(28, 317);
+            this.label4.Location = new System.Drawing.Point(28, 343);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(185, 16);
             this.label4.TabIndex = 30;
@@ -149,7 +150,7 @@
             // croppedPreviewPictureBox
             // 
             this.croppedPreviewPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.croppedPreviewPictureBox.Location = new System.Drawing.Point(30, 336);
+            this.croppedPreviewPictureBox.Location = new System.Drawing.Point(30, 362);
             this.croppedPreviewPictureBox.Name = "croppedPreviewPictureBox";
             this.croppedPreviewPictureBox.Size = new System.Drawing.Size(400, 160);
             this.croppedPreviewPictureBox.TabIndex = 29;
@@ -222,12 +223,13 @@
             this.platformComboBox.FormattingEnabled = true;
             this.platformComboBox.Items.AddRange(new object[] {
             "ENG/PS2",
+            "ENG/PS2 experimental ML",
             "JPN/PS2",
             "KRN/PS2",
             "ENG/XBOX&GC"});
             this.platformComboBox.Location = new System.Drawing.Point(85, 33);
             this.platformComboBox.Name = "platformComboBox";
-            this.platformComboBox.Size = new System.Drawing.Size(103, 21);
+            this.platformComboBox.Size = new System.Drawing.Size(345, 21);
             this.platformComboBox.TabIndex = 40;
             this.platformComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
@@ -249,7 +251,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(476, 532);
+            this.tabControl1.Size = new System.Drawing.Size(476, 558);
             this.tabControl1.TabIndex = 38;
             // 
             // tabPage1
@@ -273,14 +275,14 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(468, 506);
+            this.tabPage1.Size = new System.Drawing.Size(468, 532);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Setup";
             // 
             // blacklevelLabel
             // 
             this.blacklevelLabel.AutoSize = true;
-            this.blacklevelLabel.Location = new System.Drawing.Point(259, 37);
+            this.blacklevelLabel.Location = new System.Drawing.Point(95, 113);
             this.blacklevelLabel.Name = "blacklevelLabel";
             this.blacklevelLabel.Size = new System.Drawing.Size(13, 13);
             this.blacklevelLabel.TabIndex = 43;
@@ -291,7 +293,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(194, 37);
+            this.label8.Location = new System.Drawing.Point(30, 113);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(59, 13);
             this.label8.TabIndex = 42;
@@ -299,7 +301,7 @@
             // 
             // calibrateBlacklevelButton
             // 
-            this.calibrateBlacklevelButton.Location = new System.Drawing.Point(304, 33);
+            this.calibrateBlacklevelButton.Location = new System.Drawing.Point(304, 111);
             this.calibrateBlacklevelButton.Name = "calibrateBlacklevelButton";
             this.calibrateBlacklevelButton.Size = new System.Drawing.Size(126, 21);
             this.calibrateBlacklevelButton.TabIndex = 40;
@@ -333,7 +335,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(468, 506);
+            this.tabPage2.Size = new System.Drawing.Size(468, 532);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "AutoSplitter";
             // 
@@ -410,7 +412,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "CrashTWoCLoadRemovalSettings";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Size = new System.Drawing.Size(474, 532);
+            this.Size = new System.Drawing.Size(474, 558);
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.croppedPreviewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();

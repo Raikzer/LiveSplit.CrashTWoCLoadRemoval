@@ -9,7 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveSplit.CrashTWoCLoadRemoval</RootNamespace>
     <AssemblyName>LiveSplit.CrashTWoCLoadRemoval</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <LiveSplitRoot Condition="'$(LiveSplitRoot)' == ''">$(MSBuildProjectDirectory)\..\LiveSplit</LiveSplitRoot>
+    <PackagesRoot Condition="'$(PackagesRoot)' == ''">$(MSBuildProjectDirectory)\..\packages</PackagesRoot>
+    <MlModelFile Condition="'$(MlModelFile)' == ''">$(MSBuildProjectDirectory)\ml\artifacts\demo\loading-text.twml</MlModelFile>
+    <MlMetadataFile>$([System.IO.Path]::ChangeExtension('$(MlModelFile)', '.json'))</MlMetadataFile>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -23,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <OutputPath>..\..\bin\Debug\Components\</OutputPath>
+    <OutputPath>$(LiveSplitRoot)\bin\Debug\Components\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,22 +38,19 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>
     </DocumentationFile>
-    <OutputPath>..\..\bin\Release\Components\</OutputPath>
+    <OutputPath>$(LiveSplitRoot)\bin\Release\Components\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CrashNSTLiveSplitDirectly|AnyCPU'">
     <OutputPath>..\..\bin\CrashNSTLiveSplitDirectly\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveSplit.Core">
-      <HintPath>..\..\bin\Release\LiveSplit.Core.dll</HintPath>
+      <HintPath>$(LiveSplitRoot)\bin\Release\LiveSplit.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Drawing.Common.5.0.1\lib\net461\System.Drawing.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,11 +58,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tesseract, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Tesseract.4.1.1\lib\net45\Tesseract.dll</HintPath>
+      <HintPath>$(PackagesRoot)\Tesseract.4.1.1\lib\net45\Tesseract.dll</HintPath>
     </Reference>
     <Reference Include="UpdateManager, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Release\UpdateManager.dll</HintPath>
+      <HintPath>$(LiveSplitRoot)\bin\Release\UpdateManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -72,7 +73,20 @@
     <Compile Include="ComponentSettings.designer.cs">
       <DependentUpon>ComponentSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="ComponentSettings.MachineLearning.cs">
+      <DependentUpon>ComponentSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ComponentSettings.Training.cs">
+      <DependentUpon>ComponentSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Training\TrainingSession.cs" />
+    <Compile Include="Training\TrainingRecorder.cs" />
+    <Compile Include="Training\TrainingCaptureForm.cs" />
+    <Compile Include="VulkanLoadingClassifier.cs" />
     <Compile Include="CrashTWoCLoadRemovalComponent.cs" />
+    <Compile Include="CrashTWoCLoadRemovalComponent.MachineLearning.cs">
+      <DependentUpon>CrashTWoCLoadRemovalComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="CrashTWoCLoadRemovalFactory.cs" />
     <Compile Include="DLLImportStuff.cs" />
     <Compile Include="FeatureDetector.cs" />
@@ -103,13 +117,38 @@
       <DependentUpon>ComponentSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="native\build\x64\TwocLoadingVulkan.dll" Condition="Exists('native\build\x64\TwocLoadingVulkan.dll')">
+      <Link>x64\TwocLoadingVulkan.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="native\build\x86\TwocLoadingVulkan.dll" Condition="Exists('native\build\x86\TwocLoadingVulkan.dll')">
+      <Link>x86\TwocLoadingVulkan.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="native\build\shaders\*.spv">
+      <Link>ML\shaders\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MlModelFile)" Condition="Exists('$(MlModelFile)')">
+      <Link>ML\loading-text.twml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MlMetadataFile)" Condition="Exists('$(MlMetadataFile)')">
+      <Link>ML\loading-text.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\Tesseract.4.1.1\build\Tesseract.targets" Condition="Exists('..\..\packages\Tesseract.4.1.1\build\Tesseract.targets')" />
+  <Target Name="RemoveStaleMlMetadata" AfterTargets="CopyFilesToOutputDirectory" Condition="!Exists('$(MlMetadataFile)')">
+    <Delete Files="$(OutDir)ML\loading-text.json" />
+  </Target>
+  <Import Project="$(PackagesRoot)\Tesseract.4.1.1\build\Tesseract.targets" Condition="Exists('$(PackagesRoot)\Tesseract.4.1.1\build\Tesseract.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Tesseract.4.1.1\build\Tesseract.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Tesseract.4.1.1\build\Tesseract.targets'))" />
+    <Error Condition="!Exists('$(PackagesRoot)\Tesseract.4.1.1\build\Tesseract.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(PackagesRoot)\Tesseract.4.1.1\build\Tesseract.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

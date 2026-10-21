@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+datasets/
+!artifacts/
+artifacts/*/
+!artifacts/demo/
+artifacts/demo/*
+!artifacts/demo/loading-text.twml
+!artifacts/demo/loading-text.json
+!artifacts/demo/parity.npz
+!artifacts/demo/history.json
+!artifacts/demo/parity-samples/

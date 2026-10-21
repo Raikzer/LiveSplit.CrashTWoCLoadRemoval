@@ -1,0 +1,31 @@
+#version 450
+layout(local_size_x = 64) in;
+layout(set = 0, binding = 0, std430) readonly buffer Input { float inputValues[]; };
+layout(set = 0, binding = 1, std430) readonly buffer Weights { float weights[]; };
+layout(set = 0, binding = 2, std430) writeonly buffer Output { float outputValues[]; };
+
+float convolution(int channel, int y, int x) {
+    float value = weights[72 + channel];
+    for (int ky = 0; ky < 3; ++ky) {
+        int iy = y + ky - 1;
+        for (int kx = 0; kx < 3; ++kx) {
+            int ix = x + kx - 1;
+            if (iy >= 0 && iy < 96 && ix >= 0 && ix < 96)
+                value += inputValues[iy * 96 + ix] * weights[channel * 9 + ky * 3 + kx];
+        }
+    }
+    return value;
+}
+
+void main() {
+    uint index = gl_GlobalInvocationID.x;
+    if (index >= 8 * 48 * 48) return;
+    int channel = int(index) / (48 * 48);
+    int y = (int(index) / 48 % 48) * 2;
+    int x = (int(index) % 48) * 2;
+    float value = 0.0;
+    for (int dy = 0; dy < 2; ++dy)
+        for (int dx = 0; dx < 2; ++dx)
+            value = max(value, convolution(channel, y + dy, x + dx));
+    outputValues[index] = value;
+}

@@ -1,0 +1,14 @@
+#version 450
+layout(local_size_x = 1) in;
+layout(set = 0, binding = 0, std430) readonly buffer Input { float inputValues[]; };
+layout(set = 0, binding = 1, std430) readonly buffer Weights { float weights[]; };
+layout(set = 0, binding = 2, std430) writeonly buffer Output { float outputValues[]; };
+
+void main() {
+    float logit = weights[10464];
+    for (int i = 0; i < 9216; ++i)
+        logit += inputValues[i] * weights[1248 + i];
+    // Stable sigmoid avoids overflow for large negative logits.
+    float e = exp(-abs(logit));
+    outputValues[0] = logit >= 0.0 ? 1.0 / (1.0 + e) : e / (1.0 + e);
+}

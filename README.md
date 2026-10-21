@@ -1,4 +1,16 @@
 # LiveSplit.CrashTWoCLoadRemoval
+
+This local build adds **ENG/PS2 experimental ML**, a single-confidence loading-text
+classifier using Vulkan compute shaders. See [BUILDING-ML.md](BUILDING-ML.md) for
+building/deployment and [ml/README.md](ml/README.md) for the training pipeline.
+Bundled weights are a synthetic demonstration and have not been validated on game
+footage. The existing OCR platforms remain available.
+
+The **Training** settings tab opens a capture/review window. Its Start capture
+button records 20,000 cropped frames at a requested 30 FPS by default, then opens
+review. **Y** labels loading, **N** labels absent, **R** goes back, and **U** labels
+the current frame and next 99 absent. Review edits autosave and can be resumed.
+See [TRAINING-MODE.md](TRAINING-MODE.md) for collection and export instructions.
 LiveSplit component to automatically detect and remove loads from Crash Bandicoot: The Wrath of Cortex.
 
 This is adapted from the NST load remover https://github.com/thomasneff/LiveSplit.CrashNSTLoadRemoval

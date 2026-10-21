@@ -1,4 +1,4 @@
-﻿using CrashTWoCLoadDetector;
+using CrashTWoCLoadDetector;
 using LiveSplit.Model;
 using System;
 using System.Collections.Generic;
@@ -53,6 +53,7 @@ namespace LiveSplit.UI.Components
         #region Private Fields
 
         private AutoSplitData autoSplitData = null;
+        private readonly bool capturePreview;
 
         private float captureAspectRatioX = 16.0f;
 
@@ -116,9 +117,11 @@ namespace LiveSplit.UI.Components
 
         #region Public Constructors
 
-        public CrashTWoCLoadRemovalSettings(LiveSplitState state)
+        public CrashTWoCLoadRemovalSettings(LiveSplitState state, bool capturePreview = true)
         {
+            this.capturePreview = capturePreview;
             InitializeComponent();
+            InitializeMachineLearningSettings();
 
             //RemoveFadeins = chkRemoveFadeIns.Checked;
             //if (language == "ENG")
@@ -148,7 +151,7 @@ namespace LiveSplit.UI.Components
 
         public Bitmap CaptureImage()
         {
-            Bitmap b = new Bitmap(1, 1);
+            Bitmap b;
 
             //Full screen capture
             if (processCaptureIndex < 0)
@@ -182,8 +185,8 @@ namespace LiveSplit.UI.Components
             {
                 IntPtr handle = new IntPtr(0);
 
-                if (processCaptureIndex >= processList.Length)
-                    return b;
+                if (processList == null || processCaptureIndex >= processList.Length)
+                    return new Bitmap(1, 1);
 
                 if (processCaptureIndex != -1)
                 {
@@ -191,8 +194,8 @@ namespace LiveSplit.UI.Components
                 }
                 //Capture from specific process
                 processList[processCaptureIndex].Refresh();
-                if ((int)handle == 0)
-                    return b;
+                if (handle == IntPtr.Zero)
+                    return new Bitmap(1, 1);
 
                 b = ImageCapture.PrintWindow(handle, ref imageCaptureInfo, useCrop: true, useResize: true);
             }
@@ -467,6 +470,7 @@ namespace LiveSplit.UI.Components
             settingsNode.AppendChild(ToElement(document, "AutoSplitDisableOnSkipUntilSplit", chkAutoSplitterDisableOnSkip.Checked));
             //settingsNode.AppendChild(ToElement(document, "RemoveFadeins", chkRemoveFadeIns.Checked));
             settingsNode.AppendChild(ToElement(document, "SaveDetectionLog", chkSaveDetectionLog.Checked));
+            SaveMachineLearningSettings(document, settingsNode);
 
             var splitsNode = document.CreateElement("AutoSplitGames");
 
@@ -516,6 +520,7 @@ namespace LiveSplit.UI.Components
         public void SetSettings(XmlNode settings)
         {
             var element = (XmlElement)settings;
+            LoadMachineLearningSettings(element);
             if (!element.IsEmpty)
             {
                 Version version;
@@ -760,6 +765,7 @@ namespace LiveSplit.UI.Components
 
         private void DrawPreview()
         {
+            if (!capturePreview) return;
             try
             {
 
@@ -1100,7 +1106,7 @@ namespace LiveSplit.UI.Components
         private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             platform = platformComboBox.SelectedItem.ToString();
-            if (platform == "ENG/PS2" || platform == "ENG/XBOX&GX")
+            if (platform == "ENG/PS2" || platform == "ENG/XBOX&GC" || platform == ExperimentalMlPlatform)
             {
                 imageCaptureInfo.resizeState = ResizeState.ENG;
             }

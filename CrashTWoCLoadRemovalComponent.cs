@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LiveSplit.UI.Components
 {
-    class CrashTWoCLoadRemovalComponent : IComponent
+    partial class CrashTWoCLoadRemovalComponent : IComponent
     {
         public string ComponentName
         {
@@ -81,7 +81,7 @@ namespace LiveSplit.UI.Components
 
         //private HighResolutionTimer.HighResolutionTimer highResTimer;
         private List<int> NumberOfLoadsPerSplit;
-        public CrashTWoCLoadRemovalComponent(LiveSplitState state)
+        public CrashTWoCLoadRemovalComponent(LiveSplitState state, bool capturePreview = true)
         {
 
             GameName = state.Run.GameName;
@@ -97,8 +97,10 @@ namespace LiveSplit.UI.Components
             liveSplitState = state;
             NumberOfLoadsPerSplit = new List<int>();
             InitNumberOfLoadsFromState();
-            settings = new CrashTWoCLoadRemovalSettings(state);
-            InitTesseract();
+            settings = new CrashTWoCLoadRemovalSettings(state, capturePreview);
+            settings.MlPreviewRequested += OnMlPreviewRequested;
+            settings.MlReloadRequested += OnMlReloadRequested;
+            settings.TrainingCaptureStateChanged += OnTrainingCaptureStateChanged;
             lastTime = DateTime.Now;
             segmentTimeStart = DateTime.Now;
             timer = new TimerModel { CurrentState = state };
@@ -178,7 +180,7 @@ namespace LiveSplit.UI.Components
 
                 if (timerStarted && !settings.isCalibratingBlacklevel)
                 {
-                    if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2" || settings.platform == "KRN/PS2")
+                    if (settings.platform == "ENG/PS2" || settings.platform == "JPN/PS2" || settings.platform == "KRN/PS2" || IsMachineLearningPlatform)
                     {
                         isLoad = CaptureLoadsPS2();
                     }
@@ -208,6 +210,7 @@ namespace LiveSplit.UI.Components
             }
             catch (Exception ex)
             {
+                if (IsMachineLearningPlatform) { RecognitionFailed(ex); return; }
                 isLoading = false;
                 Console.WriteLine("Error: " + ex.ToString());
             }
@@ -325,110 +328,36 @@ namespace LiveSplit.UI.Components
 
         private bool CaptureLoadsPS2()
         {
+            Bitmap capture = settings.CaptureImage();
+            try { return ProcessPs2Capture(capture); }
+            finally { capture.Dispose(); }
+        }
+
+        private bool ProcessPs2Capture(Bitmap capture)
+        {
             bool isLoad = false;
             framesSinceLastManualSplit++;
-            //Console.WriteLine("TIME NOW: {0}", DateTime.Now - lastTime);13
-            //Console.WriteLine("TIME DIFF START: {0}", DateTime.Now - lastTime);
             lastTime = DateTime.Now;
-
-            //Capture image using the settings defined for the component
-            Bitmap capture = settings.CaptureImage();
+            if (IsMachineLearningPlatform && (capture.Width < 2 || capture.Height < 2))
+                throw new InvalidOperationException("Capture source is unavailable.");
             wasBlackScreen = isBlackScreen;
             isBlackScreen = FeatureDetector.IsBlackScreen(ref capture, settings.blacklevel);
-            //BitmapToPixConverter btp = new BitmapToPixConverter();
-            //if (!testSaved)
-            //{
-            //    Bitmap jpntestbmp = new Bitmap("cutout.bmp");
-            //    FeatureDetector.GetBlackLevel(ref jpntestbmp);
-            //    FeatureDetector.ClearBackground(ref jpntestbmp);
-            //    jpntestbmp.Save("jpntest.bmp");
-            //    Pix jpntest = btp.Convert(jpntestbmp);
-            //    using (var page = engine.Process(jpntest, PageSegMode.SingleChar))
-            //    {
-            //        Console.WriteLine(page.GetText());
-            //    }
-            //    testSaved = true;
-            //}
 
 
             if (!isBlackScreen && waitOnLoad)
             {
-                FeatureDetector.ClearBackground(ref capture, settings.blacklevel);
-
-                BitmapToPixConverter btp = new BitmapToPixConverter();
-                Pix img = btp.Convert(capture);
-                string ResultText = "";
-                using (var page = engine.Process(img, PageSegMode.SingleChar))
+                if (RecognizeLoadingText(capture, false))
                 {
-                    ResultText = page.GetText();
-                    //Console.WriteLine(ResultText);
+                    isLoading = true;
+                    isLoad = true;
                 }
-                int counter = 0;
-                if (settings.platform == "ENG/PS2")
-                {
-                    foreach (char c in expectedResultEng)
-                    {
-                        if (ResultText.Contains(c))
-                            counter++;
-                    }
-                    if (counter > 5 && ResultText.Length == 8)
-                    {
-                        isLoading = true;
-                        isLoad = true;
-                    }
-                    else
-                    {
-                        waitFrames++;
-                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
-                        {
-                            waitOnLoad = false;
-                            waitFrames = 0;
-                        }
-                    }
-                }
-                else if (settings.platform == "JPN/PS2")
-                {
-                    foreach (char c in expectedResultJpn)
-                    {
-                        if (ResultText.Contains(c))
-                            counter++;
-                    }
-                    if (counter > 3)
-                    {
-                        isLoading = true;
-                        isLoad = true;
-                    }
-                    else
-                    {
-                        waitFrames++;
-                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
-                        {
-                            waitOnLoad = false;
-                            waitFrames = 0;
-                        }
-                    }
-                }
-                //TODO: add korean
                 else
                 {
-                    foreach (char c in expectedResultKrn)
+                    waitFrames++;
+                    if (waitFrames == WAIT_ON_LOAD_FRAMES)
                     {
-                        if (ResultText.Contains(c))
-                            counter++;
-                    }
-                    if (counter > 1)
-                    {
-                        isLoading = true;
-                        isLoad = true;
-                    }
-                    else
-                    {
-                        waitFrames++;
-                        if (waitFrames == WAIT_ON_LOAD_FRAMES)
-                        {
-                            waitOnLoad = false;
-                            waitFrames = 0;
-                        }
+                        waitOnLoad = false;
+                        waitFrames = 0;
                     }
                 }
             }
@@ -467,67 +396,24 @@ namespace LiveSplit.UI.Components
         private void CalibrateBlacklevel()
         {
             Bitmap capture = settings.CaptureImage();
-            int tempBlacklevel = FeatureDetector.GetBlackLevel(ref capture);
-            if (tempBlacklevel != -1 && tempBlacklevel < settings.cmpBlackLevel)
+            try
             {
-                settings.cmpBlackLevel = tempBlacklevel;
-            }
-            FeatureDetector.ClearBackground(ref capture, settings.cmpBlackLevel);
-
-            BitmapToPixConverter btp = new BitmapToPixConverter();
-            Pix img = btp.Convert(capture);
-            string ResultText = "";
-            using (var page = engine.Process(img, PageSegMode.SingleChar))
-            {
-                ResultText = page.GetText();
-            }
-            int counter = 0;
-            if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX&GC")
-            {
-                foreach (char c in expectedResultEng)
+                int tempBlacklevel = FeatureDetector.GetBlackLevel(ref capture);
+                if (tempBlacklevel != -1 && tempBlacklevel < settings.cmpBlackLevel)
+                    settings.cmpBlackLevel = tempBlacklevel;
+                isCmpFinished = RecognizeLoadingText(capture, true);
+                if (isCmpFinished)
                 {
-                    if (ResultText.Contains(c))
-                        counter++;
-                }
-                if (counter > 5 && ResultText.Length == 8)
-                {
-                    isCmpFinished = true;
+                    settings.blacklevel = settings.cmpBlackLevel;
+                    isCmpFinished = false;
+                    settings.isCalibratingBlacklevel = false;
+                    settings.cmpBlackLevel = 100;
+                    Console.WriteLine("BLACKLEVEL: {0}", settings.blacklevel);
+                    settings.UpdateBlacklevelLabel();
+                    settings.Refresh();
                 }
             }
-            else if (settings.platform == "JPN/PS2")
-            {
-                foreach (char c in expectedResultJpn)
-                {
-                    if (ResultText.Contains(c))
-                        counter++;
-                }
-                if (counter > 3)
-                {
-                    isCmpFinished = true;
-                }
-            }
-            else
-            {
-                foreach (char c in expectedResultKrn)
-                {
-                    if (ResultText.Contains(c))
-                        counter++;
-                }
-                if (counter > 2)
-                {
-                    isCmpFinished = true;
-                }
-            }
-            if (isCmpFinished)
-            {
-                settings.blacklevel = settings.cmpBlackLevel;
-                isCmpFinished = false;
-                settings.isCalibratingBlacklevel = false;
-                settings.cmpBlackLevel = 100;
-                Console.WriteLine("BLACKLEVEL: {0}", settings.blacklevel);
-                settings.UpdateBlacklevelLabel();
-                settings.Refresh();
-            }
+            finally { capture.Dispose(); }
         }
 
         private void timer_OnUndoSplit(object sender, EventArgs e)
@@ -701,17 +587,15 @@ namespace LiveSplit.UI.Components
         }
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
+            if (settings.TrainingCaptureActive) return;
             if (SplitsAreDifferent(state))
             {
                 settings.ChangeAutoSplitSettingsToGameName(GameName, GameCategory);
 
                 ReloadLogFile();
             }
-            if (LanguageIsDifferent())
-            {
-                InitTesseract();
-            }
             liveSplitState = state;
+            if (!EnsureRecognitionBackend()) return;
             /*
                   liveSplitState = state;
                   if (GameName != state.Run.GameName || GameCategory != state.Run.CategoryName)
@@ -730,7 +614,8 @@ namespace LiveSplit.UI.Components
 
             if (settings.isCalibratingBlacklevel)
             {
-                CalibrateBlacklevel();
+                try { CalibrateBlacklevel(); }
+                catch (Exception ex) { RecognitionFailed(ex); }
             }
 
 
@@ -788,7 +673,21 @@ namespace LiveSplit.UI.Components
 
         public void Dispose()
         {
+            if (disposed) return;
+            disposed = true;
+            settings.CloseTrainingMode();
             timer.CurrentState.OnStart -= timer_OnStart;
+            timer.CurrentState.OnReset -= timer_OnReset;
+            timer.CurrentState.OnSkipSplit -= timer_OnSkipSplit;
+            timer.CurrentState.OnSplit -= timer_OnSplit;
+            timer.CurrentState.OnUndoSplit -= timer_OnUndoSplit;
+            timer.CurrentState.OnPause -= timer_OnPause;
+            timer.CurrentState.OnResume -= timer_OnResume;
+            settings.MlPreviewRequested -= OnMlPreviewRequested;
+            settings.MlReloadRequested -= OnMlReloadRequested;
+            settings.TrainingCaptureStateChanged -= OnTrainingCaptureStateChanged;
+            ResetRecognitionTransition();
+            DisposeRecognitionBackend();
 
             if (log_file_writer != null)
             {

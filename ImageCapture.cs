@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -122,28 +122,18 @@ namespace CrashTWoCLoadDetector
 
         public static Bitmap CaptureFromDisplay(ref ImageCaptureInfo info, bool useResize = false)
         {
-            Bitmap b = new Bitmap((int)info.actual_crop_size_x, (int)info.actual_crop_size_y);
-
-            //Full screen capture
-            using (Graphics g = Graphics.FromImage(b))
+            using (Bitmap capture = new Bitmap((int)info.actual_crop_size_x, (int)info.actual_crop_size_y))
             {
-                g.CopyFromScreen((int)(info.center_of_frame_x - info.actual_crop_size_x / 2 + info.actual_offset_x),
-                (int)(info.center_of_frame_y - info.actual_crop_size_y / 2 + info.actual_offset_y), 0, 0, new Size((int)info.actual_crop_size_x, (int)info.actual_crop_size_y), CopyPixelOperation.SourceCopy);
+                using (Graphics graphics = Graphics.FromImage(capture))
+                {
+                    graphics.CopyFromScreen((int)(info.center_of_frame_x - info.actual_crop_size_x / 2 + info.actual_offset_x),
+                        (int)(info.center_of_frame_y - info.actual_crop_size_y / 2 + info.actual_offset_y), 0, 0,
+                        capture.Size, CopyPixelOperation.SourceCopy);
+                }
+                int width = useResize ? (info.resizeState == ResizeState.ENG ? info.resizeSizeXEng : info.resizeSizeXJpn) : info.captureSizeX;
+                int height = useResize ? (info.resizeState == ResizeState.ENG ? info.resizeSizeYEng : info.resizeSizeYJpn) : info.captureSizeY;
+                return ResizeImage(capture, width, height);
             }
-
-            if (useResize)
-                if (info.resizeState == ResizeState.ENG)
-                {
-                    b = ResizeImage(b, info.resizeSizeXEng, info.resizeSizeYEng);
-                }
-                else
-                {
-                    b = ResizeImage(b, info.resizeSizeXJpn, info.resizeSizeYJpn);
-                }
-            else
-                b = ResizeImage(b, info.captureSizeX, info.captureSizeY);
-
-            return b;
         }
 
         public static Bitmap CaptureForegroundWindow()
@@ -192,98 +182,70 @@ namespace CrashTWoCLoadDetector
 
         public static Bitmap PrintWindow(IntPtr hwnd, ref ImageCaptureInfo info, bool full = false, bool useCrop = false, float scalingValueFloat = 1.0f, bool useResize = false)
         {
+            IntPtr sourceDc = IntPtr.Zero, targetDc = IntPtr.Zero, bitmap = IntPtr.Zero, oldBitmap = IntPtr.Zero;
+            float offsetX = info.actual_offset_x, offsetY = info.actual_offset_y;
             try
             {
-
-
                 Rectangle rc;
-                DLLImportStuff.GetClientRect(hwnd, out rc);
-
-                Bitmap ret = new Bitmap(1, 1);
-
-                if (rc.Width < 0)
-                    return ret;
-
-                IntPtr hdcwnd = DLLImportStuff.GetDC(hwnd);
-                IntPtr hdc = DLLImportStuff.CreateCompatibleDC(hdcwnd);
-
+                if (hwnd == IntPtr.Zero || !DLLImportStuff.GetClientRect(hwnd, out rc) || rc.Width <= 0 || rc.Height <= 0)
+                    return new Bitmap(1, 1);
                 rc.Width = (int)(rc.Width * scalingValueFloat);
                 rc.Height = (int)(rc.Height * scalingValueFloat);
-
-
-
                 if (useCrop)
                 {
-                    //Change size according to selected crop
                     rc.Width = (int)(info.crop_coordinate_right - info.crop_coordinate_left);
                     rc.Height = (int)(info.crop_coordinate_bottom - info.crop_coordinate_top);
                 }
-
-
-
-
-                //Compute crop coordinates and width/ height based on resoution
-                ImageCapture.SizeAdjustedCropAndOffset(rc.Width, rc.Height, ref info);
-
-
-
-
-
-                float cropOffsetX = info.actual_offset_x;
-                float cropOffsetY = info.actual_offset_y;
-
+                if (rc.Width <= 0 || rc.Height <= 0) return new Bitmap(1, 1);
+                SizeAdjustedCropAndOffset(rc.Width, rc.Height, ref info);
+                offsetX = info.actual_offset_x;
+                offsetY = info.actual_offset_y;
                 if (full)
                 {
                     info.actual_offset_x = 0;
                     info.actual_offset_y = 0;
-
                     info.actual_crop_size_x = 2 * info.center_of_frame_x;
                     info.actual_crop_size_y = 2 * info.center_of_frame_y;
                 }
-
                 if (useCrop)
                 {
-                    //Adjust for crop offset
                     info.center_of_frame_x += info.crop_coordinate_left;
                     info.center_of_frame_y += info.crop_coordinate_top;
                 }
-
-
-                IntPtr hbmp = DLLImportStuff.CreateCompatibleBitmap(hdcwnd, (int)info.actual_crop_size_x, (int)info.actual_crop_size_y);
-
-                DLLImportStuff.SelectObject(hdc, hbmp);
-
-                DLLImportStuff.BitBlt(hdc, 0, 0, (int)info.actual_crop_size_x, (int)info.actual_crop_size_y, hdcwnd, (int)(info.center_of_frame_x + info.actual_offset_x - info.actual_crop_size_x / 2),
-                    (int)(info.center_of_frame_y + info.actual_offset_y - info.actual_crop_size_y / 2), DLLImportStuff.TernaryRasterOperations.SRCCOPY);
-
-
-
-                info.actual_offset_x = cropOffsetX;
-                info.actual_offset_y = cropOffsetY;
-
-
-                ret = (Bitmap)Image.FromHbitmap(hbmp).Clone();
-
-                DLLImportStuff.DeleteObject(hbmp);
-                DLLImportStuff.ReleaseDC(hwnd, hdcwnd);
-                DLLImportStuff.DeleteDC(hdc);
-                if (useResize)
-                    if (info.resizeState == ResizeState.ENG)
-                    {
-                        ret = ResizeImage(ret, info.resizeSizeXEng, info.resizeSizeYEng);
-                    }
-                    else
-                    {
-                        ret = ResizeImage(ret, info.resizeSizeXJpn, info.resizeSizeYJpn);
-                    }
-                else
-                    ret = ResizeImage(ret, info.captureSizeX, info.captureSizeY);
-                return ret;
+                int captureWidth = (int)info.actual_crop_size_x, captureHeight = (int)info.actual_crop_size_y;
+                if (captureWidth <= 0 || captureHeight <= 0) return new Bitmap(1, 1);
+                sourceDc = DLLImportStuff.GetDC(hwnd);
+                if (sourceDc == IntPtr.Zero) throw new System.Runtime.InteropServices.ExternalException("Cannot access the capture window.");
+                targetDc = DLLImportStuff.CreateCompatibleDC(sourceDc);
+                if (targetDc == IntPtr.Zero) throw new System.Runtime.InteropServices.ExternalException("Cannot allocate the capture context.");
+                bitmap = DLLImportStuff.CreateCompatibleBitmap(sourceDc, captureWidth, captureHeight);
+                if (bitmap == IntPtr.Zero) throw new System.Runtime.InteropServices.ExternalException("Cannot allocate the capture image.");
+                oldBitmap = DLLImportStuff.SelectObject(targetDc, bitmap);
+                if (oldBitmap == IntPtr.Zero || oldBitmap == new IntPtr(-1))
+                    throw new System.Runtime.InteropServices.ExternalException("Cannot select the capture image.");
+                if (!DLLImportStuff.BitBlt(targetDc, 0, 0, captureWidth, captureHeight, sourceDc,
+                    (int)(info.center_of_frame_x + info.actual_offset_x - info.actual_crop_size_x / 2),
+                    (int)(info.center_of_frame_y + info.actual_offset_y - info.actual_crop_size_y / 2), DLLImportStuff.TernaryRasterOperations.SRCCOPY))
+                    throw new System.Runtime.InteropServices.ExternalException("Capture window is unavailable.");
+                using (Bitmap captured = Image.FromHbitmap(bitmap))
+                {
+                    int width = useResize ? (info.resizeState == ResizeState.ENG ? info.resizeSizeXEng : info.resizeSizeXJpn) : info.captureSizeX;
+                    int height = useResize ? (info.resizeState == ResizeState.ENG ? info.resizeSizeYEng : info.resizeSizeYJpn) : info.captureSizeY;
+                    return ResizeImage(captured, width, height);
+                }
             }
-            catch (System.Runtime.InteropServices.ExternalException ex)
+            catch (System.Runtime.InteropServices.ExternalException)
             {
-
-                return new Bitmap(10, 10);
+                return new Bitmap(1, 1);
+            }
+            finally
+            {
+                info.actual_offset_x = offsetX;
+                info.actual_offset_y = offsetY;
+                if (targetDc != IntPtr.Zero && oldBitmap != IntPtr.Zero && oldBitmap != new IntPtr(-1)) DLLImportStuff.SelectObject(targetDc, oldBitmap);
+                if (bitmap != IntPtr.Zero) DLLImportStuff.DeleteObject(bitmap);
+                if (targetDc != IntPtr.Zero) DLLImportStuff.DeleteDC(targetDc);
+                if (sourceDc != IntPtr.Zero) DLLImportStuff.ReleaseDC(hwnd, sourceDc);
             }
         }
 

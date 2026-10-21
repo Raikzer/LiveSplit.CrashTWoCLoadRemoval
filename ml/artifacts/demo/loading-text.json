@@ -1,0 +1,5563 @@
+{
+  "format_version": 1,
+  "synthetic_demo": true,
+  "synthetic_demo_only": true,
+  "intended_use": "Synthetic pipeline demonstration; unvalidated on gameplay",
+  "seed": 1234,
+  "best_epoch": 39,
+  "best_validation_loss": 0.25967341661453247,
+  "recommended_threshold": 0.5199999999999999,
+  "threshold_selection": "maximum validation balanced accuracy; ties nearest 0.5",
+  "metrics": {
+    "train": {
+      "count": 528,
+      "threshold": 0.5199999999999999,
+      "tp": 252,
+      "tn": 264,
+      "fp": 0,
+      "fn": 12,
+      "accuracy": 0.9772727272727273,
+      "precision": 1.0,
+      "recall": 0.9545454545454546,
+      "f1": 0.9767441860465117,
+      "balanced_accuracy": 0.9772727272727273
+    },
+    "val": {
+      "count": 120,
+      "threshold": 0.5199999999999999,
+      "tp": 54,
+      "tn": 55,
+      "fp": 5,
+      "fn": 6,
+      "accuracy": 0.9083333333333333,
+      "precision": 0.9152542372881356,
+      "recall": 0.9,
+      "f1": 0.9075630252100839,
+      "balanced_accuracy": 0.9083333333333333
+    },
+    "test": {
+      "count": 120,
+      "threshold": 0.5199999999999999,
+      "tp": 51,
+      "tn": 58,
+      "fp": 2,
+      "fn": 9,
+      "accuracy": 0.9083333333333333,
+      "precision": 0.9622641509433962,
+      "recall": 0.85,
+      "f1": 0.9026548672566371,
+      "balanced_accuracy": 0.9083333333333333
+    }
+  },
+  "positive_class_weight": 1.0,
+  "training": {
+    "epochs_requested": 40,
+    "epochs_completed": 40,
+    "patience": 5,
+    "batch_size": 32,
+    "threads": 2,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "augmentation": "train only: bilinear translation +/-2.88 px, gain 0.8-1.2, Gaussian noise sigma 0.012"
+  },
+  "environment": {
+    "python": "3.10.5",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.2.6",
+    "pillow": "12.3.0",
+    "device": "cpu"
+  },
+  "manifest_sha256": "15830531291f7f85cd3efba121d308e715462c1b71f6ea891ed8fe90bb668931",
+  "model_sha256": "7cd718566b6740f43f42792852fd461ab9225ff480a971a21f5185d307807b08",
+  "split_summary": {
+    "train": {
+      "samples": 528,
+      "positive": 264,
+      "groups": [
+        "synthetic-seed-1028981",
+        "synthetic-seed-1133710",
+        "synthetic-seed-1238439",
+        "synthetic-seed-1343168",
+        "synthetic-seed-1447897",
+        "synthetic-seed-1552626",
+        "synthetic-seed-1657355",
+        "synthetic-seed-1762084",
+        "synthetic-seed-1866813",
+        "synthetic-seed-2076271",
+        "synthetic-seed-2285729",
+        "synthetic-seed-2390458",
+        "synthetic-seed-2495187",
+        "synthetic-seed-2599916",
+        "synthetic-seed-2704645",
+        "synthetic-seed-2809374",
+        "synthetic-seed-295878",
+        "synthetic-seed-3228290",
+        "synthetic-seed-3542477",
+        "synthetic-seed-3647206",
+        "synthetic-seed-3751935",
+        "synthetic-seed-3856664",
+        "synthetic-seed-3961393",
+        "synthetic-seed-400607",
+        "synthetic-seed-4170851",
+        "synthetic-seed-4380309",
+        "synthetic-seed-4485038",
+        "synthetic-seed-4589767",
+        "synthetic-seed-4694496",
+        "synthetic-seed-505336",
+        "synthetic-seed-5218141",
+        "synthetic-seed-5322870",
+        "synthetic-seed-5427599",
+        "synthetic-seed-5637057",
+        "synthetic-seed-5741786",
+        "synthetic-seed-5846515",
+        "synthetic-seed-5951244",
+        "synthetic-seed-6055973",
+        "synthetic-seed-6265431",
+        "synthetic-seed-6370160",
+        "synthetic-seed-6474889",
+        "synthetic-seed-6579618",
+        "synthetic-seed-714794",
+        "synthetic-seed-819523"
+      ]
+    },
+    "val": {
+      "samples": 120,
+      "positive": 60,
+      "groups": [
+        "synthetic-seed-1971542",
+        "synthetic-seed-2181000",
+        "synthetic-seed-3018832",
+        "synthetic-seed-3333019",
+        "synthetic-seed-4799225",
+        "synthetic-seed-5008683",
+        "synthetic-seed-5532328",
+        "synthetic-seed-610065",
+        "synthetic-seed-6160702",
+        "synthetic-seed-86420"
+      ]
+    },
+    "test": {
+      "samples": 120,
+      "positive": 60,
+      "groups": [
+        "synthetic-seed-191149",
+        "synthetic-seed-2914103",
+        "synthetic-seed-3123561",
+        "synthetic-seed-3437748",
+        "synthetic-seed-4066122",
+        "synthetic-seed-4275580",
+        "synthetic-seed-4903954",
+        "synthetic-seed-5113412",
+        "synthetic-seed-6684347",
+        "synthetic-seed-924252"
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "path": "synthetic-seed-86420/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "1c0273095382988333e2f2b5ae487cea460737ed9be65cbad9c5de537f95bf75"
+    },
+    {
+      "path": "synthetic-seed-86420/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "10c63239b8b621107abd060ed03c9852b9a8475fcbc385434de1298c5148f6af"
+    },
+    {
+      "path": "synthetic-seed-86420/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "f2aa6f82d7a2ed34385d857d14abd9410296400e697189f4664661c1395365d4"
+    },
+    {
+      "path": "synthetic-seed-86420/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "de84e63ec3bd633bcd1117d13786ac85398ba2b880bcc948189331efbdd676ad"
+    },
+    {
+      "path": "synthetic-seed-86420/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "139e5ebfe3ac71fb6f3d00d0f97ce3de3e32432a357a3f0d27a4b7abdc8d8291"
+    },
+    {
+      "path": "synthetic-seed-86420/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "f2f5b719df5ea07a7f9422cd70a54a077a65cd1db398828a9d405b97e02c13fc"
+    },
+    {
+      "path": "synthetic-seed-86420/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "d940d74a3c89fdd186c0aba048988affab10d592759e9b5b610f21a5dd9e2ad2"
+    },
+    {
+      "path": "synthetic-seed-86420/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "ae487b02ccc10ca78cabd37f4a5b620a9a2c6efdb4dca2e4fe2f3446836908c8"
+    },
+    {
+      "path": "synthetic-seed-86420/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "e4a888db3f0c6b1c050eb754a82e833d6f64608189eb44b8baabca430874692e"
+    },
+    {
+      "path": "synthetic-seed-86420/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "5a5ee56a69848faebd66164e3cd6972461455f712173df1e67f309a069ed578d"
+    },
+    {
+      "path": "synthetic-seed-86420/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "f5276eb69634e8a60afdfbd1abf95c08d465490cd228de5444cde2d8b7149eef"
+    },
+    {
+      "path": "synthetic-seed-86420/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-86420",
+      "split": "val",
+      "tensor_sha256": "9d125d002d09019b7381399838a62c06535039e3e669072d3a1a48b8e5abbe55"
+    },
+    {
+      "path": "synthetic-seed-191149/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "378e744ed03194f8a02c8cfd56e179fa798f16451a64c580529b5fba44d8adda"
+    },
+    {
+      "path": "synthetic-seed-191149/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "6fc8f049fef2807af51a6b2d83e944f7c0e6ef384644609ef5c73b9328e6035c"
+    },
+    {
+      "path": "synthetic-seed-191149/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "d4c637ce4fc8ad055bc57bce165fa2205545b34a0e2ba2615d4bd6fc63e58ba6"
+    },
+    {
+      "path": "synthetic-seed-191149/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "b38378397ee3b5135b7b9f0560e10a7f733fc7c71eb37d433f3ba287fd4b5018"
+    },
+    {
+      "path": "synthetic-seed-191149/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "06065b44e4e485567599a22754eb085c508c98611b232fc35e401ea10513b0af"
+    },
+    {
+      "path": "synthetic-seed-191149/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "9ff93bd66382a519962e3f847bc345e7f549dcc5d9c2cef762fcf4ff739b4f47"
+    },
+    {
+      "path": "synthetic-seed-191149/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "460b67fcaec2406720015bc6d951ee9562c4eca975d54633436a38ee025a1dd1"
+    },
+    {
+      "path": "synthetic-seed-191149/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "a1f7740f3e85cf864a11dd4a7b0e71af6757b9f3e80e154082e401a8109c27e9"
+    },
+    {
+      "path": "synthetic-seed-191149/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "105f55d4dc82233cc7f05dbdd85be782043238a65f90ad5cda4d15917676da4a"
+    },
+    {
+      "path": "synthetic-seed-191149/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "07e69ee1e097a6619ef890324db0eff59ee4a87777084cf568abc1106ab3f576"
+    },
+    {
+      "path": "synthetic-seed-191149/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "e7e477b5267bcd25f1def0d7f79ddf00f2ccff802b9c521084e47774d31fccd6"
+    },
+    {
+      "path": "synthetic-seed-191149/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-191149",
+      "split": "test",
+      "tensor_sha256": "bc1ec2eb16e441b1dc7e8f8d3c03c66011fb546c3425ea1f7423205e6384335a"
+    },
+    {
+      "path": "synthetic-seed-295878/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "22d6616de417406d975bd7c3346eaafaf3a983fad5fe338755b68b7dfd4cf98f"
+    },
+    {
+      "path": "synthetic-seed-295878/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "b788c4767901b35255838f1badb9c74e3ca84fa70573f54337037e7a14cc838d"
+    },
+    {
+      "path": "synthetic-seed-295878/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "c58fae1bb07e6ae40bbd32dc2b67d48b12aadd547d0149855d9a22e0435dc55e"
+    },
+    {
+      "path": "synthetic-seed-295878/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "2f48cdbb4834ec763a145c30c6e2da57ddd749f8dcfdb645805438d5226c2165"
+    },
+    {
+      "path": "synthetic-seed-295878/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "d2db62a3c8f60bff443011698fbd0fc05082e489bb6a637935b0e35ddd09bdb3"
+    },
+    {
+      "path": "synthetic-seed-295878/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "ed65260e8a5b0787d4b4e20cab53a9f5359b5cba8babfb332003402986d1e9e9"
+    },
+    {
+      "path": "synthetic-seed-295878/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "53a11a4e14318b72627e54a0493733c2c952db417463b7a1b53b8f895ba15eb6"
+    },
+    {
+      "path": "synthetic-seed-295878/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "d373f790de4d17b8a3dc45a5595ef2b8c82204c358dae14f8b95fcc067c28a19"
+    },
+    {
+      "path": "synthetic-seed-295878/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "bf9a173835a3d0e756685296ee4352cd68c8b4dcbb027d02861440bb3a9711bb"
+    },
+    {
+      "path": "synthetic-seed-295878/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "a289b6cf4c8a0d05096a98156c6500d32c9f0514bfe0bffb59cd8774569b66be"
+    },
+    {
+      "path": "synthetic-seed-295878/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "cdb638bf579fdee01bfe524b8eb93fc42500d8b733276a82fcb7e151e84bffe1"
+    },
+    {
+      "path": "synthetic-seed-295878/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-295878",
+      "split": "train",
+      "tensor_sha256": "6047f981be41be3fbbc74192fe98325a6e7658756c6db34886c8a6ffe78cc1d5"
+    },
+    {
+      "path": "synthetic-seed-400607/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "2a0bb38b7bb40f1185176403b3b1d286d5eb67b20e1575f55b1667f95b12a044"
+    },
+    {
+      "path": "synthetic-seed-400607/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "9b7d77b4649f17a104d4b9b34a9748c2de45181a92b3a716493f6fbc2e4d2ba4"
+    },
+    {
+      "path": "synthetic-seed-400607/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "ed34b5c73125ea7e00a7fc7c8c498621ee966fdb178978ca1841a1a5578fcbb5"
+    },
+    {
+      "path": "synthetic-seed-400607/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "c7d813961c5e796c8e8ad8ba71aa2309a3de519b4f2ab96d312694ba0f7575aa"
+    },
+    {
+      "path": "synthetic-seed-400607/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "026eae7bfff1a2cbedf9203413a7ae544de71400a948cd6f47a03a1ecfd6ea59"
+    },
+    {
+      "path": "synthetic-seed-400607/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "83ab9a2589bddeab0bc5c4093e5a39ac52e23b1fcd8ce6f23c630e1f28ad6331"
+    },
+    {
+      "path": "synthetic-seed-400607/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "edb971de5b46cd477a4f3a6869cc58d4a328c4a7c0ee3ddeae4773af5c086e67"
+    },
+    {
+      "path": "synthetic-seed-400607/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "65218bb69a7ff98cea1cc8acd6d52be2bbfde9acb11f30d7629e56650221410b"
+    },
+    {
+      "path": "synthetic-seed-400607/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "e2d1b149397c19bd767bdf62173cdbe774346919b8510147c274fd8143dfd057"
+    },
+    {
+      "path": "synthetic-seed-400607/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "37e682c5de556341cceea7caf44c5b5763732e6113d5ae1fcb48e9b0d7b5fc87"
+    },
+    {
+      "path": "synthetic-seed-400607/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "bf5d0b637cbdde27bd74dd0eb9dea609e0ddbc684f09d8a98f24b90678e003b1"
+    },
+    {
+      "path": "synthetic-seed-400607/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-400607",
+      "split": "train",
+      "tensor_sha256": "4b9eded529178cbef0748656baa0fd75fd1496d92a10e13a23ce7c2a79d7d120"
+    },
+    {
+      "path": "synthetic-seed-505336/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "741fd85730d5c0ead1bd1f95b1775ff87e5e28594a01364826d70aa6759ddb19"
+    },
+    {
+      "path": "synthetic-seed-505336/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "4a250991822819d8916b0fe97ec140986ee1fd506f8546cb8d62a0c1079ab551"
+    },
+    {
+      "path": "synthetic-seed-505336/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "10452f434dc27220477ff25068722999bbb6fba97bca298117f13f6f525ff12b"
+    },
+    {
+      "path": "synthetic-seed-505336/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "b29413c887052d8eee845a0b6118fe759cb11b9072a6a1ff5bf13ce243bfa336"
+    },
+    {
+      "path": "synthetic-seed-505336/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "0f76e37def5580d63ed252ae0ac2e211018614b605d16deba9c99f8b40c8eeb2"
+    },
+    {
+      "path": "synthetic-seed-505336/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "738f1cf1868a291cade7c0b88e9bd2edc347cae282d768a10f627e7421822b38"
+    },
+    {
+      "path": "synthetic-seed-505336/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "0f6301b11cf22b1e7c7db9cd29fe450d0bba1e1b8c93cdc678e395b554401577"
+    },
+    {
+      "path": "synthetic-seed-505336/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "33726db1418d828816414135485b1d5d40fb7f34645a838dcacfeacfb4092bbe"
+    },
+    {
+      "path": "synthetic-seed-505336/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "779710117c34f62ade52d3f3bff74d4b86ef6820a6406968d0300b4bede4afaf"
+    },
+    {
+      "path": "synthetic-seed-505336/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "334bf9466dcbe22f5fefef6ad1d5eb5ff6132f4b602d5bdcf4c2433e0f880aae"
+    },
+    {
+      "path": "synthetic-seed-505336/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "447e818276dfe71c7abcfdf848600b13b2dfb4375b9cebc1984a4d58714834ee"
+    },
+    {
+      "path": "synthetic-seed-505336/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-505336",
+      "split": "train",
+      "tensor_sha256": "535f5ced12b5b8ea6d183d67050b590f166711c32c3960ec30e1d213625912e9"
+    },
+    {
+      "path": "synthetic-seed-610065/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "4b94311991ce4ba462e73535cd5f26e5843e5029fa36aae5f64ad80fdd79cb96"
+    },
+    {
+      "path": "synthetic-seed-610065/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "5bf1dd5bf506d3885fb43179935da1b9212613f01e57946a4b8658740029c329"
+    },
+    {
+      "path": "synthetic-seed-610065/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "4d2ec7177f4c751134758cd50875fefe158f19739790b7e2a1cad3efb9441a28"
+    },
+    {
+      "path": "synthetic-seed-610065/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "18be6c9dcb164857bbf5682140779c9d54c37219c74aba72578548acb255a4fc"
+    },
+    {
+      "path": "synthetic-seed-610065/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "ab334c27cbf093cd2c202c7b416c4cc73d39c87f5fa91bb794a24f7164d0a99e"
+    },
+    {
+      "path": "synthetic-seed-610065/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "7ea6047560017d8b38e07651a0c56fbe242843df6b92e62c50e9760511b6e5d5"
+    },
+    {
+      "path": "synthetic-seed-610065/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "38489892dc8b7c94198f1fa0698fed685b155838a6a9a4f77cfc21dae69ef21d"
+    },
+    {
+      "path": "synthetic-seed-610065/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "171cbe34ab5fe9dc8ab917056c5c82dfca81afa813e3be4ee1bdbe728105147f"
+    },
+    {
+      "path": "synthetic-seed-610065/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "bb2a9e22bfef02ffcfd2c81ad994c17c3260d45ba7d50f99f36a485aa6e0824a"
+    },
+    {
+      "path": "synthetic-seed-610065/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "a075f7b374b1542c224f5050ca7b95c8e6bfd878bb9da7fc16eed6032cd04b41"
+    },
+    {
+      "path": "synthetic-seed-610065/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "dec8173de014e586bed9a7fe2617c62ae9e101ad5a8ff627ee6c606f5565601e"
+    },
+    {
+      "path": "synthetic-seed-610065/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-610065",
+      "split": "val",
+      "tensor_sha256": "7c1b7e68d83e005dd261c609e914943c14e2981336760db4c8e17e59776be99c"
+    },
+    {
+      "path": "synthetic-seed-714794/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "a7e883bca86172c90f92f4493f37f355604018a6bc26d8e8c7b181a463d371d5"
+    },
+    {
+      "path": "synthetic-seed-714794/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "ad17db7b8147cb0d46c49125990f38c35d10950389907801b549c7633cc289fb"
+    },
+    {
+      "path": "synthetic-seed-714794/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "0fd045a7ba4c4226ac01b002a756dbe74652df008b7a3f601924c7c6565d3a9c"
+    },
+    {
+      "path": "synthetic-seed-714794/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "57139c9f7da1ae75c5edb15ee40f828be64caacaf88d32bfccf86f7166522330"
+    },
+    {
+      "path": "synthetic-seed-714794/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "23a9355614b188aa1b880d237d18f2e4546330182efacd55ece8b34abe8c7829"
+    },
+    {
+      "path": "synthetic-seed-714794/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "fbfe542c1a6dd456112ac79218594717f6a3fedc1495ac1c12f0f9cda70f8752"
+    },
+    {
+      "path": "synthetic-seed-714794/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "f02ab6576abae99c55a88bce8f584f3744787b003e1b788305b12a3eff940fb9"
+    },
+    {
+      "path": "synthetic-seed-714794/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "0cc379f1403bb4d6491b28def5e4382f39ff5eee0a65fccd941535423c0e2536"
+    },
+    {
+      "path": "synthetic-seed-714794/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "a2e0627e5c00896945da049dd923a5796a314715983480173ce64633138d85ca"
+    },
+    {
+      "path": "synthetic-seed-714794/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "296b2fd343ba45ee2184a134c36b816a434944b0627417b51d31e2d16b088f1b"
+    },
+    {
+      "path": "synthetic-seed-714794/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "940275fdd04cd4ff9c4291677f97c58d318d22e95e832a6c7be3fce13e983641"
+    },
+    {
+      "path": "synthetic-seed-714794/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-714794",
+      "split": "train",
+      "tensor_sha256": "cd6992dd9f2aa10e89814a6d3fd32b40caed14e7ee6bc4545e782415bb62e9b0"
+    },
+    {
+      "path": "synthetic-seed-819523/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "d2536188ea180e0669296d6210c31335bd5beacfff930264f1b93bcce2002ab0"
+    },
+    {
+      "path": "synthetic-seed-819523/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "ebf0fe418ffeb0272c25a3e75ca730755422addb1ea3f3e9d69302d39acf5d7d"
+    },
+    {
+      "path": "synthetic-seed-819523/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "520a6b2801c4f9582be6fad7fa9d3211125ac2165531466268b59cae53bfc8dc"
+    },
+    {
+      "path": "synthetic-seed-819523/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "ac7bcde6920f92ca9b6ed2f8926597c2fb6756013631eaac92a7fdf15cc23a3f"
+    },
+    {
+      "path": "synthetic-seed-819523/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "9086f717a5d83b028a88c8a0103e73afe17017e988d825e40719265ee2b8ab10"
+    },
+    {
+      "path": "synthetic-seed-819523/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "5b3bc927b9ca5364f3ae7d067825ded77bc68ca5c959ed00822d775c0eadb06b"
+    },
+    {
+      "path": "synthetic-seed-819523/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "c47c0dfe213137f8b391ad5e94a5d9573b27386a888d1ff48646e973f6985535"
+    },
+    {
+      "path": "synthetic-seed-819523/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "32fa49f2e96fb177e4c2f745e8479f7c18334a4e9e01a51ce46be9714ada79c4"
+    },
+    {
+      "path": "synthetic-seed-819523/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "6315b223bf3e86fd76e0d4178cb3fe3f1e82fb3d12b1576de210d3ce9888e3d5"
+    },
+    {
+      "path": "synthetic-seed-819523/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "8b75f4d4fc7e882022979f97fc1e92e6030aa941c2841f43b8a90db18bda7f52"
+    },
+    {
+      "path": "synthetic-seed-819523/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "d78a0edc5a55739aa13246aa0ec61ec18e2a6ed09cb6e6078198e2cf0c442bba"
+    },
+    {
+      "path": "synthetic-seed-819523/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-819523",
+      "split": "train",
+      "tensor_sha256": "fed652a12d341398ec7dd6042588702b67444d07cfbb262efc5e8583ad2eaf49"
+    },
+    {
+      "path": "synthetic-seed-924252/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "4f78a312e7ce51c7d36540e84e6acd4705529c40db933be98e2fab1e76129c61"
+    },
+    {
+      "path": "synthetic-seed-924252/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "59b47193b0bbbed6062fc242bdea3d076797d8e409b5e5bf2d77700d7487a1d5"
+    },
+    {
+      "path": "synthetic-seed-924252/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "04fb88c37735c8288d8ff3d7b293f6453838b310952f7fffc785e56799b8dacf"
+    },
+    {
+      "path": "synthetic-seed-924252/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "6a1d2fb60694a46053609966a7e4210f0a1bb6904cffe2432f1e8aa2dd94406c"
+    },
+    {
+      "path": "synthetic-seed-924252/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "6999677c279eeff92d2340b3e3a7ec35e3dd22d1d388550e48b8f6d48805af91"
+    },
+    {
+      "path": "synthetic-seed-924252/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "332ea082087d8b6b66f1c49dcb22a1561c5cc52ae478d1c7050dc90ed78c81e5"
+    },
+    {
+      "path": "synthetic-seed-924252/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "afe8885365a05812e1f17782c25a6c32ad194d8a3f1cd193531db99214aeb9e9"
+    },
+    {
+      "path": "synthetic-seed-924252/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "70d557adca9a91538b81b4c94c3afa232ec2cb11ecff74c972e312d9d4907419"
+    },
+    {
+      "path": "synthetic-seed-924252/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "f9404aa9ba577936636e041f990b5786de69c6fd603f7a1c594ecfa1d8b51072"
+    },
+    {
+      "path": "synthetic-seed-924252/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "00896c67c2e580c3c688438cb87ef60761c9afa4d9f73d8b41dd290106525ca7"
+    },
+    {
+      "path": "synthetic-seed-924252/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "7e0ea99c6117b95557b7b38e2992dde82eb236a7e45aca03e3203e57a01d2bbc"
+    },
+    {
+      "path": "synthetic-seed-924252/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-924252",
+      "split": "test",
+      "tensor_sha256": "d9dd563970bdee87d04e0b101e4fe33d2d9c01fa696ed70eafefd60835e9d6d1"
+    },
+    {
+      "path": "synthetic-seed-1028981/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "9ee40e515cc3898335f9a5a76a290b280873502d65125210044f34b8a7cc5f76"
+    },
+    {
+      "path": "synthetic-seed-1028981/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "75dbc1f3a26c912c8a96d596ff563f4c1d78021f019614da9073e8ef908e4e64"
+    },
+    {
+      "path": "synthetic-seed-1028981/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "0c8126bd369e6187cc4b66bae8e018a29ece9e13ce4e388aea69397d3b1b6f1d"
+    },
+    {
+      "path": "synthetic-seed-1028981/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "b35c5b8a187479cc617288316e691d2125565220a3215b53f06990f3af246739"
+    },
+    {
+      "path": "synthetic-seed-1028981/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "e31cf1814578e3ee7f62c5d72d394d1f70711918a48ca3c4cf915c6b2f3c2e1c"
+    },
+    {
+      "path": "synthetic-seed-1028981/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "62e748913eb0f6415127898a7baadb48c61a65bcc6d9ab78140653e1ac239ef8"
+    },
+    {
+      "path": "synthetic-seed-1028981/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "ce79fa73c025b409b4beff0d33abd701c4cfac2e5bcffebece1559410232c6c1"
+    },
+    {
+      "path": "synthetic-seed-1028981/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "27ce6a43db67787bad5eb2a9118449b104bf47c267857f1f9e5a4432287e1921"
+    },
+    {
+      "path": "synthetic-seed-1028981/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "fc9e3e0f447b6540b0b19a3477961e7f7a22d175fbe088ec215ba5a765c67592"
+    },
+    {
+      "path": "synthetic-seed-1028981/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "dd3ad20d9b55eb75de1c42ebce68753a18e815f0ff8d0e9646ea5438d5710ddf"
+    },
+    {
+      "path": "synthetic-seed-1028981/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "bc9e19fec5d85506f5ac5ac85f9ea1a2bdcaa4d66e816347d7fbf17fb261eb03"
+    },
+    {
+      "path": "synthetic-seed-1028981/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1028981",
+      "split": "train",
+      "tensor_sha256": "cb228dddb5b96cff28a0debb9d619db46f95f21c402e757731353580fd99beab"
+    },
+    {
+      "path": "synthetic-seed-1133710/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "50daf1e692a9ee2071f05333badc0a3eb96c6c6ce59b4484916955315997fb5a"
+    },
+    {
+      "path": "synthetic-seed-1133710/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "5e5b5ff9f3282438b7c407f78ab4e717a4222639cb493a4be1d09e72d62dd87c"
+    },
+    {
+      "path": "synthetic-seed-1133710/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "89bf09e41760f4183384e72fdcb589c75868307828c34ab3b9a4a5427520b302"
+    },
+    {
+      "path": "synthetic-seed-1133710/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "0b1256f51818b02a12259044aab4e36f16a97820ed868b3b5298da8d29493137"
+    },
+    {
+      "path": "synthetic-seed-1133710/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "b8d5adee5e63e38affc34a51461937146378e5da02bc62afeb325f3630a4e458"
+    },
+    {
+      "path": "synthetic-seed-1133710/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "da85ef8bf361876327f9ec87fdb360c3054d3ebd853c12bd4021622ef283f007"
+    },
+    {
+      "path": "synthetic-seed-1133710/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "9ebe4773d323d174c0b0c79710defbe18f300090840e9a1a8d402ff12fa27664"
+    },
+    {
+      "path": "synthetic-seed-1133710/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "f10330924c822fa5a7efea1eb2ccab1595862f2a76924085431fc15a546783a3"
+    },
+    {
+      "path": "synthetic-seed-1133710/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "f3fc844c874ae4229fb9a424aa3942c220d0ed07409716da25823b0f5a825afe"
+    },
+    {
+      "path": "synthetic-seed-1133710/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "1848ca9b34204c5c7603f510c99169c7902477cc9bb5ff3de6b0dd22bd88f187"
+    },
+    {
+      "path": "synthetic-seed-1133710/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "056a3c4aba6da0de6f11b5b68f5933e4a597f2a76375e7f486aa00fe8160f8c5"
+    },
+    {
+      "path": "synthetic-seed-1133710/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1133710",
+      "split": "train",
+      "tensor_sha256": "2517963576fdf1501ae89ce3c6c323954ce7343dca381c36a7e2356cb147ea8d"
+    },
+    {
+      "path": "synthetic-seed-1238439/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "8c40f9fbe6cfc7257ee55e4c281195548b3ce05206474967fa1700afd418c2f3"
+    },
+    {
+      "path": "synthetic-seed-1238439/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "4ca23c5a7ede1504b3bf3b844bdb26c4387cc534bb65cafa6dce6e9e05129b64"
+    },
+    {
+      "path": "synthetic-seed-1238439/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "69e2ef2cfc5df608756b5c8add1e613cd508526e6caa9df803566d20ca82b57b"
+    },
+    {
+      "path": "synthetic-seed-1238439/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "258f0a1696f620ce1c0fb2fecc5498b6a3cb8d6f76776858426936bba81f252d"
+    },
+    {
+      "path": "synthetic-seed-1238439/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "c3a3ad497101f6e9e5c15ae597f70a4840c9e1839cd0663a8db9aaf8bde96d86"
+    },
+    {
+      "path": "synthetic-seed-1238439/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "078ac11882f0ab773f9e34ddb8477a89b3d72b8e4381b5f4723b99193e8ac255"
+    },
+    {
+      "path": "synthetic-seed-1238439/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "8918a5ba0bf0ff4cd6f84197c666142798944974ea1f740871933c0f56bbca62"
+    },
+    {
+      "path": "synthetic-seed-1238439/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "f9f7a443d56feb8ae2dfa26d3b04abeea35fa0c2e9bef702f02e050f3443714a"
+    },
+    {
+      "path": "synthetic-seed-1238439/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "1504459b2d6330c7fa3153aa9c279d413e34bec9b29a522bba59fd240379d3db"
+    },
+    {
+      "path": "synthetic-seed-1238439/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "b062aa64a237f41bf227534ff86650c6772b4094e3c3638efca78e189fa66613"
+    },
+    {
+      "path": "synthetic-seed-1238439/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "e78732efeeb8060308e8799682f13ced045d234fa79526f6ce9a21531dac422c"
+    },
+    {
+      "path": "synthetic-seed-1238439/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1238439",
+      "split": "train",
+      "tensor_sha256": "a49589df63bdd4f8fe874052d62f0636911776f6d0e51ad4e4da4b83ec79edd9"
+    },
+    {
+      "path": "synthetic-seed-1343168/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "07e6c7db893e31eea28dfd3a4cf49bbebe11b22dabbfa4535f867f33bd241fd7"
+    },
+    {
+      "path": "synthetic-seed-1343168/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "d3386a24c289adc68594f6dc02daf5337b7a5719b320a243093b51d923a0c68b"
+    },
+    {
+      "path": "synthetic-seed-1343168/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "083e663b55a54b2f54c14f8074d43a4971e772f01aa96aebfe98b4254c171f66"
+    },
+    {
+      "path": "synthetic-seed-1343168/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "a834c88ec480a2d8794a122200cb4db0bc8ffe0fb6f348ae1119626c574216ba"
+    },
+    {
+      "path": "synthetic-seed-1343168/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "957e720771fdd9fd58b1f70d7004a9b5b3b421aacbfe4b51ebb8050d6fe696ef"
+    },
+    {
+      "path": "synthetic-seed-1343168/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "3b2bb865d075b1f5918a80b6c68665f6c0494264c5bd47e0fcc02d08a83985bd"
+    },
+    {
+      "path": "synthetic-seed-1343168/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "3e57d3e3de5b35acbec9ae1fab5bed7c52fc00f27ca5ffc428dfdb8ff10c4c73"
+    },
+    {
+      "path": "synthetic-seed-1343168/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "75a285b3e3fe08fa795be25bcb04fa78765d4cfdf24664dad9e8b6cfa7455c20"
+    },
+    {
+      "path": "synthetic-seed-1343168/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "f17b45e5fc3a8f0c1475b6be1a93bfd07a45b72cc979209442d0a8df738970ea"
+    },
+    {
+      "path": "synthetic-seed-1343168/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "5ae2eff17b759301c72aa8e187465a428c486d9757f2095936e97ca440097ad3"
+    },
+    {
+      "path": "synthetic-seed-1343168/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "6c6b6762739eff2fde440ff4c92226916d487850807049ee00a521980d31889d"
+    },
+    {
+      "path": "synthetic-seed-1343168/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1343168",
+      "split": "train",
+      "tensor_sha256": "511016204b8ef20dd9dcd0beb5cf2ae6bad6984452f6bfaa7a639c636b9882dd"
+    },
+    {
+      "path": "synthetic-seed-1447897/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "651aae83b2d519bc54cefcbb0910109c88d2e44efd633deeda8f1a393a043082"
+    },
+    {
+      "path": "synthetic-seed-1447897/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "6dd26514f2f3dc0c2da01cad949e4bb240e0e930366a78b20dbca88040ccbb0f"
+    },
+    {
+      "path": "synthetic-seed-1447897/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "0d3a6e1b62515764c813706b76448548ba0a660bb787b5adaeb596ce3b97e196"
+    },
+    {
+      "path": "synthetic-seed-1447897/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "044d40f8032a2bb4198b9a91059ab41275a71e7531057d966bb82ed54ef97eba"
+    },
+    {
+      "path": "synthetic-seed-1447897/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "f1cfb4a3d4cf529e9d954365b14225960b1ceb5954af667959249da98b21e975"
+    },
+    {
+      "path": "synthetic-seed-1447897/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "f6a25f1205d0e8f958815d50f60b4363c082947f0509e85c28eca4b251d20896"
+    },
+    {
+      "path": "synthetic-seed-1447897/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "8315680ceac21c0ddf829f962a9da5fe4a9ed2240c6a0de8c0c12875eb2af576"
+    },
+    {
+      "path": "synthetic-seed-1447897/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "ec739f12100e0f6bf7836235bb9f9ccf818f9ced10526e6124737bd436b73501"
+    },
+    {
+      "path": "synthetic-seed-1447897/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "dbf723538e556c3e3e6bd7a787d17061a1f4a082986e9e82489191c35f0349df"
+    },
+    {
+      "path": "synthetic-seed-1447897/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "aa7500d03dff8c010bacc8166edfa90c2d163713f05b594904deee2fd6394ab1"
+    },
+    {
+      "path": "synthetic-seed-1447897/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "b7a698edb6ebedb38d7c88436f4eafa834e3bde98aa88689be62dfe2a0eff426"
+    },
+    {
+      "path": "synthetic-seed-1447897/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1447897",
+      "split": "train",
+      "tensor_sha256": "81c0bba0cf419df45f84817d7ab00590f3a341c3d575c2332e022caa232a530b"
+    },
+    {
+      "path": "synthetic-seed-1552626/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "f258c0564721d2bf3cea17ebc65c071d1dc409755ee7438eeda64e90d4ddfbd1"
+    },
+    {
+      "path": "synthetic-seed-1552626/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "df4c3978965180132872cdda22912ddce96b9f03b959e4e34a7d3567500d8f5e"
+    },
+    {
+      "path": "synthetic-seed-1552626/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "a05cc59e3016b666c581fa48216eecdc1fae716fbed5d44f719b78eda762f4a3"
+    },
+    {
+      "path": "synthetic-seed-1552626/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "c0c6b4372dc4c7c55a4e74b954bb3cc56aa210aa03cff6fb613bb01c0366fbe4"
+    },
+    {
+      "path": "synthetic-seed-1552626/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "af7cd9367d6640a2e062d4dc0d60186298e2abe92835da1287713893cea94e97"
+    },
+    {
+      "path": "synthetic-seed-1552626/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "a73d81e079b1f0214eb3579dc7e456a875b53c706583da7b793c0634f9de45ee"
+    },
+    {
+      "path": "synthetic-seed-1552626/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "d387ee7d63c86d820ca393ad659faa9386240d3954017570ad9a81d8780e5b4b"
+    },
+    {
+      "path": "synthetic-seed-1552626/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "bed253102452ddd83a00071bdc562b60165c2c64cb5dc3a37d288d9e6cd50eba"
+    },
+    {
+      "path": "synthetic-seed-1552626/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "40165b470d9bba26c3bc71db2c1a00ca7530bb571b91ff150c05e27771ea177e"
+    },
+    {
+      "path": "synthetic-seed-1552626/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "ed58cc0506571204a3619154549ad7b6b65aa91100cab9758362bc541643a5fb"
+    },
+    {
+      "path": "synthetic-seed-1552626/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "a69b88d6f5f009069eba0a72f89b29e222ffffd43e412a34c17a6ff92e7f2d3a"
+    },
+    {
+      "path": "synthetic-seed-1552626/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1552626",
+      "split": "train",
+      "tensor_sha256": "dde6df35ecda9ca2695448616e06026d299f0974a7234d67eeae4047f8a2466b"
+    },
+    {
+      "path": "synthetic-seed-1657355/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "227c5064cf5c941b792c72157de46393c93d051bb8d54b75b4b3c42f2a3e2e28"
+    },
+    {
+      "path": "synthetic-seed-1657355/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "50b1d72beccfc51f287929ef2da7e6da660368b0987e678a2b5f8f961f0739a0"
+    },
+    {
+      "path": "synthetic-seed-1657355/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "9217f48316070a9c03cbe0ac54032a11caefbf367a908b04f166b26b023d75a4"
+    },
+    {
+      "path": "synthetic-seed-1657355/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "10f27f9293d6d22fc76eb85d011cdcb3902754b3421b064514e24fb6353cde3a"
+    },
+    {
+      "path": "synthetic-seed-1657355/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "bde4a8d53422a7ed2fd648c6c502c94cfe136311f923fd1d8dc21c0407ce91c3"
+    },
+    {
+      "path": "synthetic-seed-1657355/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "bf7d682812282a473d3ad361d41bc9adec96d7ec325b3e12abf61b2f77a36908"
+    },
+    {
+      "path": "synthetic-seed-1657355/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "624ea3f00b922114b520820208decc4002c2fc4796fc796fb6446a2a2f482dfe"
+    },
+    {
+      "path": "synthetic-seed-1657355/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "44fd4552341fa79f58f9a4094d8f3914ddd2523290f0262887eef44b97344745"
+    },
+    {
+      "path": "synthetic-seed-1657355/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "63060cb4e650f5eaea5592d4d0c7d627ed8fbf897730fec2740f733f80d92ed4"
+    },
+    {
+      "path": "synthetic-seed-1657355/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "cd5ed111827a1ace0375ef072b5c1ee104eb47d0edea4b8fea9e26108a8fe61a"
+    },
+    {
+      "path": "synthetic-seed-1657355/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "23d07b21fffd3e33f9cb6edd9e4b8d46b079c024111497ba896b0516835a7d0f"
+    },
+    {
+      "path": "synthetic-seed-1657355/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1657355",
+      "split": "train",
+      "tensor_sha256": "ba6491f1d8808361b515738d7f7ff5381229f4974f0260bcb8ebbdd1351d8fee"
+    },
+    {
+      "path": "synthetic-seed-1762084/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "4b8e430001ca8cc181ad24421de214f3515690e763afe9c8321a7fc4ec27f177"
+    },
+    {
+      "path": "synthetic-seed-1762084/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "cdc7676ceeb67082ab6687bd3e64caaa078dcb5bc0eb01af3f27fa86ac727aee"
+    },
+    {
+      "path": "synthetic-seed-1762084/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "bc6fb8ab2cc3dabb0289859a8fb91d71cbb9c2ae83197e7ca97cd862911046b1"
+    },
+    {
+      "path": "synthetic-seed-1762084/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "058246b62beb8cf1da57cfd78c2302f09f6d0e1451619d544afae63354cf02ca"
+    },
+    {
+      "path": "synthetic-seed-1762084/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "541e54b2596dca1d80a5d747509655280f33e397b0b90b10076601107bdcccf0"
+    },
+    {
+      "path": "synthetic-seed-1762084/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "92009eff4fd0b829508b6dd2d304afae728daa0625be5b05c8128ffa93de026a"
+    },
+    {
+      "path": "synthetic-seed-1762084/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "96f6a05b8f862147963df0691a9b46e66e5b58a7e03a3dc943775ce644514293"
+    },
+    {
+      "path": "synthetic-seed-1762084/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "1166fe8519d78e16cc385d7949f2b77e61ac7215e959a38c69579b154477c080"
+    },
+    {
+      "path": "synthetic-seed-1762084/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "079501bda54a342fe83e88d65221721b0775e3d10eae4ee6fd694c176b3fe659"
+    },
+    {
+      "path": "synthetic-seed-1762084/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "28a04f18bef0443d5c2060e6fd8256244ea036535262886f50eeadd933719025"
+    },
+    {
+      "path": "synthetic-seed-1762084/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "49289b609d31e8625b0baae88edebe2512b9486c52767f06542c380ea59824e3"
+    },
+    {
+      "path": "synthetic-seed-1762084/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1762084",
+      "split": "train",
+      "tensor_sha256": "0887d39f436bf488fc0438e74152cbc718d1d8ebc30e1616face25694fb8ace8"
+    },
+    {
+      "path": "synthetic-seed-1866813/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "55150a5ecdad152e5d197d48641ee0086e31bd5b91d01a316419646df206d8cb"
+    },
+    {
+      "path": "synthetic-seed-1866813/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "1d66b115d5841bc2ae7cc4b5beb1253d9304c214621d56a55e9e8e95639c4250"
+    },
+    {
+      "path": "synthetic-seed-1866813/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "230f369cf3a8d37066eecb0abd0c9068020d656359955559537d29cf33e58d88"
+    },
+    {
+      "path": "synthetic-seed-1866813/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "a234b756073deef9698cb3a09b4d0637a29dd8a3f3fcb78f3eef13fd13a7f66b"
+    },
+    {
+      "path": "synthetic-seed-1866813/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "dca1cb9a62a7417e91699fe437db12fa204c204d582632bc2fb7e89e0ee41d32"
+    },
+    {
+      "path": "synthetic-seed-1866813/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "01780031ecea99b37ddcd3d336b0e297263da42596133c3d13f09497e6eb449c"
+    },
+    {
+      "path": "synthetic-seed-1866813/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "c1ebf2af04d3db3901bcb8632cd667e070cb3ed8942d00da9e094add34cff224"
+    },
+    {
+      "path": "synthetic-seed-1866813/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "54df62e2440250f89c59dc62cdae82e659e0e043f38a1ca77016c244193637cf"
+    },
+    {
+      "path": "synthetic-seed-1866813/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "f6d7b7375a20d988450476c4e863ab9e875295b84197c239cd119ed31e5620b2"
+    },
+    {
+      "path": "synthetic-seed-1866813/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "5471d9b019407f176e5b38d22f1235ffea51506a85d40a1b9add47dbc6e463dd"
+    },
+    {
+      "path": "synthetic-seed-1866813/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "49f9abdc52b105f2f85ba4ce09f9587eaf401302d6670d4b8e0094f2b4a59fd5"
+    },
+    {
+      "path": "synthetic-seed-1866813/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1866813",
+      "split": "train",
+      "tensor_sha256": "6e31ab1ad3df99985ae5f5a23625e594a3f235253f83dc25f8414d978ab59301"
+    },
+    {
+      "path": "synthetic-seed-1971542/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "66211530dfe5d0349f600e78ab1342aafdec7260b9441c27c6b4d920707b440b"
+    },
+    {
+      "path": "synthetic-seed-1971542/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "665a1e5230ec998c16d0ca75585e79d975ccaef00925cf648ba5f139e032fdae"
+    },
+    {
+      "path": "synthetic-seed-1971542/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "f6d370c8899718e5eb6016636e893f24861102bf180bc74fbd151b2660e23494"
+    },
+    {
+      "path": "synthetic-seed-1971542/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "9e1aba6b628fed6a8c31cab6c9893b894316441d9c88ecfe25248e29a559bee0"
+    },
+    {
+      "path": "synthetic-seed-1971542/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "d1aa00a13bd283858139ca35239d2250703de20037abc17a7ef3270f3712b2e5"
+    },
+    {
+      "path": "synthetic-seed-1971542/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "09e2ab3c820e72a916e02d696dcd852046291e496e33c5db8760a47dff50f31c"
+    },
+    {
+      "path": "synthetic-seed-1971542/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "b3e1ac8495534f07427a03d83a2dd324a3d27ced2d63c24f6e6a1f65e0567853"
+    },
+    {
+      "path": "synthetic-seed-1971542/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "6154152acec75434de376dae4a7f059de04ec2468aea2dd6e925ed43ec423f23"
+    },
+    {
+      "path": "synthetic-seed-1971542/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "41929209837fd42124275c7f6ee3ae7b74251ca3417994fe18e929e90b60274d"
+    },
+    {
+      "path": "synthetic-seed-1971542/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "5bacc7cb86f40bbf867fd4faad1c1151776cfbdaa399f08c6deb70cd496371a3"
+    },
+    {
+      "path": "synthetic-seed-1971542/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "615dddba95245a6330a251952d0db224d5c70b6460ed854193d4e2b32d84b754"
+    },
+    {
+      "path": "synthetic-seed-1971542/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-1971542",
+      "split": "val",
+      "tensor_sha256": "2dcaaee371c658f024c62bd6c8f9e2c5d1d7d5545e4a745c5598c2ee54cf35e5"
+    },
+    {
+      "path": "synthetic-seed-2076271/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "049dfc0250a457adcaf6ec59a78bcd7b1015158b294728748ebc0fbe7e0d990a"
+    },
+    {
+      "path": "synthetic-seed-2076271/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "dde73aeaff2835220eb0b11e33d2fcdb3c67d785942627e2d5b8e4f6386095da"
+    },
+    {
+      "path": "synthetic-seed-2076271/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "ecca27eb854cf577b0af4aeac95cf0fa064843b89a1076269fa18a76bfbd1040"
+    },
+    {
+      "path": "synthetic-seed-2076271/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "d4820e062dd3dfef78a11f286746575e9578867b0f1b3ca753d23cf0cbfad2bb"
+    },
+    {
+      "path": "synthetic-seed-2076271/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "91bd205c5c027c046a411e6b7ed4cd28f9799d4e85456b8bc66cf6fc1fc77a6a"
+    },
+    {
+      "path": "synthetic-seed-2076271/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "09c328cd5dc57d49a5861d6d59cb13c86baf7b1b230028e06ae230df7c5ed9ab"
+    },
+    {
+      "path": "synthetic-seed-2076271/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "bda171cefc7e5aab76c082f1e819357cac980f45b20ea914b27551463f9258d5"
+    },
+    {
+      "path": "synthetic-seed-2076271/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "639a99e3aad6588bf41d5c6d0883e99bc3d7243ce5a3c43683bc5833a1dca050"
+    },
+    {
+      "path": "synthetic-seed-2076271/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "d0324d8769539a69524a83d995e8f2282d7e8cdce9ffa3a20080d4b6cda9d128"
+    },
+    {
+      "path": "synthetic-seed-2076271/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "7267634c3418fce79a20a8ff28180fd5f0cc5da9dada62948389056764227168"
+    },
+    {
+      "path": "synthetic-seed-2076271/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "901315dc82dbb8bffcac61392ef32cbe928154c916a353db34e21d6c143cab93"
+    },
+    {
+      "path": "synthetic-seed-2076271/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2076271",
+      "split": "train",
+      "tensor_sha256": "c055cf3ced4e9e04c69facc9b7681d8d90e8fbe5c080f2b05ce766d9eeb0471e"
+    },
+    {
+      "path": "synthetic-seed-2181000/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "7d71f33626219e5f92671cf15bb9147124b964f7ba0635520b5c365b978a4cae"
+    },
+    {
+      "path": "synthetic-seed-2181000/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "19c4b35672c06e297236c1486e9cfce17a584faac97c0472decca5015784c64b"
+    },
+    {
+      "path": "synthetic-seed-2181000/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "ea226f8d42bb47616ac887fcb57b1ce59fe5ac6055b6b705f3767be1a91d25c8"
+    },
+    {
+      "path": "synthetic-seed-2181000/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "289d13c25b9fe4920215321c76b8084a7958975b63f4d7b3da83f35a754b7ce4"
+    },
+    {
+      "path": "synthetic-seed-2181000/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "7db6f08240f1eca198f654b91d4b8dab637072cec07d17c360784e2166414ca3"
+    },
+    {
+      "path": "synthetic-seed-2181000/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "5c09b5e622ae6293389a1d2a6ffae511875dcf38c169f767a03f5907763c5484"
+    },
+    {
+      "path": "synthetic-seed-2181000/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "c845641f2279d6fe26fad9d5a5a2750f4ddcfc830d2220ac392b7cc8adc72a15"
+    },
+    {
+      "path": "synthetic-seed-2181000/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "080afd30c5e2d1645fece490332c4390a071d39e5415b0c7f4adbc17b2d21022"
+    },
+    {
+      "path": "synthetic-seed-2181000/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "a26259b4a309eb273b9b933ab0b543c5fc0ef69ed26b4dfbff4138c621485a00"
+    },
+    {
+      "path": "synthetic-seed-2181000/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "ca6b311325d3be64df952cbb3ef91b0c56581418fa93a6d9c7c14684206aca4f"
+    },
+    {
+      "path": "synthetic-seed-2181000/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "cb551d4861a5d7335e9b5d67c584002469834a2488b68cad0e18958ffabc04c6"
+    },
+    {
+      "path": "synthetic-seed-2181000/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2181000",
+      "split": "val",
+      "tensor_sha256": "33ba43065ec05524d8630a188499fe9df756774b7adba5622c2b459edc06b685"
+    },
+    {
+      "path": "synthetic-seed-2285729/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "d5b66755fb051789df516443be090ad6879fa1b0fd3a02c2fe6b4cd10ca3e0ba"
+    },
+    {
+      "path": "synthetic-seed-2285729/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "bdd4b0ce9a6bf9ed6e4874a5c9b2833659efc9152e124cd1856f89f4e7a836a7"
+    },
+    {
+      "path": "synthetic-seed-2285729/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "bd38beba48791752389d0824be937b4f1789db1617a2d0857d6c01e0ea64c999"
+    },
+    {
+      "path": "synthetic-seed-2285729/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "b9e3ad622242b1e352714eb67d5c1e1f3d6cdf354804b7a7d8d2251f53147262"
+    },
+    {
+      "path": "synthetic-seed-2285729/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "b0cb9f10fba05682187182a095c8cff966acdf1f6eae9f3352d1fccf881f2698"
+    },
+    {
+      "path": "synthetic-seed-2285729/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "03c934b270089fd2ae42152bf900099a7e3640a7c569ac2e98f37fdc254d8e62"
+    },
+    {
+      "path": "synthetic-seed-2285729/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "eea9a9bdc7d6e44dd0ababcb9d008341e1201abd840d46823fbdf0be512146b0"
+    },
+    {
+      "path": "synthetic-seed-2285729/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "f4d96ed15912e6738637f062cf27779fd9bd1adc227394418c687a3936f1706d"
+    },
+    {
+      "path": "synthetic-seed-2285729/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "abc516d4fa67093ad0689e47e943a19313cf6758a684b31944e42173b45691e3"
+    },
+    {
+      "path": "synthetic-seed-2285729/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "c07b05be3ba4a060190bc34c7b8834f31632c8161e03077d907924cdd316cf1d"
+    },
+    {
+      "path": "synthetic-seed-2285729/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "629ebab9e3c49de60241022f8ccad9f04455837f95d706caedaa4e7cf3065d27"
+    },
+    {
+      "path": "synthetic-seed-2285729/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2285729",
+      "split": "train",
+      "tensor_sha256": "021379a13561f5098c1cadeefa3b7c9a0061b13f43332f4cf5e69052d4444369"
+    },
+    {
+      "path": "synthetic-seed-2390458/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "42a0cf0961ee0d8c7e4bb58a8b1df4843c07f3b4f5052f7b04f5a53c23c90a06"
+    },
+    {
+      "path": "synthetic-seed-2390458/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "648df7022b5d8ffe8907c521ed10c5373ba46ce70a1653b18ace8f7746b4b10a"
+    },
+    {
+      "path": "synthetic-seed-2390458/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "7b2fd01cdfd3bcae526ad9420e5424127b4ade98ef96136aa9f3b087da57319d"
+    },
+    {
+      "path": "synthetic-seed-2390458/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "61aafb15ef0b32eeb7c69679046778c422aa99f01026e0650d55f8c1fa29d1aa"
+    },
+    {
+      "path": "synthetic-seed-2390458/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "2624af1f3fe4cd06fd117286beca455dd58261b88b53e3ce917d63e97de9e94f"
+    },
+    {
+      "path": "synthetic-seed-2390458/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "908a25fce566474de294ea9632f400a31e368391a9f23fbe61b0310e51241cd9"
+    },
+    {
+      "path": "synthetic-seed-2390458/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "370a006a4306695a67359596eb2aaee1dd82e1ef611434329903982513889c6a"
+    },
+    {
+      "path": "synthetic-seed-2390458/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "97db55b7719c716f0f1025f44d56104b4e91d2a223e8d0599c54e0a5023b2bb4"
+    },
+    {
+      "path": "synthetic-seed-2390458/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "cd50eb3a31a1bfd5e7bbabe3501129009f2da124c7b2f000d34f05a51b278848"
+    },
+    {
+      "path": "synthetic-seed-2390458/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "2ca54245566b4f3bacd3103e0f2d88e93184d51a7c58fd4f0a170bdafd48a23f"
+    },
+    {
+      "path": "synthetic-seed-2390458/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "dad122f354f9c1a0cae1bbbbbf743fd66727360c67c5e60b76fce0531d1d7e88"
+    },
+    {
+      "path": "synthetic-seed-2390458/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2390458",
+      "split": "train",
+      "tensor_sha256": "39ac6c46984a8caef26c9850e07d559f52c186dcffe6ee3a0e5c1709da64f658"
+    },
+    {
+      "path": "synthetic-seed-2495187/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "4be332c8c3471ec2f35ba0227fef3e0302c18b2b5a542eae969533d3e94927ff"
+    },
+    {
+      "path": "synthetic-seed-2495187/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "2deac3f87f771f2e0231cf8fbb56c51d8f00161decfa85f09bc4cfaeeaadf1af"
+    },
+    {
+      "path": "synthetic-seed-2495187/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "31b391c74d4fed9fef591191362ffc67495828dd8ad1ae18f88e880c9b4a2e99"
+    },
+    {
+      "path": "synthetic-seed-2495187/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "89175690c5fb2af13faed37ff16f600dcaf3f149411430b79c7a179225ccb444"
+    },
+    {
+      "path": "synthetic-seed-2495187/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "500207e643feddd3efb369c5551f19a612f0da09a1576c0b992618d621dbef33"
+    },
+    {
+      "path": "synthetic-seed-2495187/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "aa77d6c7246d4c1237fdc971bbe42e63b054071c7ed3d3197fed32aeb2db3109"
+    },
+    {
+      "path": "synthetic-seed-2495187/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "83ae0c841271f6d3bd0cbf302f8e672917a4c69e524b0b1d725d44b0033d3b7e"
+    },
+    {
+      "path": "synthetic-seed-2495187/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "c7b72c70eae4f7ba3d9034f99e4576f80e937a8693c3619695e289b520f47447"
+    },
+    {
+      "path": "synthetic-seed-2495187/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "040097012942aafbb20abe467dcb8ce02b543797f129dfa25054faaf78d5d8ab"
+    },
+    {
+      "path": "synthetic-seed-2495187/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "be6dd4ec04f332dafc4a9bfb1022f1902b1f15f05f2c611ac309d0ff69a36dde"
+    },
+    {
+      "path": "synthetic-seed-2495187/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "3a8e4308c94cb59739182968642fed37495c566c72e0c829aabcfab2937423c3"
+    },
+    {
+      "path": "synthetic-seed-2495187/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2495187",
+      "split": "train",
+      "tensor_sha256": "50297ba7f22559371952656c875b83998e14ea7de56a605819de41e0011c91b9"
+    },
+    {
+      "path": "synthetic-seed-2599916/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "61d0d14c0c60d09b6e58166f83122f2b5869547f8c057885f830fbaff5e5b8c1"
+    },
+    {
+      "path": "synthetic-seed-2599916/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "4b5467232a9ec8076606d73b153837aabfc65f2c3542292df0615cad1fcf1502"
+    },
+    {
+      "path": "synthetic-seed-2599916/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "6b6b8fc45c4e5cacf5131e555afec1fefa5273b8e912a2e852b3408519c46339"
+    },
+    {
+      "path": "synthetic-seed-2599916/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "e943521e45aeedd035871b2a007de8ae2b9d06626abea5eba70d0c2619481be4"
+    },
+    {
+      "path": "synthetic-seed-2599916/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "d07255bee6b292c51dc9a2af7e88b1e940711bafced62c14d45a8a6498b527ff"
+    },
+    {
+      "path": "synthetic-seed-2599916/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "9531da5ccdea09961fd6124fe863413aaaae481bef58c2b987aaddc9411616ed"
+    },
+    {
+      "path": "synthetic-seed-2599916/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "c85538ebe0d6a1d2fc1e76bba1c9a32d4254958f1c2f1a559351b34309b80b53"
+    },
+    {
+      "path": "synthetic-seed-2599916/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "273eff6ceea04dcfddaaed52f27c3d328131c40a6cc4e05e3f8c4e3744bf260b"
+    },
+    {
+      "path": "synthetic-seed-2599916/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "e3e36872247049210f70db55013e4b2484eaf0fdc4bc8b327a104299b6fa9301"
+    },
+    {
+      "path": "synthetic-seed-2599916/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "9aa5a2aad510a7501698fe82cba2c9c6a644554e4fd0075883113156dc3572f9"
+    },
+    {
+      "path": "synthetic-seed-2599916/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "dae9ad5aaff519f689dd362176cc14a8f9b053ac4c8984cbbe53cd3bb2d95c51"
+    },
+    {
+      "path": "synthetic-seed-2599916/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2599916",
+      "split": "train",
+      "tensor_sha256": "d86cc81491d0dba429fdf45f7015bd7eb72f1a36c03192e1169f9941e7066c15"
+    },
+    {
+      "path": "synthetic-seed-2704645/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "b1ecd186f7ffbef41fe9748a4da0a0a2f81778616f56407a51363d90f22b1e45"
+    },
+    {
+      "path": "synthetic-seed-2704645/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "cdf624500f056e91422feb8fdd52ed9ec96fb120d2b9a057b30708a17f43762e"
+    },
+    {
+      "path": "synthetic-seed-2704645/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "c78cc1cb46000f60123a6d8a1597c51f7f60f5d1a5ad07d9ec00bab88202bfdc"
+    },
+    {
+      "path": "synthetic-seed-2704645/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "72408057a18084affcb12a601af88637b910099f74c46eefaa601b4c19559a29"
+    },
+    {
+      "path": "synthetic-seed-2704645/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "c486e5c55253a1cade67a83afc6376e8c7eba0fdac0f16a84e518ee4d43ab279"
+    },
+    {
+      "path": "synthetic-seed-2704645/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "513b9960a64dc3be8b7b74068accbc426592484a753fff6af97ae1a3dca54974"
+    },
+    {
+      "path": "synthetic-seed-2704645/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "f5a6ba941d68659d16909510883b3fe941c99150fc8840c0373fc1ee29e54fc8"
+    },
+    {
+      "path": "synthetic-seed-2704645/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "3964c5814d2f566a1a76adc951bc1e7d59daa2c081277d7eea5169af8e5c9dff"
+    },
+    {
+      "path": "synthetic-seed-2704645/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "10eb0295cbd59e764aa039343e81f182798855150625976e3a258d53a5d1e08f"
+    },
+    {
+      "path": "synthetic-seed-2704645/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "5c8fe6107b9ef9c1ffd1f01aa13c7e3e0b7dcce964fa91232edfd54d14a4b8a0"
+    },
+    {
+      "path": "synthetic-seed-2704645/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "e79a82794a2f2b479b18c27c72cc7712c15ddc7bf0e2f0d3ea91886e6be409ce"
+    },
+    {
+      "path": "synthetic-seed-2704645/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2704645",
+      "split": "train",
+      "tensor_sha256": "2c972886b92cf12f1a1d4ef6ae2798ef017c726bfb19a0bd8c4b95ad7868b1c5"
+    },
+    {
+      "path": "synthetic-seed-2809374/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "9489d5837c1b5edf850a2ba6591259cece31bc56b3587971d043346070a32a88"
+    },
+    {
+      "path": "synthetic-seed-2809374/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "62df8e98304d8f4c8b70e45ae0127700101e9965bffd176622979cd0fc1a952d"
+    },
+    {
+      "path": "synthetic-seed-2809374/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "3cd461045e68d05ef502217474434991898eb91c80c126be2365ea118834ee91"
+    },
+    {
+      "path": "synthetic-seed-2809374/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "4253172c8521462e83cd5e14fcf39e7b34096e5b884d36dcdcd258d5ed7c545f"
+    },
+    {
+      "path": "synthetic-seed-2809374/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "42b6f6cbf25160963b55ca26910465805d2a7fae5256b8868ace29d59f08de58"
+    },
+    {
+      "path": "synthetic-seed-2809374/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "79583491bc43ee0c081bbe799a3e094e0fcd73ec5cfe431ff6f6cc1a1975b8ab"
+    },
+    {
+      "path": "synthetic-seed-2809374/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "de5a33837cfc836bc6cb258451c652ac29f57c39edd0fd13aa26bd18db000805"
+    },
+    {
+      "path": "synthetic-seed-2809374/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "2b572aba540b3d61e1c4bd4ce8cf5854c2de52cb093a28c7364e8a2de73ff031"
+    },
+    {
+      "path": "synthetic-seed-2809374/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "d4587768d6f08a033b98ec5130f91322e3975a1f09515e96a11ef9a96acbbfb7"
+    },
+    {
+      "path": "synthetic-seed-2809374/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "8d254811d2f68112cc3cb8d4a7ea9a78f5ea6e64cef685757f1a617278f9f0a6"
+    },
+    {
+      "path": "synthetic-seed-2809374/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "c5b543b2d7db68f40c5134c82f6592b034e6bcd147c2163ab91ae19f580ef7ac"
+    },
+    {
+      "path": "synthetic-seed-2809374/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2809374",
+      "split": "train",
+      "tensor_sha256": "aa3780357fb54c70f1dc9e089163e0169ec6c6efeddcb63e64958e0cc5bcee72"
+    },
+    {
+      "path": "synthetic-seed-2914103/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "05fded06856275f325307b227440b4108e0c2bb67d91932617ecf517664b7e6e"
+    },
+    {
+      "path": "synthetic-seed-2914103/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "bdd32bfa3c904591154996507bf0609e8f52ac761521ec994833b12afc349951"
+    },
+    {
+      "path": "synthetic-seed-2914103/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "cd24a46dae55d7b593d0de7d6cd40767151ce534813b925e289983e146956ec4"
+    },
+    {
+      "path": "synthetic-seed-2914103/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "be2dbc965372fba88d73db6e74c813084646906e9e2b8763b3c1c76c0b2067ca"
+    },
+    {
+      "path": "synthetic-seed-2914103/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "2e28a24c6ddcc8cef19d7195de2911b35ec6c7a251dfa801f6fe8808eceb936c"
+    },
+    {
+      "path": "synthetic-seed-2914103/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "b2acba11a1b49b4d8640e3ee30d0c07277cd460908275ea43f2ddb6d04e35772"
+    },
+    {
+      "path": "synthetic-seed-2914103/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "cb3e113888e8ebbcc4b73d7a0055b7c4c9b458a2d21c055cc84ceed8685d73c4"
+    },
+    {
+      "path": "synthetic-seed-2914103/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "58392ad1ee74fed248326e8f8b88413f30cd9417cdb37956bbbc3f494826983c"
+    },
+    {
+      "path": "synthetic-seed-2914103/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "80c1e25bbfbc24d28f2cee4c7aa2a95e55e2e3c5b75ced813ee3db6748287e96"
+    },
+    {
+      "path": "synthetic-seed-2914103/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "bbe2d6473f81d7033071426135aaa82fc73c1b9d9e00cb5b6b4ddf8e542b3cc3"
+    },
+    {
+      "path": "synthetic-seed-2914103/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "62e2556c23918241cd7780556d2bd2c9acb0ed0f050336e3f37b1dcf081ce161"
+    },
+    {
+      "path": "synthetic-seed-2914103/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-2914103",
+      "split": "test",
+      "tensor_sha256": "dc12c752af5fc4a978549b96676c45484dd725628fbcc1a174c77f42626bb7cf"
+    },
+    {
+      "path": "synthetic-seed-3018832/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "8655123e6ee8363a29536e2759cc90428bb9326226c06da1a95ab462290e1aa1"
+    },
+    {
+      "path": "synthetic-seed-3018832/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "85cb391ea290d3d1086af8578e03507d970b465b5c41c6294286ff8a96ecd2cc"
+    },
+    {
+      "path": "synthetic-seed-3018832/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "8050927ab2b1c589192c9af2c2e9b24337293ef40f8e86f8b50a6089615a88f9"
+    },
+    {
+      "path": "synthetic-seed-3018832/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "12171b1261959ce90a2c26aa4f502c0ed2ca8c9a1e102517f2b1bad47d12047c"
+    },
+    {
+      "path": "synthetic-seed-3018832/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "0444d1e62300925121c0c30ab6aa3b4ed5cd97877c0c0398c0191cefaee57a2f"
+    },
+    {
+      "path": "synthetic-seed-3018832/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "ce3085fc9ad9eede254041bd857120c5e38f8cfbfd35f1a486947c3e783306ac"
+    },
+    {
+      "path": "synthetic-seed-3018832/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "34a319e5605f606d161dbc4bd1babbccd7be9c613fa8986adb333e261c688db1"
+    },
+    {
+      "path": "synthetic-seed-3018832/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "93b339c1a3ed2b7b211a30e3b3cb17f07955838e3ec9fac898d8edb810763812"
+    },
+    {
+      "path": "synthetic-seed-3018832/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "97a4e1a3e8a67ee4e2a38d027031b7be136868214548ea4a406b7e927c780258"
+    },
+    {
+      "path": "synthetic-seed-3018832/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "7f4a21a0ca57bf075cd101dd753e0b558b6c5e1978a0d6693f03eac1ca34a15a"
+    },
+    {
+      "path": "synthetic-seed-3018832/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "0444e337c86b331b41e65f5cbe15f5acbf9670b1a781de6165c5a1f5089b21fe"
+    },
+    {
+      "path": "synthetic-seed-3018832/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3018832",
+      "split": "val",
+      "tensor_sha256": "b841ce139e217fbacb00236b881415e55b3f554a883e5c8b88550d5cc3cc54fd"
+    },
+    {
+      "path": "synthetic-seed-3123561/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "74441c142c032b926443a39279e08ff7aa25bae466aba1ff7d071b45c853babe"
+    },
+    {
+      "path": "synthetic-seed-3123561/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "3b37865e8715015353a38e2b6b611ae48bf5d37258bc43df271b62006238e8fc"
+    },
+    {
+      "path": "synthetic-seed-3123561/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "e296d4d153c4c3aa2fa51071ed05d578f178941bf5b71b18b0d913f1caead263"
+    },
+    {
+      "path": "synthetic-seed-3123561/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "96e573f87ec71f9a837972e672f16c103044556ce48b25a81d37f3eb94a2f66c"
+    },
+    {
+      "path": "synthetic-seed-3123561/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "f3397842a5eda1ac41065136ab74fffe4b0698b211ac189c355012c1f0063b09"
+    },
+    {
+      "path": "synthetic-seed-3123561/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "05aac84a4159bef8459d9e5d11345c9a69a2d60c8de7aeac0dd5955bade626c3"
+    },
+    {
+      "path": "synthetic-seed-3123561/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "f62c52d86e197199e5d55c1127496a06d9975cc1e243b4e0d4477ff14ed3c784"
+    },
+    {
+      "path": "synthetic-seed-3123561/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "4ac361a0a4866b1e579e733c8f753fcc28da2cac7d95327516d988a43ebd746e"
+    },
+    {
+      "path": "synthetic-seed-3123561/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "692682d317b873a6e424a73aabfb310b88a2dfa7c9ff38872996be80d626baeb"
+    },
+    {
+      "path": "synthetic-seed-3123561/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "a4f58cccfcfb627bdbcbecfac19d1e29db8a9dc50f644940d1036520de5376ee"
+    },
+    {
+      "path": "synthetic-seed-3123561/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "37bcbc35ca34d04b855c61256eb41ea12963c1ef65f8d4ef2193aff2f8aea1f9"
+    },
+    {
+      "path": "synthetic-seed-3123561/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3123561",
+      "split": "test",
+      "tensor_sha256": "21176794617d0d53d00bf1375eae2d4c965f4935047e14885447e2aae4cb04f3"
+    },
+    {
+      "path": "synthetic-seed-3228290/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "2b472e1cbf098f7014d072301d0ce7bf0c4ca19b2b0ec56192d3abb73c25e6af"
+    },
+    {
+      "path": "synthetic-seed-3228290/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "8b4eecba2a4efadd82800c5cc04d33be03855c0d581381e735ae001b398d19db"
+    },
+    {
+      "path": "synthetic-seed-3228290/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "44c0cd658bb6ec6314ed145d87f63e024ec779b4dcc390220b8a60ae2de32d4e"
+    },
+    {
+      "path": "synthetic-seed-3228290/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "f6230bc2befc1caa0ebdbc7334320ae7afafc2b0d43ca41902f817b52c9461db"
+    },
+    {
+      "path": "synthetic-seed-3228290/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "fe611a4c60ad5ca2fc3435be4bc85bf7d869bdaf23f0c4c58372af0a34ac6003"
+    },
+    {
+      "path": "synthetic-seed-3228290/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "b179cd745851d665a3e6c1956963fc88c5d3c91ceb182e3ab69db202d936ce32"
+    },
+    {
+      "path": "synthetic-seed-3228290/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "02293aecd0810f3eadcc1f801611c95dd7cfd5ee7c78afd7599594dc54cdd140"
+    },
+    {
+      "path": "synthetic-seed-3228290/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "37b7d390284ad6cbc0abcf3130bd97c5c3a091ab31cdf17c0f7b8d3323ad87dd"
+    },
+    {
+      "path": "synthetic-seed-3228290/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "af1dc51244ba51e80cda4e0f5ede3fb85abdd06e93c533009b9e2a8ea0021380"
+    },
+    {
+      "path": "synthetic-seed-3228290/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "391731d49d91b3dae77007b2a26dcf12a9184e3917058abd19caa69d86bd5bac"
+    },
+    {
+      "path": "synthetic-seed-3228290/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "7b10ed30332ea3a80f4e465685a0d64159233dd48863470432c8668c45cf1743"
+    },
+    {
+      "path": "synthetic-seed-3228290/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3228290",
+      "split": "train",
+      "tensor_sha256": "2e8a0eebb31d8d63d192523dc87f49c4a49e67e537a5cd16a41a646d733e0ffc"
+    },
+    {
+      "path": "synthetic-seed-3333019/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "4f5f5aa2c23ec6998a06b559b0e56f7cdde2acfecec979a3351b189e7196b8d1"
+    },
+    {
+      "path": "synthetic-seed-3333019/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "b74f79a59aea7625ec3dbeabfb8043dad6ed431101c25b19934cc807a3cc5887"
+    },
+    {
+      "path": "synthetic-seed-3333019/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "f8b6a770ee89182a933834cd1d1cb501c9687f801468644afc9952856f95c8f7"
+    },
+    {
+      "path": "synthetic-seed-3333019/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "292ca1de9c2ab332f7a40ebd5e8501947b4cfcaa160d9969c6c9c634f9863d9f"
+    },
+    {
+      "path": "synthetic-seed-3333019/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "aae8f1f21c7e98c1656f3ff25a24d411a1dbdb9a4a15354209973ee51df348fe"
+    },
+    {
+      "path": "synthetic-seed-3333019/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "ffa17e788e6a989b942baaf98aa85a67f587b7d5c8520f064031ca5d274fd0ce"
+    },
+    {
+      "path": "synthetic-seed-3333019/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "6da217c026cdb23e384bd3721d07714cada17054dd9d0b3e7bdbfb8092c110f3"
+    },
+    {
+      "path": "synthetic-seed-3333019/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "b55d44abc9d88a3c9bc0e0437d6f584fb0c95775d1a38e2c41b2b1fe3c97461f"
+    },
+    {
+      "path": "synthetic-seed-3333019/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "8954d07a919c3fa67c4d4b93edb20c10cc0cba7c379c4b8c0a038ff9f8ec3cdc"
+    },
+    {
+      "path": "synthetic-seed-3333019/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "50b35dad68cdb4dfbba66fd5d1417f1170b28b24387dde59e1c939ede17adf2f"
+    },
+    {
+      "path": "synthetic-seed-3333019/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "3104ff45c08539809c461f50f810939c0e5c449b1e6a4714cc49e760b165a776"
+    },
+    {
+      "path": "synthetic-seed-3333019/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3333019",
+      "split": "val",
+      "tensor_sha256": "112a3eb5b3e71483e7d24426f8badf73870c708e4d99af0fb2cfff4c3fdb714e"
+    },
+    {
+      "path": "synthetic-seed-3437748/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "3ae5835597ef02839ad0a5c6717f19f6a867f04659c30fd603a481c9db7acc10"
+    },
+    {
+      "path": "synthetic-seed-3437748/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "468632bd04a75dd469e63acbb1814720e8ebc7393eaf9b9d588d53d93249c3f2"
+    },
+    {
+      "path": "synthetic-seed-3437748/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "f9c592c4731388a8a52559bad3e24f83843c8c54ce2cf8ee6006a4bc8b127540"
+    },
+    {
+      "path": "synthetic-seed-3437748/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "97f004cd4aea7d7cf271b39c8f90544738c03f364040bb2d210387f9489ac9e7"
+    },
+    {
+      "path": "synthetic-seed-3437748/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "9fc3ca6008f9f309cbc2bb4029d47496e62a7ac9619ef7b4aa83f5d1b9d32812"
+    },
+    {
+      "path": "synthetic-seed-3437748/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "c7b9931f56cb2a14929d05390655dae066eab4df9b56e746e8f6ee966edbb420"
+    },
+    {
+      "path": "synthetic-seed-3437748/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "ba103ca3226f8f77a4cb10cd8944a8d5fad5ac6d5cc46a0bfc8acf979d02fbd4"
+    },
+    {
+      "path": "synthetic-seed-3437748/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "e8b26cc796a7d1da8dad69d04acf860b3d54293c737c9ca7b158dcdcbee141bf"
+    },
+    {
+      "path": "synthetic-seed-3437748/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "e81ce7dad1b6437dfc467c72c4b161bbdd3d490c1ee722e2af37b30c6a6c5187"
+    },
+    {
+      "path": "synthetic-seed-3437748/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "41c1d0bcd0d074ae66aac229bf0e4d5164339d4b1dccdc13dba9d126031a522e"
+    },
+    {
+      "path": "synthetic-seed-3437748/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "6700449e102540b1f458a1b43c61ed85ec79917d97536ef5f361d2e37144277d"
+    },
+    {
+      "path": "synthetic-seed-3437748/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3437748",
+      "split": "test",
+      "tensor_sha256": "575137e6427d722558f90324f8a35a6c22b368f6c0cdb421ed67f6444c654c1c"
+    },
+    {
+      "path": "synthetic-seed-3542477/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "577aee18ee2566c8c90573cc10c4e7f74121fd630801cd965c1564fc1b436bc4"
+    },
+    {
+      "path": "synthetic-seed-3542477/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "3f6427314afa9c8460fc4c7c2599e4f734476e5d6d2e1805231597728ff5c18e"
+    },
+    {
+      "path": "synthetic-seed-3542477/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "3cf1bded7479e9c98326e28a13bd4070963eeba269bb12485de2a19d30793dc2"
+    },
+    {
+      "path": "synthetic-seed-3542477/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "c39439880cc47ba7ce52c0e0b2345cf507c5c888c34dc24fe006140e676f7c86"
+    },
+    {
+      "path": "synthetic-seed-3542477/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "9aef2bddbfc19793cb4aa97e63fdfee4810697414c1c613c147c14da40cc94ee"
+    },
+    {
+      "path": "synthetic-seed-3542477/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "e5970e77f37a0274387557d6760510b54e169f5e5fe7b75a87a7a22fab4396e0"
+    },
+    {
+      "path": "synthetic-seed-3542477/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "491c14b0884801cc7be76a7b5b3f9139622bc0df0f17cb1fa88e7959af3980bc"
+    },
+    {
+      "path": "synthetic-seed-3542477/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "a3e1b4b9799c96b77a1efa7cd87e7e00291f67172bd82490b4ea5b87611a2dc0"
+    },
+    {
+      "path": "synthetic-seed-3542477/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "0fe9bb95612e7cc3d85c6b18611a732e860f75c2423b7d85c2f32c0380b2937c"
+    },
+    {
+      "path": "synthetic-seed-3542477/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "54c75c80896aae98efe720b94d6c9a35a6bc03ff887119ccb7008c7e882c4212"
+    },
+    {
+      "path": "synthetic-seed-3542477/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "d4c8e2c1cbb627e757229e6e636ceec164ba390764883a1dfd0b9096b503d57e"
+    },
+    {
+      "path": "synthetic-seed-3542477/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3542477",
+      "split": "train",
+      "tensor_sha256": "afae218fa6e580b9e652b8e4134ab620639ae1ee44711a50a3f8ad0c53bcdcd0"
+    },
+    {
+      "path": "synthetic-seed-3647206/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "5bab1f7693406a16bb28a0a1ab05fc2cb410b6199b0825d994a96dfa5fbb4fdd"
+    },
+    {
+      "path": "synthetic-seed-3647206/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "93f2bc78fe9acf11b63b85034be006d748846a4656e58c93e970b8890fab4fe3"
+    },
+    {
+      "path": "synthetic-seed-3647206/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "8c11591353e07c86c35435f855b5395cf40426729843241ed9db7a51e0f202a5"
+    },
+    {
+      "path": "synthetic-seed-3647206/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "79ffc7590702f01636cb3c7df95acac1565ce3720b48cf35eba4a6dac3cc53f6"
+    },
+    {
+      "path": "synthetic-seed-3647206/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "4a55d7f560f05cbc4f05887dbf8036f0a212832056692c6631c582ffa1d1944d"
+    },
+    {
+      "path": "synthetic-seed-3647206/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "703996e22b4aeaa26c7b4291ae2cde301204a6fc06e3af58ef8c290900d6c827"
+    },
+    {
+      "path": "synthetic-seed-3647206/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "12d314c4fbcb1b4fb96ae94122d081c43135a68645acab05f120a1a3def13a01"
+    },
+    {
+      "path": "synthetic-seed-3647206/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "64049d20a7bd8a1ef2b67e4185faf3eef63addeb6c2a40fc05e2338e80775189"
+    },
+    {
+      "path": "synthetic-seed-3647206/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "30e350caeb89444cce3046a5ca15b86ea7a554ae9cb7d02e6ac2fc159a6ccbcc"
+    },
+    {
+      "path": "synthetic-seed-3647206/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "7812cc21695efb6eb8fcd4c87e8647d396519eb7b375d8cf0542a6f22d086004"
+    },
+    {
+      "path": "synthetic-seed-3647206/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "d44031c26df72872c4a7deeffcd505e1f881de90d3db4b63c7a925e41f9120a1"
+    },
+    {
+      "path": "synthetic-seed-3647206/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3647206",
+      "split": "train",
+      "tensor_sha256": "21f497f6ad2c412a0512805c2784fc1bab8a8a14601e625d44a5111dfaa8d703"
+    },
+    {
+      "path": "synthetic-seed-3751935/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "331920ca4aa954c9e8ef63d5705048b6c53b077b25d4ff8775e705ab97a84820"
+    },
+    {
+      "path": "synthetic-seed-3751935/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "213dcac60b1bffa7d5fe7a6479f14877d83c094e15f7f9b459ba88106a17ea9a"
+    },
+    {
+      "path": "synthetic-seed-3751935/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "b752bc5b9babe3b508371c3be4294648170868eb8bd1bbbab962cb2bdb268905"
+    },
+    {
+      "path": "synthetic-seed-3751935/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "98924fb45f9e71d4428b951697305ebef37ad9d959d24e8408d2639162985ed0"
+    },
+    {
+      "path": "synthetic-seed-3751935/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "223ac68e0ecb0d1f27912c001630b0c375ae3f8318f538aff460e869707ca706"
+    },
+    {
+      "path": "synthetic-seed-3751935/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "eafcdc1ad5d64c00daa2a5ebd36f1b1164eeaf038a7a9c84242d9e30222d60f3"
+    },
+    {
+      "path": "synthetic-seed-3751935/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "28fcb82db3ef7bed6327b36e7dd683b33f1fc021ed933caa508ae54fd910f164"
+    },
+    {
+      "path": "synthetic-seed-3751935/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "9bdefa488e6197ee316ee5fd9e21ee0ef14300dee4c6f8c8b36687b48ebbe397"
+    },
+    {
+      "path": "synthetic-seed-3751935/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "21904dc2db8d312ac28aaf761428421e4f366ed155c70b4a05d5e1e53f42ae0c"
+    },
+    {
+      "path": "synthetic-seed-3751935/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "3a986c749c74c98fe7d6898e029556c6f6308e63603a41b299408cb9a60b4469"
+    },
+    {
+      "path": "synthetic-seed-3751935/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "3c61c3b033833d09c1617234e4361b14c6973e1e684e3794a307a2bf076d7d0e"
+    },
+    {
+      "path": "synthetic-seed-3751935/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3751935",
+      "split": "train",
+      "tensor_sha256": "f208ffdba2fa153f83c19cbabf902ed7cd58aa94880a2aaf5a43f32fd4476261"
+    },
+    {
+      "path": "synthetic-seed-3856664/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "9cb580a14bd63482be699bfa3b5f5fdcf997daafd31b4de5a83cecd93645c214"
+    },
+    {
+      "path": "synthetic-seed-3856664/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "3090f06a78e203ad8119f3b71efdd7a5f06ad3cc30df70e60ed9a7127fdca290"
+    },
+    {
+      "path": "synthetic-seed-3856664/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "ea140ec8f0605c9343bf6d204a6c6b4936869e56a70b034526deaa867497b79a"
+    },
+    {
+      "path": "synthetic-seed-3856664/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "04bfef5a512aa71cf5511d44d7d65d77c236cbd3b18e1ece1bcaf49978d6ac85"
+    },
+    {
+      "path": "synthetic-seed-3856664/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "801f2db8432268e7a54804ae4628ca992cd35f50e3c3e25853ecd5e6e04f70d0"
+    },
+    {
+      "path": "synthetic-seed-3856664/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "bf040469b0cca26d33437f5c25c3b88da0ab92c7d5fec2304ea2f539e8536072"
+    },
+    {
+      "path": "synthetic-seed-3856664/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "1a8e851f05ddd31eaef0605d87f560f7db2bdabcb1e05a33781330349f2ed97f"
+    },
+    {
+      "path": "synthetic-seed-3856664/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "eaa964c5fdd53c43d42b4ed31f6231349a211637aca2f14c7370b37e5298c99c"
+    },
+    {
+      "path": "synthetic-seed-3856664/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "d218adae74cac11610ec0b1b5d1f31ad1b6e43cfebbf45e7ff421cfce82c514c"
+    },
+    {
+      "path": "synthetic-seed-3856664/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "be018bd8f2bfbd99c08fc44ee80fd1c6a5f4635e72fe2cda5fc3bc7b5c2abf3a"
+    },
+    {
+      "path": "synthetic-seed-3856664/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "726f77e169d29a2c80c03b60e5ebb6ee7a52577e1a22288561a7dc63274c2eb0"
+    },
+    {
+      "path": "synthetic-seed-3856664/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3856664",
+      "split": "train",
+      "tensor_sha256": "78ab437d5f843a5ebc02ead1f501f56daddc6265c05ae349b4c41277312e099d"
+    },
+    {
+      "path": "synthetic-seed-3961393/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "288961dc4e24886c6619a2f00f3c39395287451a389c52d767af58699f194015"
+    },
+    {
+      "path": "synthetic-seed-3961393/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "c1156534a1717571e326aee30ce02eef482e4ff4aa40be2d1d7fc9a2b1f210f2"
+    },
+    {
+      "path": "synthetic-seed-3961393/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "059fec0a2bb8ad80d3c6318a325c9ed17842c1adbb1cb2e7bd397c8b4e0b48d4"
+    },
+    {
+      "path": "synthetic-seed-3961393/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "a49255d49598fe433042e2283769ee9cc38465e52005225768a3a000f47d8da7"
+    },
+    {
+      "path": "synthetic-seed-3961393/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "04604fcab1331fff4b2e0032acc21023cf6ba09757ee52f6276ef8e3b4a4641b"
+    },
+    {
+      "path": "synthetic-seed-3961393/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "94e60130529518ec5ada4666404451ecdb714edc0d2e1f97f5526c78e4267f87"
+    },
+    {
+      "path": "synthetic-seed-3961393/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "a8004f6a23fd483eee310fbeaed3aa3ea95c02d724e2143349ed8fe2d51f17d5"
+    },
+    {
+      "path": "synthetic-seed-3961393/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "d7e622048f7211175562d8ed95061cbdd3c2849d044dc940a92e226d025b6caf"
+    },
+    {
+      "path": "synthetic-seed-3961393/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "f416feeac99e31e40dddbff0ae1caef80f827ec8f146b528af58f86210e3a688"
+    },
+    {
+      "path": "synthetic-seed-3961393/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "b90cae356c2d542b399b13e8d56f9159e97c986cafc027079c75eff872fef71b"
+    },
+    {
+      "path": "synthetic-seed-3961393/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "aeea5db47203f6d7301e630198eeb63cb2ae0994ba2398aaa5e1b15c07354952"
+    },
+    {
+      "path": "synthetic-seed-3961393/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-3961393",
+      "split": "train",
+      "tensor_sha256": "2251167172c12ddb2a8b91c1d92ea7d3c40fbac79e9958fac51daf008d54fcd9"
+    },
+    {
+      "path": "synthetic-seed-4066122/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "62f0c381090ec7865e805df491b3bcedddd06b56a7ae1c17989dcbc1b5b6ec2e"
+    },
+    {
+      "path": "synthetic-seed-4066122/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "d852459694a9a680c950354c28a77838da46b9bd115157147c3c4e30a953b90a"
+    },
+    {
+      "path": "synthetic-seed-4066122/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "c098d119ed883f297b34ac57b8ec66d2f528ad6c5dc793ba32b4a4159fa486c2"
+    },
+    {
+      "path": "synthetic-seed-4066122/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "f376ae5754a6244ae677354732acbbf04ab0654417d245129eb295ef52983380"
+    },
+    {
+      "path": "synthetic-seed-4066122/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "dfbee02c1a67eb2ca06b10203c33b2e8836668919d5d8337bafa07e82e4f85d5"
+    },
+    {
+      "path": "synthetic-seed-4066122/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "66308378604c401cff60d8d349fa6af02b4357eb06806632ab96a41422fb8353"
+    },
+    {
+      "path": "synthetic-seed-4066122/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "2b48f11296069a857586c452d7698cda0b7e32d8894ad421eeb9f4a7df4e1c26"
+    },
+    {
+      "path": "synthetic-seed-4066122/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "e6265419263cb05d8214795dd66163e980c9d165933490ae5adec8441830bc9e"
+    },
+    {
+      "path": "synthetic-seed-4066122/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "73b235da1e6953c29c7c59b18d0c99eae3e8dc818237702d5226b3cbe14e74f9"
+    },
+    {
+      "path": "synthetic-seed-4066122/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "1c4197d20f05a89a468afa22b564f083e45d93792782e639d0d2636d5bef6f78"
+    },
+    {
+      "path": "synthetic-seed-4066122/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "59150fb78640facc193dca0b36835b7a0f6c4560ec22d9ed88c451a9a3110013"
+    },
+    {
+      "path": "synthetic-seed-4066122/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4066122",
+      "split": "test",
+      "tensor_sha256": "cfee39294ea7afaee612dedf9285b87d9a4eff04f7968900ff582aaf9b7b1487"
+    },
+    {
+      "path": "synthetic-seed-4170851/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "d99d4b76b1278fb21d65f63a77a9104f2245c1f42d92f4250350511a2e0d89a2"
+    },
+    {
+      "path": "synthetic-seed-4170851/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "81ad69a2c1348c8f2ab5e71f297ade621367fcaf07f2f2502fbbc226ee78b490"
+    },
+    {
+      "path": "synthetic-seed-4170851/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "846df6a34acba6bec45dc7b65b18c13c07bfcba44875307047b86b3cba9279ab"
+    },
+    {
+      "path": "synthetic-seed-4170851/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "6963e35a291971c19f09bab6829de61d0bab495fe7360188f766228f49bc119e"
+    },
+    {
+      "path": "synthetic-seed-4170851/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "fe2012449187103f24a1aab6257e4daae28847f763f9e3305c6a7f0280f23320"
+    },
+    {
+      "path": "synthetic-seed-4170851/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "38d883fa1a9d1288913b9fb3ad553814fd97170e29fab391d23d2853ca9818f2"
+    },
+    {
+      "path": "synthetic-seed-4170851/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "a8266ead31a04f587af1d771cc13a0e5202ddf24682c8bfd723e57d9f080c9b5"
+    },
+    {
+      "path": "synthetic-seed-4170851/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "0759a555824e3c27adb91546d3259d657126062155c98df2e2c1d94dd722a021"
+    },
+    {
+      "path": "synthetic-seed-4170851/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "ae2fe99031dc15c6ccb1fad42fc4dd6e9f439e7bd58d801bf53f79f44f1af67a"
+    },
+    {
+      "path": "synthetic-seed-4170851/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "f1169c59ab77c1be500c63ac53f5369327c41b3e36bd82ef6e3657e24802d0cf"
+    },
+    {
+      "path": "synthetic-seed-4170851/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "25b394f9941ee847d5f6c5da7e6b3b252f1d30defb29667896b6d20218722e29"
+    },
+    {
+      "path": "synthetic-seed-4170851/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4170851",
+      "split": "train",
+      "tensor_sha256": "8d891da2c5cd761265cb6a71da24f111eb682dfa57a86bf288326135350363bc"
+    },
+    {
+      "path": "synthetic-seed-4275580/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "b1b1dd0f4e06c574527312561659c4253477b519a046c570bbc957b744117c69"
+    },
+    {
+      "path": "synthetic-seed-4275580/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "8922684c8e83ab8240bb04b20d5006e591528ff215ba7c98cbbb0670cee3c92d"
+    },
+    {
+      "path": "synthetic-seed-4275580/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "c63c088180cbf15ff6f22ae9098054e762e186b261dec243cb63db44887e39bf"
+    },
+    {
+      "path": "synthetic-seed-4275580/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "1200ddb83b984c75ed4e7fa77332db6ce386c8521b9deb30e6d5975d3d5cc132"
+    },
+    {
+      "path": "synthetic-seed-4275580/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "0727e16ed02c19395910cfe3f1472a2c96e23db27beb3f794f4eaeacb7968a93"
+    },
+    {
+      "path": "synthetic-seed-4275580/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "695c48c2a665c916a173ab6b7fef006c7790b219196490d769bbf500169445df"
+    },
+    {
+      "path": "synthetic-seed-4275580/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "c9314c1125649d3187c9cf77bceffbd3307d93ffdd5003641b6690425048d276"
+    },
+    {
+      "path": "synthetic-seed-4275580/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "6ba0efcb8f694fd9b55360f8dc5ba4e81043d642fca9fd29fdb10fdbba068c12"
+    },
+    {
+      "path": "synthetic-seed-4275580/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "38117144fe3b862d08f96408717f7d2840d3bf560486f058349076e7c6e45399"
+    },
+    {
+      "path": "synthetic-seed-4275580/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "7e776cd1ba0d084c0bd3517e663d7125d176f1845aa94e937ea0d46d9d29cf3d"
+    },
+    {
+      "path": "synthetic-seed-4275580/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "cb6c355e18cefc1eedbb1d1e0294f04e3d447d6be59739c5d6bd29bd8c114969"
+    },
+    {
+      "path": "synthetic-seed-4275580/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4275580",
+      "split": "test",
+      "tensor_sha256": "c99c6cd59a121339dae0e71ccac94c1bd9cc3a84e221f2e81e78e6163ebf10cb"
+    },
+    {
+      "path": "synthetic-seed-4380309/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "4c31ce5018d62cce08a559f88a8e6dc27cae4dc6c63b558e0056cde9c55dda6e"
+    },
+    {
+      "path": "synthetic-seed-4380309/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "761e4550e5c4d3fc82d65a0d1635b26b44da3c51ea1fac8881d1e9f150d6557b"
+    },
+    {
+      "path": "synthetic-seed-4380309/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "08fdaae0fdb39b4fbb0b434a71dd2e82a9fcbff96dd99d02420c207489fdf72f"
+    },
+    {
+      "path": "synthetic-seed-4380309/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "40fef1500fc5e51a53c8b5e858856acbdbd89596357f26420412cf26b3f29cbc"
+    },
+    {
+      "path": "synthetic-seed-4380309/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "ee5121f24d492654d25fc6fd5cbfeecc8587fec43626c684ac34ead95aff26dd"
+    },
+    {
+      "path": "synthetic-seed-4380309/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "f696017a6e50522cf76c19ff7883e1e8478f8366edd6f1c7cff4be0215e70f24"
+    },
+    {
+      "path": "synthetic-seed-4380309/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "0bef7d1f78bf3425a912026d20d991f5a9f844748e009f52cca8e4933261d86e"
+    },
+    {
+      "path": "synthetic-seed-4380309/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "dae574d5576487286c8a89d08b85e52aeb99e862fb34011407a2338ee2ad28f1"
+    },
+    {
+      "path": "synthetic-seed-4380309/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "dede62c6e53ae968ac551bbefe88037aadde89e259dade938b8da5296c7f280d"
+    },
+    {
+      "path": "synthetic-seed-4380309/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "bbbdcab0c9f3e969933af72354c7ff8f452d3ee4a4ac30d6fdbbf6bb22efaf8d"
+    },
+    {
+      "path": "synthetic-seed-4380309/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "8bf0ad2322f9bc513297aac8324eb51ea5e2aed54aab743a284825f8af30a536"
+    },
+    {
+      "path": "synthetic-seed-4380309/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4380309",
+      "split": "train",
+      "tensor_sha256": "41db6498ebbf1d08eeab2210aa95f0b6363960ddb388ccb2aa6206d9a7b7b75c"
+    },
+    {
+      "path": "synthetic-seed-4485038/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "6a4135a54acba19d5babfeea376b0bc8678da4ac6d36a8797fe55458c3b66b47"
+    },
+    {
+      "path": "synthetic-seed-4485038/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "a476f0adb3fb898713dc11eee4a385aea07be5598d164bf9f0a474e827e87beb"
+    },
+    {
+      "path": "synthetic-seed-4485038/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "9acdc5e8a5a611b859c2e5d37f422d8a5c4c6e6127705058b89b905548875691"
+    },
+    {
+      "path": "synthetic-seed-4485038/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "02eb6003fe642e24d68ca95da40093e02b7bf18b5aa949d991f038924c608e82"
+    },
+    {
+      "path": "synthetic-seed-4485038/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "3a817c5c0a9aa3b98e00441634ca78880eb0f4990fc828702dc3316ffc7dacf1"
+    },
+    {
+      "path": "synthetic-seed-4485038/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "c336a56cfcda312858f6bc8dd1b7c5af184cd27fd22656d1f74030181aa2d1c7"
+    },
+    {
+      "path": "synthetic-seed-4485038/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "959ce711ce9b642506f87185bbdb49b5c377fd60c9b2c0a03f5eeaf9c53e3983"
+    },
+    {
+      "path": "synthetic-seed-4485038/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "c5f24f67ce66fb98c6f5e51dfd6d67a1acc8ec9d324d2a13c8985fe55ee0d50c"
+    },
+    {
+      "path": "synthetic-seed-4485038/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "91514c0708c49b0a90c2a1212d3d67edf95e2b3a0b80b638fb99c613a945d4ac"
+    },
+    {
+      "path": "synthetic-seed-4485038/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "b636e5f01191ebb4708cd98c5c8f7f58ceea1f870a6e85249cb00701e205cf71"
+    },
+    {
+      "path": "synthetic-seed-4485038/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "4c18c38f9ecc670855a80dae58590266fda2f84afa77a54296fbb757c513f869"
+    },
+    {
+      "path": "synthetic-seed-4485038/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4485038",
+      "split": "train",
+      "tensor_sha256": "a40a20bd61ef74b97e3615a9e669208e76af7681069995ab14d5ffdee2ffee32"
+    },
+    {
+      "path": "synthetic-seed-4589767/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "bd819b71ddda8b7460f30ed0d9a86a5212ec899193764aab952cfbc57610d414"
+    },
+    {
+      "path": "synthetic-seed-4589767/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "06feed7ab2be65963781dc6b54f8870fc3b64269e248317442816c70d320fc75"
+    },
+    {
+      "path": "synthetic-seed-4589767/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "c168f1afc71cabb59675b631f241d923f2316bb5d0f0ac573ec7cad3a16227bf"
+    },
+    {
+      "path": "synthetic-seed-4589767/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "5409eaf72e1994c8f97aa3b34b01a7b4ce6e5913a54dc0875a0ef9509872b3a6"
+    },
+    {
+      "path": "synthetic-seed-4589767/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "a13f18e65cd7453aed4982083a406a96ace5572de2115ca4e2e44ebcafe170e1"
+    },
+    {
+      "path": "synthetic-seed-4589767/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "003ccc35d44505942cd301403f17cf769a7b09549376931b175bc08550e1cacc"
+    },
+    {
+      "path": "synthetic-seed-4589767/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "fc15c0fdabe98e290e6eb1ad57651fbb2116eb4876bd0068b41622998be07bd2"
+    },
+    {
+      "path": "synthetic-seed-4589767/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "5755fbbb5662a4aa9f26dc690a9644ecb9d1681cf46914dc195a9e570cd60629"
+    },
+    {
+      "path": "synthetic-seed-4589767/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "27d01e37888686345844b4accb7dab009c34c93becc265ac8992bf7335f0be2c"
+    },
+    {
+      "path": "synthetic-seed-4589767/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "5b2bb5bce513de0907d3d406b724a429003769c0066193cd217094b29b44eb64"
+    },
+    {
+      "path": "synthetic-seed-4589767/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "585deed07a59db877268620d8700cfec38f4a89fbe4f1864e604af053bfca245"
+    },
+    {
+      "path": "synthetic-seed-4589767/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4589767",
+      "split": "train",
+      "tensor_sha256": "b6dfb5b9b1d1a97705a1c21bd60e0ff1f76471f9c68f0f893efda02480165491"
+    },
+    {
+      "path": "synthetic-seed-4694496/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "d553a13b54b8377ea5429f1f3156ce04be37e8bcd049dd14a88392f54c19622f"
+    },
+    {
+      "path": "synthetic-seed-4694496/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "26f78ebf2c6180e1137ec97f311521774e492a1f46542773aa336245f413f55b"
+    },
+    {
+      "path": "synthetic-seed-4694496/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "300685734018392161d3cd56772a67b958c224bf80f21ed4733fc1c41c7bff79"
+    },
+    {
+      "path": "synthetic-seed-4694496/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "b0e1bc5bdc5e8a7a3ca79e34ec3f410d9fc0ec2f5d4366e274288bef8bbf883b"
+    },
+    {
+      "path": "synthetic-seed-4694496/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "a1258a196cc532c342d52db3b1fc0eebfb4f88cd07e3b4283160c6d0aeffb6c4"
+    },
+    {
+      "path": "synthetic-seed-4694496/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "8f7c6934096770e3eed5c7813dc5f489dfb5b7c9b2abe1cbf2a1c9a7c596e651"
+    },
+    {
+      "path": "synthetic-seed-4694496/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "7538d62db876530f37dfcf678b3f16db7575bdebd5b56fc7a3b9f43bc0871c62"
+    },
+    {
+      "path": "synthetic-seed-4694496/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "98696c101f71b23c6a80bf6bd7b185a79d30d121a0641fa97d68eb2e8669a4f9"
+    },
+    {
+      "path": "synthetic-seed-4694496/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "58928bc710a35199660f964c2f6a1047bbaa75e0a40389382e12e7f169d720e6"
+    },
+    {
+      "path": "synthetic-seed-4694496/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "7a6967e75b656408214aad296637b82010441d2fceecdcd575c88808f2f08ed0"
+    },
+    {
+      "path": "synthetic-seed-4694496/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "94a3ca3fea855b694483f7556a0e473c3d9b3e381766fc4d49bfdef75eadbd6b"
+    },
+    {
+      "path": "synthetic-seed-4694496/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4694496",
+      "split": "train",
+      "tensor_sha256": "c7ccf7cce1ab8c2efe8e0055c6eaa19338f19a6051ec497cd736abf5c8eecf9b"
+    },
+    {
+      "path": "synthetic-seed-4799225/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "b4c5627f8250e39f7e9b39f0ec483b0fa9c43db100821d0ee25bfde20624deda"
+    },
+    {
+      "path": "synthetic-seed-4799225/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "5df06823b112d02fa2d8bad9ac9f2b25425821b325ccfc979f027e35fb02aee5"
+    },
+    {
+      "path": "synthetic-seed-4799225/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "5264d6167d9850c6406341d799f21ac275e74380d798e4221f68847d81e614d2"
+    },
+    {
+      "path": "synthetic-seed-4799225/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "fe1c43c4251a653d76bd0f1a81f488695af381c876fcc4c85e65710b4ae1beb4"
+    },
+    {
+      "path": "synthetic-seed-4799225/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "04caa55280b55e780afa9af588f41365d8476ae86465721895659c34cf6dca79"
+    },
+    {
+      "path": "synthetic-seed-4799225/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "251c320f5f1f90cb2a221fa5b1fdec47a4aa52d8fcdaad1b4624859744752fe7"
+    },
+    {
+      "path": "synthetic-seed-4799225/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "11c39bfe31cf71a0af193d419fdbf88a8ab45cb46045e21bf6d0b708d0416e0e"
+    },
+    {
+      "path": "synthetic-seed-4799225/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "48f3e121ba81ae7c836f8d57f3eafe6ea0a664d46de6d92854f303403110ad84"
+    },
+    {
+      "path": "synthetic-seed-4799225/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "37b501bd46dde3267203d62bc861a6f787511e9717c113aa24481d3d4d9723cc"
+    },
+    {
+      "path": "synthetic-seed-4799225/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "6b183a37bf4fb23095ed20ddd6ba6c6036cddb351a1707daddbe84bcfda1515a"
+    },
+    {
+      "path": "synthetic-seed-4799225/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "a799a526a1dd0520f89c75d3f81613c7407d5f3764492cd67e54325df1356855"
+    },
+    {
+      "path": "synthetic-seed-4799225/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4799225",
+      "split": "val",
+      "tensor_sha256": "aa1187263b0af098a4b3ca49cbb4c27249dfebc1669c5d2264d6280afceeb64b"
+    },
+    {
+      "path": "synthetic-seed-4903954/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "5624a4b295e483723939e8cbfe313fdb93b218f3b4df9f02cc14cf65ca5069b8"
+    },
+    {
+      "path": "synthetic-seed-4903954/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "d66dfe2f3450f919a3b50cf14e6e9c7ea796f891ce7d67c6d3b0d5c181610a09"
+    },
+    {
+      "path": "synthetic-seed-4903954/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "780329d0530a239e9594505c72abf6e61977b6559c2ef4c0d51137cd24c42a2c"
+    },
+    {
+      "path": "synthetic-seed-4903954/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "fb29714ef3638e6ed1fcdd24f995336ba6e68fac8fe32cc4c995c1a4c3009aae"
+    },
+    {
+      "path": "synthetic-seed-4903954/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "b03d2187ab2ce66b69cacb092780eaa776edf61368e2e515474de09ad6c617e5"
+    },
+    {
+      "path": "synthetic-seed-4903954/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "1dae004f1830c9c543458b11536303231348742eb7df06f743dff8d8f323a88a"
+    },
+    {
+      "path": "synthetic-seed-4903954/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "423cad0ae2bcbe8ccfd80cc6b8c8f85e698b7f4ae2326b84aee92f11ed74f5f6"
+    },
+    {
+      "path": "synthetic-seed-4903954/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "d6a00be66a415af474f695dd9730101e07145719ba516950160ec3d0749ca40d"
+    },
+    {
+      "path": "synthetic-seed-4903954/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "82e46c3bcc65709c5ba1b85525b56daa7203ea35799c9216eb278be7d6eae647"
+    },
+    {
+      "path": "synthetic-seed-4903954/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "1f9b2b676282e22fa6c5047414792251470b03bca6b2ff67700fb2813d24d780"
+    },
+    {
+      "path": "synthetic-seed-4903954/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "15c739069ed85f4341be74232c35270f39cc56a56bf0a8481b005edf269c8193"
+    },
+    {
+      "path": "synthetic-seed-4903954/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-4903954",
+      "split": "test",
+      "tensor_sha256": "ce92444c38bfea3a0b8312b3b680f08d690809bf727a06b9d58d11c530174a80"
+    },
+    {
+      "path": "synthetic-seed-5008683/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "8e4d3f9ec812dc24fdbf9d423dbce55d7e3cbfba79315cc7ea3b8a59268c9df1"
+    },
+    {
+      "path": "synthetic-seed-5008683/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "3df066ef94b7e3f5ae2a12a1fd8026d05dfd5aae168ef63e2416be0a74acdb68"
+    },
+    {
+      "path": "synthetic-seed-5008683/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "477455f665b1b09c4a6d8fca4fae8440bd0683cea797e6a2b8529690d7948b9b"
+    },
+    {
+      "path": "synthetic-seed-5008683/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "e5000c1f8d1411f7f2cf9ada1236c980ac06133a5cb468945936f38105b8ca59"
+    },
+    {
+      "path": "synthetic-seed-5008683/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "6304f958a463a3d98e89daf26515b7d42c862633ebe7ba2382c4d453222cc1f3"
+    },
+    {
+      "path": "synthetic-seed-5008683/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "92ba8e7bb49287910148c0ce2b86499e0f92311685def9649c7d7c809dbe2552"
+    },
+    {
+      "path": "synthetic-seed-5008683/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "b6b5c25af98b35026b90801d915c4af19d935ee247ceb153e92c194b07a5dfd3"
+    },
+    {
+      "path": "synthetic-seed-5008683/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "4635043c34a04c44e74b141312076cfd39b23a10c962ad9403a723c9687b8c6d"
+    },
+    {
+      "path": "synthetic-seed-5008683/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "b333a44d86b8ff0c63736b78bad3755bc2fc8d7de76fc4d885bd58fec8c77d38"
+    },
+    {
+      "path": "synthetic-seed-5008683/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "3aa78ce8b45b07a35bbf04a1176cc2f8995ec0abf41068bd877f55341ee058a3"
+    },
+    {
+      "path": "synthetic-seed-5008683/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "f8c1d27f64599a4dc5ef1a2529f5bf4e787afbe6203e5ef5fe3b4492c0b022cd"
+    },
+    {
+      "path": "synthetic-seed-5008683/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5008683",
+      "split": "val",
+      "tensor_sha256": "186ccfc9cb4b8e99ede7d765b6da46bf8020833a4a358f3c3c488eae4b377b30"
+    },
+    {
+      "path": "synthetic-seed-5113412/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "d7fd42966583a041f200a8d5c233e2f237431e8d5c042e278bba0d3d970c3f83"
+    },
+    {
+      "path": "synthetic-seed-5113412/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "ea7e8b2c229fd1cd990b639db6ef3777e588b570cd5cfcd8c323527d2f7326e0"
+    },
+    {
+      "path": "synthetic-seed-5113412/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "8688c4c366aef5f6ff68dc442040e0ce42baa7b3742f60674058ecc35cd4035e"
+    },
+    {
+      "path": "synthetic-seed-5113412/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "57da660cac4bcaad1fcd1d57efb410407adca82d76a8adad4f44fdefc7287aee"
+    },
+    {
+      "path": "synthetic-seed-5113412/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "ecdcfe291e6539895729fa80cb9815cc27ae9dbc456f661424ddf2c4d5690f4d"
+    },
+    {
+      "path": "synthetic-seed-5113412/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "f131798c4f9157b163a20e83295b95b8771ed90c20b8fe6fbc0bfad2a136e2d0"
+    },
+    {
+      "path": "synthetic-seed-5113412/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "cbf12062b87af84abb99b60deea153d2bf9cf16f51bcf9ac5c7ddde291d538bb"
+    },
+    {
+      "path": "synthetic-seed-5113412/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "04f644dff8616e888258df232820ac9f40961f4d1408b3cc81f787687a24972c"
+    },
+    {
+      "path": "synthetic-seed-5113412/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "9f931d94f4f5a79711984ab33447c6b47f3b17e3c024500af058f1a78a9129e5"
+    },
+    {
+      "path": "synthetic-seed-5113412/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "5b62091eaed2807ab6fc923f173309ccfbecb4ee12361fbd6e8ebfb09dc67872"
+    },
+    {
+      "path": "synthetic-seed-5113412/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "29992d2fac8ea58f1f5adb55b99f9deaa0dfa9f5be0721d62c782fa8e5bbc200"
+    },
+    {
+      "path": "synthetic-seed-5113412/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5113412",
+      "split": "test",
+      "tensor_sha256": "f87ab24884d688a064a334cb87b5b1148511cb2f5d1394697dd411d010677856"
+    },
+    {
+      "path": "synthetic-seed-5218141/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "082ba822175a81860e01c84e17c7af77a80b020ee26a584a870edf0b8f4609b0"
+    },
+    {
+      "path": "synthetic-seed-5218141/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "79c5d182a6baf0e03b57418bc4805c3068a48b64321b9ad91f312e1c28b6da85"
+    },
+    {
+      "path": "synthetic-seed-5218141/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "79f7f05580f3a0c99f3ffd2a3fe3eecd2445bd49701c2c660637a3c94258748b"
+    },
+    {
+      "path": "synthetic-seed-5218141/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "ff13b4aaef0c6dac0b32c468470519268f7eab3861a73e2bdd3bbb950b3ff9dc"
+    },
+    {
+      "path": "synthetic-seed-5218141/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "42b13edd3ffbd1469fbd2a542857b79c405a03a7676ab7a695f1555e02918bbf"
+    },
+    {
+      "path": "synthetic-seed-5218141/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "83fdbd07ad1d58caad8a6d635c7ef9ddc2eb3ed134556e7cbabdbc75ea8483ec"
+    },
+    {
+      "path": "synthetic-seed-5218141/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "d5fba98f2567c101ec6fb2e23578e6e9597ede7ecbb76fa8ca3528a44d323a34"
+    },
+    {
+      "path": "synthetic-seed-5218141/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "db717b88a96d1d415963608c12619e29e83e54919990d2f5921e122e847b1d5a"
+    },
+    {
+      "path": "synthetic-seed-5218141/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "44651f1c62ac4b511a943a4452b333b5784eafbe8fd8e3d41f208788c9fc99fa"
+    },
+    {
+      "path": "synthetic-seed-5218141/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "758ff1a6bc4d42fd4b9efdc2891489ec7169586ef465df2e2c28bd61f6cba608"
+    },
+    {
+      "path": "synthetic-seed-5218141/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "9d5c3ffaf6db7a142c213a44520256c4656afe6dc1735fa0c92aee2fa1a88d64"
+    },
+    {
+      "path": "synthetic-seed-5218141/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5218141",
+      "split": "train",
+      "tensor_sha256": "ba1b1efa1de6852a0ae0723bed0ca7cff1c741a099a3bdfe8cec35dbe2fb3981"
+    },
+    {
+      "path": "synthetic-seed-5322870/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "caa870242d2237e82adfdb8a96027fd7b70e0c26fd06b08c9deb0ead5a27c1e3"
+    },
+    {
+      "path": "synthetic-seed-5322870/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "247805bf3827f2dd2e76982f1a9ca0ff98c17a1725d1f0a482963d5916a38265"
+    },
+    {
+      "path": "synthetic-seed-5322870/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "0d9e6b29b179274d7c1bd3f20b04f0788f8137a65f9b604c74027e8948a91a1e"
+    },
+    {
+      "path": "synthetic-seed-5322870/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "b0158f09923f511b7bc0c10accec09620ba6de07d3f886cbf5dbd9e29bb6de14"
+    },
+    {
+      "path": "synthetic-seed-5322870/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "06b37b120c42e1c3c45aea15fbe6d404377b27972c7cf87402f9271527d5e8c8"
+    },
+    {
+      "path": "synthetic-seed-5322870/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "1d5e0aea5fcf332af21ad59b46bba0f2d2991beeb09b275480eead28849c3ce2"
+    },
+    {
+      "path": "synthetic-seed-5322870/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "9b4b7dcf220ccaec490dd66d3b7c2889b31b797a856122dbed1c8b3db41a463b"
+    },
+    {
+      "path": "synthetic-seed-5322870/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "2df4e8202e898bcd425b21150636092b4df4f1e67c364732ab6357c8f8ce5022"
+    },
+    {
+      "path": "synthetic-seed-5322870/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "590dd60c98bbdbc1c88ad93c1a71df0f09e6c34f92578b7cfd8ee10ccc00db0c"
+    },
+    {
+      "path": "synthetic-seed-5322870/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "1ba894b4f09a0a404276259b54fbd25ce1038963ee38ef0778d488d5a0fffe13"
+    },
+    {
+      "path": "synthetic-seed-5322870/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "fa6457d914156ca77d57a0036631ade5b51c309c55f09a583d2f49f2a6e868d4"
+    },
+    {
+      "path": "synthetic-seed-5322870/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5322870",
+      "split": "train",
+      "tensor_sha256": "5b4b34826e5b7f26fc3a6ff7e6d2bfaa143a60973b5afcb50e43694a889e0e8f"
+    },
+    {
+      "path": "synthetic-seed-5427599/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "bfcee1609d763bd478deb55213876aa9b9e3d34ce3a962095189a8ec42efaeca"
+    },
+    {
+      "path": "synthetic-seed-5427599/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "ffbbd0d48777ec1a897d66a47afc6d64e898073a9dc3e7c7f58f58202800d750"
+    },
+    {
+      "path": "synthetic-seed-5427599/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "6441c8a217151870730e3a4301479c25714e89df3f7f47b99d5021aaf7594f12"
+    },
+    {
+      "path": "synthetic-seed-5427599/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "dfee46f0a9adacd78e521576099b4335d05adf8e502b33ff11ba348e07a0a0cd"
+    },
+    {
+      "path": "synthetic-seed-5427599/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "95ce27ef2ce7b890fb619d0335f34743ec5d9b192f9b7b38b2e60cd309811aac"
+    },
+    {
+      "path": "synthetic-seed-5427599/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "8b0b5504fdfc3d07c8f797d264a78443fee63f4fa52bc3984bef564016eedad9"
+    },
+    {
+      "path": "synthetic-seed-5427599/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "ee4f099a723f7e1f28153530f518d6f7e1196141c9646849dc20b1c64f7cfea1"
+    },
+    {
+      "path": "synthetic-seed-5427599/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "b744d650e15b8a6c5d206f61e99e7328dcd7f476d0c39b63997d48afaca441de"
+    },
+    {
+      "path": "synthetic-seed-5427599/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "8b4ca44a9a20ff6b9dc7faa662e432827e5619276010b85f988d3a7de9e2ccd2"
+    },
+    {
+      "path": "synthetic-seed-5427599/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "a65538fcd299d5a7728ab1b4ea5b1eacb80aeaf668470f9fe59c83ec75e09661"
+    },
+    {
+      "path": "synthetic-seed-5427599/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "20aeb910ec59d3d74ebae7137bde0a15ecd03f220e67499c4b83a2f8d2a3bf7e"
+    },
+    {
+      "path": "synthetic-seed-5427599/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5427599",
+      "split": "train",
+      "tensor_sha256": "17ff631263f127938557516c41f3527920182a6b941f7da94723e19577247568"
+    },
+    {
+      "path": "synthetic-seed-5532328/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "befbac6987de5ffa2a2c043956a6c95850657306755ba9953576829a4a56156e"
+    },
+    {
+      "path": "synthetic-seed-5532328/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "fed80bc06e6f0cc8899cc71a8e088e37273a10fa557a23173dce7d8f1e7bb544"
+    },
+    {
+      "path": "synthetic-seed-5532328/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "8e30c0519f425f2abee3ceddb4891c5b3c19bc9cf06fcfabbd8f3f355e95f5a3"
+    },
+    {
+      "path": "synthetic-seed-5532328/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "28b2bda91039dca1ce7eae84a5adebf63df97d23f49d3b55dd6b67df469fa2ff"
+    },
+    {
+      "path": "synthetic-seed-5532328/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "e1d0d146e6660a0986d5c9173c0ad1dda4f7873c07d020f67f1144c564ba824d"
+    },
+    {
+      "path": "synthetic-seed-5532328/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "09ff1cec5831fd395c96394501df53b00fcc32143f473074478e98d8a330f1b2"
+    },
+    {
+      "path": "synthetic-seed-5532328/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "65fe6c3bf9bf4e95b55a4977137e055da76a65ef70bd9ac826cbad65bcda6086"
+    },
+    {
+      "path": "synthetic-seed-5532328/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "a50595becba94cd764be849232ea0e6841e81572ba91c69114e64efa5f30d4e5"
+    },
+    {
+      "path": "synthetic-seed-5532328/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "c09f6936f31beaf7639ffdb4c69925d64edfb7da2193e7c443bad370f81c4865"
+    },
+    {
+      "path": "synthetic-seed-5532328/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "fd9e1b7499d3353bdf6326157ff3777747ae4cb0f1352d400bc3b2dcc4d0c2bb"
+    },
+    {
+      "path": "synthetic-seed-5532328/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "ba77034278e5b5c17cb5347725c8666b0474ac064d227e50de42efc8ca53b940"
+    },
+    {
+      "path": "synthetic-seed-5532328/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5532328",
+      "split": "val",
+      "tensor_sha256": "17c9b2d445ffc37192380014c1a561efe5614cce1c22924f0353452e00ff27fd"
+    },
+    {
+      "path": "synthetic-seed-5637057/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "0028ce12c07aa5e38a33ea179cd73a35cfdc370c3ff0a40a2e167837a45cc5d7"
+    },
+    {
+      "path": "synthetic-seed-5637057/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "98a91b683f68a35fd8b2627d017e199a7d8868ed4ad8a3738ea90d21aa8d7381"
+    },
+    {
+      "path": "synthetic-seed-5637057/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "e75a9ff61d1271ed57e0a609e4587414fa291320adf63cc8a106517949f1608a"
+    },
+    {
+      "path": "synthetic-seed-5637057/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "986b080b4827da261a12022d7ee0957d5efa7a449f124971745918a506e4ef36"
+    },
+    {
+      "path": "synthetic-seed-5637057/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "e234dcf8595f88eeda94992342c55b1f26cde5aa4f32da6246a036587760ea31"
+    },
+    {
+      "path": "synthetic-seed-5637057/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "9d390a78f0e438fafd1fcb55daf239bc3856576aad5b3167dc2570ecb578a38f"
+    },
+    {
+      "path": "synthetic-seed-5637057/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "4d4592e1e9ccc4766b58a5d63bca9e4733207d6f16d08c97ca02c2f4e7ad45ce"
+    },
+    {
+      "path": "synthetic-seed-5637057/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "6f86e64bd7e6bdf32973144558e6c930d6b3a9d6e242e12b2e9b430cb80a5a61"
+    },
+    {
+      "path": "synthetic-seed-5637057/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "748e05667309fecbb8eacc899cbf1886fbd42ec5d8c77386bf94bd911a50e472"
+    },
+    {
+      "path": "synthetic-seed-5637057/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "7ad977cd2adcad0ad325944b421b7f58e326ca5fabcb745e67b54d92f3c0dde6"
+    },
+    {
+      "path": "synthetic-seed-5637057/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "0129e782a462f472bffa2659c9bdee2ca53732215302540c9ae581fb1185d4ba"
+    },
+    {
+      "path": "synthetic-seed-5637057/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5637057",
+      "split": "train",
+      "tensor_sha256": "30067d80d85b3eaa46c9357607fad1c25bd69bc175ade170289fe0c2cc9c5aa2"
+    },
+    {
+      "path": "synthetic-seed-5741786/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "4fc22c9cbcbf57a11714105ba2983c9a29e0a826f70e111e673889a31c246b84"
+    },
+    {
+      "path": "synthetic-seed-5741786/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "efb2ddc8ddd0f1c265a0d7e33410bfb5a6de2485d1d704e99b5da235b9e2d220"
+    },
+    {
+      "path": "synthetic-seed-5741786/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "8534b4945f596ed8a15c2a9dd8f704710cae5e124e9f88be005d6fbf31771ef0"
+    },
+    {
+      "path": "synthetic-seed-5741786/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "6d9eb7f8bb975ee0afcb7c433ca90a6a355597c83754ae60de46c17fe5666c29"
+    },
+    {
+      "path": "synthetic-seed-5741786/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "f3cb8951fcfdd45d6edf8126cf68ab270760f1746388c81083f016ce62764110"
+    },
+    {
+      "path": "synthetic-seed-5741786/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "5319468b121715cb0bee155068871e9045388afe607b27be711c64d7eda78eef"
+    },
+    {
+      "path": "synthetic-seed-5741786/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "b6655b4c122536b5c4905c19e96e1b871cbcfc516ad93f56bf34145984b4cad1"
+    },
+    {
+      "path": "synthetic-seed-5741786/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "83c12db2b718e8e69e0ead482d2642d72be5f8b65c5c409793a7741ab391f185"
+    },
+    {
+      "path": "synthetic-seed-5741786/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "e3856299102e304218c5392cabbe1cd59b2214be75908063a91b1efe3c980a39"
+    },
+    {
+      "path": "synthetic-seed-5741786/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "76a9f078af139645ec4aae2ecd8044e047082ba5c037634ffa3fcb105c7eee8a"
+    },
+    {
+      "path": "synthetic-seed-5741786/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "bd3fbc7b10d727cb48a2a212dda181e62079f02681e2533b84bf2e4c5cda2ee5"
+    },
+    {
+      "path": "synthetic-seed-5741786/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5741786",
+      "split": "train",
+      "tensor_sha256": "e7bef41455961ea6387181679cefa7aafb6ba2ffdf9b0d735de790d720137818"
+    },
+    {
+      "path": "synthetic-seed-5846515/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "63662548834c093161cba8f13d3e1f51633a8175cc176c9cbd7a34c886f252b0"
+    },
+    {
+      "path": "synthetic-seed-5846515/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "031d72f48453a940184ab88b5b3e9c8299fe2fc3529aab0ebe9c87653c3a21be"
+    },
+    {
+      "path": "synthetic-seed-5846515/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "452f7c99d3682ab34848b69d83669faee65668377e0c036e2d7a1609af4ce878"
+    },
+    {
+      "path": "synthetic-seed-5846515/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "fe389f94d54540ea552b3a0ec5dbe8d332f7b46c0ce5d90c69743ea451250226"
+    },
+    {
+      "path": "synthetic-seed-5846515/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "32b307c01577e2f35e259754f247c131e359c5838e97a79fa8ef32cafc0351c1"
+    },
+    {
+      "path": "synthetic-seed-5846515/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "75db3b0615e746cd15de8396a8d8a24274e3cce54344f17d5a4ff7042715d16d"
+    },
+    {
+      "path": "synthetic-seed-5846515/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "2ab0f6c9a2abf2880c27f5bac783b75548c9f87cec68c5b9c144d919a0dc0814"
+    },
+    {
+      "path": "synthetic-seed-5846515/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "e4fbd9e91e4780c2faa51e92d48e54b7b325dd5d7fb04dd59b8eaa2ce43d37f0"
+    },
+    {
+      "path": "synthetic-seed-5846515/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "7cbbfc4fd27688488028638abc91f53ba61d8a09c789677fa22e3dbb7fb32465"
+    },
+    {
+      "path": "synthetic-seed-5846515/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "b24dceafb413575bffc3a0c5d699094affd9d2c3dcc389a7908bec7ae849a975"
+    },
+    {
+      "path": "synthetic-seed-5846515/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "996f643bf399d44f89dc4c728be4ce5401606f941118001cf7f4a5b0e0dbf7a6"
+    },
+    {
+      "path": "synthetic-seed-5846515/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5846515",
+      "split": "train",
+      "tensor_sha256": "31523f7b5a4568c4076c1f872fce61466c9eb670a8324519f009f97d91ced840"
+    },
+    {
+      "path": "synthetic-seed-5951244/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "eb467932b6566c79cc3e51722e586132137ba91e556106c53c7c8946fb707af2"
+    },
+    {
+      "path": "synthetic-seed-5951244/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "57fe49190397561d6878edb85c8d3493ca7068ea2657eb895643fa9bf1924215"
+    },
+    {
+      "path": "synthetic-seed-5951244/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "e548ba08558044af68ec924226f28213aec8d9f941e4740bd50424bc65d2e160"
+    },
+    {
+      "path": "synthetic-seed-5951244/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "6577e7a986d1851073666473e10f6da19bfdff3f3f56676161a0c5e240123a3d"
+    },
+    {
+      "path": "synthetic-seed-5951244/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "2b071d3bd130aa5790936d9537b95e0c2fc6e0e0524d9a32b3f5f82e2737b774"
+    },
+    {
+      "path": "synthetic-seed-5951244/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "c08d1d90cf3eb004b3e574ab4b20c3810269c359e4260be7e5f18b8c400ac714"
+    },
+    {
+      "path": "synthetic-seed-5951244/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "9915d372ebd701425dcd0fc91d284a7500bc30cffb9ee7fd3357969109b2df17"
+    },
+    {
+      "path": "synthetic-seed-5951244/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "c18fa4e5358a7a41158a200e23fb94ee307b1f73575404981dbb98329d52e52b"
+    },
+    {
+      "path": "synthetic-seed-5951244/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "03c0bacc577a0b98df780d6fa525c60f2a919d7db220c2749faf282bfb4023db"
+    },
+    {
+      "path": "synthetic-seed-5951244/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "90dc551ea79ea5d01b5d2b9ed8f149ed1213aa7f593d9f2adc4da5217c6f9c67"
+    },
+    {
+      "path": "synthetic-seed-5951244/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "adf22ba902a676b42ba19f7cb57a2e5b5ce3a340f18b2de87650020d6db16ccc"
+    },
+    {
+      "path": "synthetic-seed-5951244/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-5951244",
+      "split": "train",
+      "tensor_sha256": "2d142783fb803968b572d18c1d33bd3fbb3275c25761b07dc373d9d9df6742de"
+    },
+    {
+      "path": "synthetic-seed-6055973/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "000b9a279560f5fe6985b987853da1ecc0fb58495c5f79079d1e921f3ccddca7"
+    },
+    {
+      "path": "synthetic-seed-6055973/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "c1142141100fe8ee13ba9f18e9d475f97fcc6e94930c7d4065a9b8b445fdddd3"
+    },
+    {
+      "path": "synthetic-seed-6055973/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "a60f13152a64d4673f7ec0380bb07cdc4d0c19857b4c1ea081d699f665e6a474"
+    },
+    {
+      "path": "synthetic-seed-6055973/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "1dbda3dda9f08021de1d7ab623e7c28c88f9bd205e11e251bf9e29e3ce701682"
+    },
+    {
+      "path": "synthetic-seed-6055973/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "675bbe9352fa405c0ddc22ba0432f4e4c598a2beee6bdbbf3f844828ff6acf43"
+    },
+    {
+      "path": "synthetic-seed-6055973/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "841603f7edf04d77cd0f7f257af93af80cf42efe813b1304cde4ef782169c79a"
+    },
+    {
+      "path": "synthetic-seed-6055973/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "b15ef9df47cafbf1e8f1b790c84d1ada28347bdf1033d5a91390f90c726f8efe"
+    },
+    {
+      "path": "synthetic-seed-6055973/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "3369a80655539fee59ad8e62912b6cf78536adf671104ef6ff3fe45cc3edf1f4"
+    },
+    {
+      "path": "synthetic-seed-6055973/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "3285403bcf6d71fc0c7d59db57f5ff2036c0c19950a2a2607c04b6705b5557f4"
+    },
+    {
+      "path": "synthetic-seed-6055973/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "22182201e37693206dff49849b349312ac5b3cc97bc61ab5dbaac0d03093e97a"
+    },
+    {
+      "path": "synthetic-seed-6055973/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "5ad11fb1823b66a4b40953f1768f45245fe9cf9f35b5f0f46674f8e57a942e26"
+    },
+    {
+      "path": "synthetic-seed-6055973/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6055973",
+      "split": "train",
+      "tensor_sha256": "af804e389c454844a1aea8f410536ec15537c74d8a4f3d7cf02b4f975df916c1"
+    },
+    {
+      "path": "synthetic-seed-6160702/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "638a001dbcfe4da1d6031d4f0988f92bf5ea68eca7737fd8384146fa15dafeee"
+    },
+    {
+      "path": "synthetic-seed-6160702/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "32a37d7b9ff996665f91062229d6b4c9ef92776fea60dcc9ebe4e24a558b200a"
+    },
+    {
+      "path": "synthetic-seed-6160702/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "ba3f93bb45d208d707ffbbb481cafa089766de7ce8adb0f3ca9d48f95aa4da1c"
+    },
+    {
+      "path": "synthetic-seed-6160702/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "d6a53cc99edd2df31657af5810d8ffdacd544d65e82eb7acb3510dd4058dde94"
+    },
+    {
+      "path": "synthetic-seed-6160702/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "a1e47fc6c55cad3a5203056c5db6cf0eb02e527d00e0a75e55a043c3ac312d1a"
+    },
+    {
+      "path": "synthetic-seed-6160702/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "4f24923355cc16169e6c5a582ba8db271f1de90c52d5d703accacde31e387144"
+    },
+    {
+      "path": "synthetic-seed-6160702/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "725dc436e5ef3e052ae85698d0b562c19eca4ed2c08e3149be5e9051c62a7e66"
+    },
+    {
+      "path": "synthetic-seed-6160702/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "7318187a874466612ce5eac48d9aa42116298a66a062c9d7987f2199f7e66967"
+    },
+    {
+      "path": "synthetic-seed-6160702/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "596f4b0a4a31f085f45e0b163f2a55ff80233f6d019bb219da60a234ef87861d"
+    },
+    {
+      "path": "synthetic-seed-6160702/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "250083a08dd85b7e2522c1cc667eca0f4fab3bbda09cb1c3896271ef4f930679"
+    },
+    {
+      "path": "synthetic-seed-6160702/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "861d213154b0a7d0f0c40d1d9eee4edd7c35acd0dc6e399180e5a447c592c144"
+    },
+    {
+      "path": "synthetic-seed-6160702/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6160702",
+      "split": "val",
+      "tensor_sha256": "bb3613d3f713efd3af55733f55f433bf518292fd349ef63f235fbbd8794c8693"
+    },
+    {
+      "path": "synthetic-seed-6265431/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "74d66a16d7840e03d36b54cde35a81ac7b5cd72feb8b3f8be0137cad54a8ad89"
+    },
+    {
+      "path": "synthetic-seed-6265431/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "d717cde1ba5b5d76ad4f906171fce00b5acca3ee8e2bd8fcc0430d1db29bed20"
+    },
+    {
+      "path": "synthetic-seed-6265431/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "9244d8c3b764743a9516019e9ef38675eae086e402605b95e5a5425c2966b3a0"
+    },
+    {
+      "path": "synthetic-seed-6265431/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "3ef34cecb4162d0800d50bd61562b701eecb7f35731cf2df2f3c7cf4081d6e0f"
+    },
+    {
+      "path": "synthetic-seed-6265431/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "64dfc007bb18006a9c713478aa66604b13173aed5ef8d922deb172498c7046ba"
+    },
+    {
+      "path": "synthetic-seed-6265431/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "74e1ce30796ab0fe8174da3e01876dcdaa4c4012ac682abf0c7a18e82dfcfdc6"
+    },
+    {
+      "path": "synthetic-seed-6265431/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "9e4e307bf44a8789dd9d0e7364f990641c30df16791e82956026cce646943a9e"
+    },
+    {
+      "path": "synthetic-seed-6265431/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "dffd2b1abbb09e5e6eca6a87ed9d867dfe5b38d9d285d3928659debce3cce987"
+    },
+    {
+      "path": "synthetic-seed-6265431/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "a820019b6dc6a2eec9bdf7f3101af1f921d26dcbb4974bb5fd0b576f21f6e98f"
+    },
+    {
+      "path": "synthetic-seed-6265431/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "4a0b0afd1dbf858d0ee5036b6ed9c27ca79c21d3cefc8f31de43a124cb1dc0da"
+    },
+    {
+      "path": "synthetic-seed-6265431/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "5cfa6da7f197ce14b6869fd70a9149c8d33a7240f82871120e0f8844ecac6a9d"
+    },
+    {
+      "path": "synthetic-seed-6265431/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6265431",
+      "split": "train",
+      "tensor_sha256": "239c79d6e18c1905ac187fed4a9dfc6e3b9f08627812644cff1839e4103a61eb"
+    },
+    {
+      "path": "synthetic-seed-6370160/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "77b84abeef5fd696088549eb5fab6134970bdb10520937b06ce07d17bcb206f3"
+    },
+    {
+      "path": "synthetic-seed-6370160/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "188c4124f930aabff26dd6718ca08fe421f4f50338c5febe72d75f37dfd43b78"
+    },
+    {
+      "path": "synthetic-seed-6370160/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "7e75927798ce3d0cba16407fea90249592a8403ff44de3cfcf15922031ead7b8"
+    },
+    {
+      "path": "synthetic-seed-6370160/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "dea478f0c3c0ead414f3bec8e5106ec2d61bc0923d04a6ae224ea99302afd057"
+    },
+    {
+      "path": "synthetic-seed-6370160/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "540999dd7ac5ac260be280c96c57923c370fcaf6a6ccf00ee83442a894566cd7"
+    },
+    {
+      "path": "synthetic-seed-6370160/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "05c2234d4412f2d8ee63bc70384ce02ec447e35354d84b7ff2a3da0451349dc0"
+    },
+    {
+      "path": "synthetic-seed-6370160/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "a30be8cba4447af27756bf23042ccf4f82a58cc28b24b87144cd5d86a0fab43d"
+    },
+    {
+      "path": "synthetic-seed-6370160/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "d1f9065fcd335db2df9b654f5d8bc0dca5378fdbc43e88e9bf4bf5d3fcdbbe46"
+    },
+    {
+      "path": "synthetic-seed-6370160/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "0ec0c5b997dbc0eb977cdab386a350b5293eb87255fce7a9e0dcc1241fd5d059"
+    },
+    {
+      "path": "synthetic-seed-6370160/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "63d1fb46aaa017f7438010c1d4df1e52e2918e7c96edb0c7f34d93ddb60227f6"
+    },
+    {
+      "path": "synthetic-seed-6370160/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "a2c269550677b2c22874acaa459d22d24320d1b67365845e68f436a2ef8a350b"
+    },
+    {
+      "path": "synthetic-seed-6370160/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6370160",
+      "split": "train",
+      "tensor_sha256": "ffc9154866af6def82ef024bd6519273ac32f8daa719364dcf8ec6732702f231"
+    },
+    {
+      "path": "synthetic-seed-6474889/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "f0eb2b8de177698149969c33bfb5be58022dc09fa0bcd695cf84b5f52edd8221"
+    },
+    {
+      "path": "synthetic-seed-6474889/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "70323196065078ad089665844171fed8d1a7bf9fb6f36e80c82ed1d03d5369e3"
+    },
+    {
+      "path": "synthetic-seed-6474889/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "03fca69afc9fad2ef2ff0e3de0966f22250e6084a90cd8745a883c49938cc150"
+    },
+    {
+      "path": "synthetic-seed-6474889/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "9e1b9cbf45fd2f299000007edca34393f19a0046a1a6aed86fe9963f3eba4365"
+    },
+    {
+      "path": "synthetic-seed-6474889/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "817fd821489fb60ed114f5853476ac6158beeca8a23766d5ee71c63dbe0deb0e"
+    },
+    {
+      "path": "synthetic-seed-6474889/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "58afcf53e00c823ac1a324acb4bf89cfbc7915f59a1361333af0fa116a9cf687"
+    },
+    {
+      "path": "synthetic-seed-6474889/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "92607a42c42e9ffb7249f37c98e75d9f2bff9494ce9a8512eec377ceb74325be"
+    },
+    {
+      "path": "synthetic-seed-6474889/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "13040c1d266dfd436599f20a190b54de6c7b8848b88cc6c8798424933d744b59"
+    },
+    {
+      "path": "synthetic-seed-6474889/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "992b2f87f44f826eba664102dfe528c34e42dad2bc1038756e58f07b16deaf40"
+    },
+    {
+      "path": "synthetic-seed-6474889/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "8607f0c434057c7df4455e52cb1cd0b73b30710c8a81ae998e34a45e5edeecce"
+    },
+    {
+      "path": "synthetic-seed-6474889/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "247ad719fcece9840191ebaff2418f7f528d0290d4c8a564a90a26efde36b57c"
+    },
+    {
+      "path": "synthetic-seed-6474889/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6474889",
+      "split": "train",
+      "tensor_sha256": "b4b8bf80e3aea421346eea45deec6ffb6da6e325131b8d64cea5618dcb6cf827"
+    },
+    {
+      "path": "synthetic-seed-6579618/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "155a6aee4f45a5de8ffc26c830f6fe99c489a10cd0923448258f0cfcd14ebd39"
+    },
+    {
+      "path": "synthetic-seed-6579618/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "4856930101945b4ad6f0d41e0d6a7619885c65db932ad07364f351b4f991c8ca"
+    },
+    {
+      "path": "synthetic-seed-6579618/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "81d7562b94171ea0463de4757704bbc866b62fd212dc1a3758afac3834106ad1"
+    },
+    {
+      "path": "synthetic-seed-6579618/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "86f2a6c5c9fcd71dbb8752ae869e6834320d032d8d7bfef3a7a5995ce7d5ddac"
+    },
+    {
+      "path": "synthetic-seed-6579618/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "85430227e693891f2e22318a52b8527da0d6ade6f1e0a8543dd61096d0e42d12"
+    },
+    {
+      "path": "synthetic-seed-6579618/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "c6ef7aedbb7d37179daf549cc297e6390755c4f009e4bae7902739639b1a3f0a"
+    },
+    {
+      "path": "synthetic-seed-6579618/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "d6c05367e1c9879b49da38ebd47857a328838ac6bcdfd7f76d3d3a30ce1732d3"
+    },
+    {
+      "path": "synthetic-seed-6579618/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "8c4639fb3d49c0501750719cf0a1c178c409e6a7bb73bca351ac9560706b57f6"
+    },
+    {
+      "path": "synthetic-seed-6579618/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "fa579039f1fbb0f9172a69a55cec3176f619fc0329a12be13f3add061a4632a6"
+    },
+    {
+      "path": "synthetic-seed-6579618/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "0d50703546530cc749cf0fb27e6e805faa736050eb084c4c4c28bf10e8cc46e7"
+    },
+    {
+      "path": "synthetic-seed-6579618/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "a53d3fe10959756675bf0b0f9d9c1029f885c4c258cb14578c1d53c53fdc77fb"
+    },
+    {
+      "path": "synthetic-seed-6579618/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6579618",
+      "split": "train",
+      "tensor_sha256": "2e7b73d67df476afecff482d12c7c71fb20eb6283e64c70796a924d87e9cfe5f"
+    },
+    {
+      "path": "synthetic-seed-6684347/000-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "286f9af9a937eacd43dc71d280a287282ced086d660896e3133533d7fb30937d"
+    },
+    {
+      "path": "synthetic-seed-6684347/001-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "5de22ffa277dab733c66f0808152d1e340669028f5cc44b8602eecf6003acbf3"
+    },
+    {
+      "path": "synthetic-seed-6684347/002-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "94d6bc7269c7a6f50fa8c5475a296d407ea59e884016f8618c5c69c9632090ae"
+    },
+    {
+      "path": "synthetic-seed-6684347/003-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "dc370155cd12bf42fe4d9e6beee7ea61005b383f30061ae040a96462d76f56d7"
+    },
+    {
+      "path": "synthetic-seed-6684347/004-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "17061f869f0742a164d6eeffa7ec4e06f16e3a157965ba0326791e9632d4ade5"
+    },
+    {
+      "path": "synthetic-seed-6684347/005-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "48e85cf74c687bcee947e85ca5f31e0eaad399c569c2feefd3bf913d145bd34d"
+    },
+    {
+      "path": "synthetic-seed-6684347/006-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "02ae30837936455fe413d51bfa5945edb8f6b09369cd7e09b00dd9c184b40949"
+    },
+    {
+      "path": "synthetic-seed-6684347/007-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "2142941677d0f806c66ea39fe526bb063a69589f1939e4d7b6defbe37ee9e6cf"
+    },
+    {
+      "path": "synthetic-seed-6684347/008-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "1c9be97c880aeb04ff023b100a606bf3083c59266997cc1d74c7c66d013b11ed"
+    },
+    {
+      "path": "synthetic-seed-6684347/009-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "c0b1105279f8158faa443a99ff2f92a16f18bace0ceaa40b9a9c97c27378c9f3"
+    },
+    {
+      "path": "synthetic-seed-6684347/010-0.png",
+      "label": 0,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "641fd4585e3e5a4a7a1beb20bf66a85bc32513f9b91d9cd48d70c46a0a1dcf31"
+    },
+    {
+      "path": "synthetic-seed-6684347/011-1.png",
+      "label": 1,
+      "group": "synthetic-seed-6684347",
+      "split": "test",
+      "tensor_sha256": "d83d8cb30d697e052ec4013ead634f5948af01f356919e913fae5f5c058f0c27"
+    }
+  ],
+  "parity_max_absolute_error": 1.1920928955078125e-07,
+  "generator": {
+    "synthetic_demo": true,
+    "generator": "generate_demo.py",
+    "generator_sha256": "347eb9d410ae9773b309c11c2eab1e7f0adfb78ecb31bcd068814b2742f8c770",
+    "seed": 86420,
+    "groups": 64,
+    "per_group": 12,
+    "group_seed_rule": "seed + group_index * 104729; separate numpy generator per group",
+    "fonts": [
+      {
+        "file": "arial.ttf",
+        "sha256": "edfbd22a3d088fc2f5d7c79b8c9c732df6dc878a60f0a80be0f92a3c7a634404"
+      },
+      {
+        "file": "arialbd.ttf",
+        "sha256": "4d59199834e7439c67ea4949407639961060b21b173833f566eb60ac6fd8f5af"
+      },
+      {
+        "file": "consola.ttf",
+        "sha256": "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179"
+      },
+      {
+        "file": "tahoma.ttf",
+        "sha256": "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1"
+      }
+    ],
+    "limitation": "Artificial text/noise only. No game frames, capture artifacts or evidence of gameplay accuracy."
+  }
+}
