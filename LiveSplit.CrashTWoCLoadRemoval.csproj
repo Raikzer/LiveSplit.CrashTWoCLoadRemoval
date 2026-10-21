@@ -83,6 +83,7 @@
     <Compile Include="Training\TrainingRecorder.cs" />
     <Compile Include="Training\TrainingCaptureForm.cs" />
     <Compile Include="VulkanLoadingClassifier.cs" />
+    <Compile Include="OcrNativeRuntime.cs" />
     <Compile Include="CrashTWoCLoadRemovalComponent.cs" />
     <Compile Include="CrashTWoCLoadRemovalComponent.MachineLearning.cs">
       <DependentUpon>CrashTWoCLoadRemovalComponent.cs</DependentUpon>

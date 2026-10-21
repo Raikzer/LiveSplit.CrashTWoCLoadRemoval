@@ -39,7 +39,7 @@ namespace LiveSplit.CrashTWoCLoadRemover
 
         public Version Version
         {
-            get { return Version.Parse("2.7"); }
+            get { return Version.Parse("2.0"); }
         }
     }
 }

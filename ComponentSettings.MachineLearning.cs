@@ -41,7 +41,7 @@ namespace LiveSplit.UI.Components
             };
             page.Controls.Add(browse);
             page.Controls.Add(new Label { Text = "Loading confidence threshold:", AutoSize = true, Location = new Point(16, 164) });
-            mlThresholdBox = new NumericUpDown { Name = "MlConfidenceThreshold", Minimum = 0.001m, Maximum = 1m, DecimalPlaces = 3, Increment = 0.005m, Value = 0.52m, Location = new Point(240, 160), Size = new Size(85, 24) };
+            mlThresholdBox = new NumericUpDown { Name = "MlConfidenceThreshold", Minimum = 0.001m, Maximum = 1m, DecimalPlaces = 3, Increment = 0.005m, Value = 0.50m, Location = new Point(240, 160), Size = new Size(85, 24) };
             page.Controls.Add(mlThresholdBox);
             mlConfidenceLabel = new Label { Name = "MlConfidence", Text = "Confidence: no prediction yet", AutoSize = true, Location = new Point(16, 201) };
             mlStatusLabel = new Label { Name = "MlStatus", Text = "Select the experimental platform to initialize Vulkan.", Location = new Point(16, 228), Size = new Size(424, 56) };

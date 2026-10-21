@@ -1,5 +1,8 @@
 # LiveSplit.CrashTWoCLoadRemoval
 
+For the **2.0 pre-release** component ZIP and runtime prerequisites, see
+[RELEASE-2.0.md](RELEASE-2.0.md).
+
 This local build adds **ENG/PS2 experimental ML**, a single-confidence loading-text
 classifier using Vulkan compute shaders. See [BUILDING-ML.md](BUILDING-ML.md) for
 building/deployment and [ml/README.md](ml/README.md) for the training pipeline.

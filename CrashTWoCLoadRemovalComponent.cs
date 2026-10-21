@@ -117,6 +117,7 @@ namespace LiveSplit.UI.Components
 
         private void InitTesseract()
         {
+            OcrNativeRuntime.EnsureLoaded();
             curLanguage = settings.platform;
             if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX&GC")
             {
