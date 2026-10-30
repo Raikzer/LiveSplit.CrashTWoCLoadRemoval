@@ -10,7 +10,10 @@ from model import load_pixels
 SPLITS = ("train", "val", "test")
 
 
-def read_dataset(manifest, seed=1234, *, temporal_holdout=False, temporal_gap_frames=90):
+def read_dataset(manifest, seed=1234, *, temporal_holdout=False, temporal_gap_frames=90,
+                 negative_only_test=False):
+    if negative_only_test and temporal_holdout:
+        raise ValueError("negative_only_test cannot be combined with temporal_holdout")
     if isinstance(temporal_gap_frames, bool) or not isinstance(temporal_gap_frames, int) or temporal_gap_frames < 1:
         raise ValueError("temporal_gap_frames must be a positive integer")
     manifest = Path(manifest).resolve()
@@ -51,6 +54,8 @@ def read_dataset(manifest, seed=1234, *, temporal_holdout=False, temporal_gap_fr
             raise ValueError("Every sample needs a recording/session group")
         if row["split"] not in ("", *SPLITS):
             raise ValueError("Split must be train, val, test or omitted")
+        if negative_only_test and not row["split"]:
+            raise ValueError("Negative-only test requires explicit train, val, test split on every row")
         if str(path).casefold() in paths:
             raise ValueError("Duplicate image path: " + str(path))
         paths[str(path).casefold()] = row
@@ -93,7 +98,10 @@ def read_dataset(manifest, seed=1234, *, temporal_holdout=False, temporal_gap_fr
     indices = {split: np.array([i for i, row in enumerate(rows) if row["split"] == split], dtype=np.int64)
                for split in SPLITS}
     for split, ids in indices.items():
-        if {labels[i] for i in ids} != {0, 1}:
+        if negative_only_test and split == "test":
+            if {labels[i] for i in ids} != {0}:
+                raise ValueError("Negative-only test split must contain negatives only and cannot be empty")
+        elif {labels[i] for i in ids} != {0, 1}:
             raise ValueError(split + " split must contain both classes")
     if temporal_holdout:
         for earlier, later in zip(SPLITS, SPLITS[1:]):

@@ -4,11 +4,18 @@ The model returns one floating confidence in `[0,1]` for the English **LOADING**
 text. It does not recognize or return text. The native experimental runtime uses
 Vulkan; Python/PyTorch here are offline training and verification tools.
 
-The included `artifacts/demo/loading-text.twml` is **synthetic demo only**. No real
-gameplay images were supplied. Its metrics describe artificial text on generated
-backgrounds and do not establish accuracy on Crash: The Wrath of Cortex. Do not
-use its score as evidence of reliable timing. A sigmoid confidence is not a
-calibrated probability.
+Source builds default to `models/eng-ps2-hud-fix/loading-text.twml`, a custom
+offline fine-tune on reviewed English PS2 captures at fixed threshold **0.800**.
+Its [model card](models/eng-ps2-hud-fix/README.md) records training provenance,
+HUD regression results and limited, reused holdouts. The test recordings contain
+no positives, so positive test recall is unavailable. The generic `train.py`
+instructions below do not reproduce these custom fine-tuned weights; the dataset
+and custom run artifacts remain private.
+
+The separate `artifacts/demo/loading-text.twml` remains **synthetic demo only**;
+use `Build.ps1 -TrainDemo` to select it explicitly. Its metrics describe artificial
+text on generated backgrounds and do not establish gameplay accuracy. A sigmoid
+confidence is not a calibrated probability.
 
 ## Local setup (Windows, Python 3.10, CPU)
 
@@ -114,6 +121,55 @@ merging; the preparation command rejects a `split` column. The training loader
 also rejects exact duplicate paths and equal preprocessed image content even
 within one split, so train from the cleaned manifest.
 
+### Explicit independent negative-only test
+
+If only two independent recording groups contain positives, use the explicit
+`--negative-only-test` protocol. Assign the first both-class recording to `train`,
+the second both-class recording to `val`, and independent negative-only recordings
+to `test`. Supply a `split` on every row of the cleaned manifest. At least three
+original recording groups are required; a group cannot span splits, training and
+validation must each contain both classes, and test must contain only negatives.
+The flag cannot be combined with `--temporal-holdout`. Never rename portions of
+one recording as independent groups. Default training still requires both classes
+in every split.
+
+For example, after preparing and assigning explicit splits in
+`C:\captures\all-sessions\training-data.csv`, run:
+
+```powershell
+.\.venv\Scripts\python.exe train.py C:\captures\all-sessions\training-data.csv --output artifacts\all-sessions --epochs 30 --patience 5 --seed 1234 --negative-only-test --initial-model artifacts\previous\loading-text.twml
+```
+
+`--initial-model` is optional. It loads the exact version-1 `.twml` weights before
+creating a new Adam optimizer; it does not resume optimizer state. Header, shape,
+file length and finite weights are validated by `model.read_model`. The caller
+must verify that **every recording used by the initial model belongs exclusively
+to the current training split**, including recordings used for that model's
+validation, test, or experiment selection. The binary cannot establish its own
+data provenance. Use the previous run's metadata and source records to check
+this; also remove duplicate model inputs before assigning the new splits.
+Metadata records `training.initialization` and `training.initial_model_sha256`.
+
+Checkpoint and threshold selection still use validation only. Independent test
+recordings measure negative accuracy, specificity, false-positive rate, and
+confusion counts. There is **no held-out test recall**: `recall`, `f1` and
+`balanced_accuracy` are JSON `null`. Precision is `0` when false positives exist
+and `null` when no samples are predicted positive. Validation recall is measured
+on the same data used to select the model and threshold; it is not independent
+test recall. Many adjacent positive frames from a single loading event provide
+weak positive coverage, even when the frame count looks substantial. Collect
+additional independent positive events and recordings before drawing conclusions
+about missed loading screens.
+
+`evaluation_protocol.mode` is
+`independent_recording_holdout_negative_only_test`. Metadata records the actual
+unique recording count, `test_class_coverage`, `validation_class_counts`, and the
+explicit recall limitation. Negative parity fixtures come from test and positive
+fixtures come from validation. Each fixture's `source_split` is recorded in
+`parity-samples/expected.json` and `loading-text.json`'s `parity_samples`; parity
+agreement establishes runtime numerical agreement and supplies no positive test
+coverage.
+
 ### Explicit single-session temporal holdout
 
 For exploratory training from exactly one real recording, explicitly opt into
@@ -173,7 +229,8 @@ The output contains:
 - `loading-text.json`: sample/tensor hashes, group membership, seeds, environment,
   generator provenance if present, threshold and confusion metrics on each split.
 - `best.pt` and `history.json`: local checkpoint and training/validation losses.
-- `parity.npz`: held-out CHW float32 tensors and CPU reference confidences.
+- `parity.npz`: held-out CHW float32 tensors and CPU reference confidences;
+  negative-only test runs include validation positives as described above.
 - `parity-samples/`: corresponding raw PNGs, `.npy` input tensors and expected JSON.
 
 Use a fresh output directory for each experiment. Keep the held-out recordings
@@ -231,4 +288,6 @@ The script calls the native ABI, compares held-out tensor confidences within an
 absolute tolerance of `0.0002`, and fails if Vulkan initialization or prediction
 fails. The `.png`/`.npy` pairs can separately verify managed ROI preprocessing.
 Generated datasets, virtual environments and training checkpoints are ignored by
-Git; only the small demo model, metadata, history and parity fixtures are included.
+Git. The reviewed-capture model includes only its binary, compact public metadata
+and model card; raw captures and private run artifacts are excluded. The separate
+demo also includes its metadata, history and parity fixtures.

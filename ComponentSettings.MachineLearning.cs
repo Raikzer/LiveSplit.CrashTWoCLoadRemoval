@@ -29,7 +29,7 @@ namespace LiveSplit.UI.Components
             var page = new TabPage("Experimental ML") { AutoScroll = true, BackColor = SystemColors.Control };
             tabControl1.TabPages.Add(page);
             page.Controls.Add(new Label { Text = "Vulkan loading-text detector", AutoSize = true, Location = new Point(16, 18) });
-            page.Controls.Add(new Label { Text = "Select ENG/PS2 experimental ML on the Setup tab.\nDemo weights use synthetic images. Train on game captures before timing.", Location = new Point(16, 45), Size = new Size(426, 42) });
+            page.Controls.Add(new Label { Text = "Select ENG/PS2 experimental ML on the Setup tab.\nBundled model uses reviewed game captures; validation is limited.", Location = new Point(16, 45), Size = new Size(426, 42) });
             page.Controls.Add(new Label { Text = "Model file (relative paths start in Components):", AutoSize = true, Location = new Point(16, 99) });
             mlModelPathBox = new TextBox { Name = "MlModelPath", Text = @"ML\loading-text.twml", Location = new Point(16, 120), Size = new Size(340, 22) };
             page.Controls.Add(mlModelPathBox);
@@ -41,7 +41,7 @@ namespace LiveSplit.UI.Components
             };
             page.Controls.Add(browse);
             page.Controls.Add(new Label { Text = "Loading confidence threshold:", AutoSize = true, Location = new Point(16, 164) });
-            mlThresholdBox = new NumericUpDown { Name = "MlConfidenceThreshold", Minimum = 0.001m, Maximum = 1m, DecimalPlaces = 3, Increment = 0.005m, Value = 0.50m, Location = new Point(240, 160), Size = new Size(85, 24) };
+            mlThresholdBox = new NumericUpDown { Name = "MlConfidenceThreshold", Minimum = 0.001m, Maximum = 1m, DecimalPlaces = 3, Increment = 0.005m, Value = 0.80m, Location = new Point(240, 160), Size = new Size(85, 24) };
             page.Controls.Add(mlThresholdBox);
             mlConfidenceLabel = new Label { Name = "MlConfidence", Text = "Confidence: no prediction yet", AutoSize = true, Location = new Point(16, 201) };
             mlStatusLabel = new Label { Name = "MlStatus", Text = "Select the experimental platform to initialize Vulkan.", Location = new Point(16, 228), Size = new Size(424, 56) };

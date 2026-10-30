@@ -1,0 +1,245 @@
+{
+  "format_version": 1,
+  "metadata_scope": "compact public model card; private captures, per-frame manifests and run artifacts excluded",
+  "synthetic_demo": false,
+  "synthetic_demo_only": false,
+  "intended_use": "Experimental English PS2 LOADING-text classification on the raw capture ROI; limited validation",
+  "model_sha256": "2c167317cf777da5f23dd9a5a659279466a3394650c450d58a96f902e546994d",
+  "model_bytes": 41892,
+  "recommended_threshold": 0.8,
+  "deployment_threshold": 0.8,
+  "threshold_selection": "user_fixed",
+  "seed": 1234,
+  "best_epoch": 3,
+  "best_validation_loss": 3.8490878068841994e-05,
+  "metrics": {
+    "train": {
+      "count": 74027,
+      "threshold": 0.8,
+      "tp": 1194,
+      "tn": 72733,
+      "fp": 98,
+      "fn": 2,
+      "accuracy": 0.998649141529442,
+      "precision": 0.9241486068111455,
+      "recall": 0.9983277591973244,
+      "f1": 0.959807073954984,
+      "balanced_accuracy": 0.9984910891660168
+    },
+    "val": {
+      "count": 12799,
+      "threshold": 0.8,
+      "tp": 21,
+      "tn": 12778,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "test": {
+      "count": 14316,
+      "threshold": 0.8,
+      "tp": 0,
+      "tn": 14316,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "specificity": 1.0,
+      "false_positive_rate": 0.0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "balanced_accuracy": null
+    }
+  },
+  "split_summary": {
+    "train": {
+      "samples": 74027,
+      "positive": 1196,
+      "negative": 72831,
+      "recordings": 12
+    },
+    "val": {
+      "samples": 12799,
+      "positive": 21,
+      "negative": 12778,
+      "recordings": 3
+    },
+    "test": {
+      "samples": 14316,
+      "positive": 0,
+      "negative": 14316,
+      "recordings": 2
+    }
+  },
+  "dataset_summary": {
+    "independent_recordings": 17,
+    "globally_deduplicated_model_inputs": 101142,
+    "private_dataset": true,
+    "validation_positive_events": 1
+  },
+  "training": {
+    "method": "custom offline classifier-only fine-tune; generic train.py does not reproduce these weights",
+    "initialization": "exported_model",
+    "initial_model_sha256": "28698bc1a0d597426ed143783220aa46fd5ceb37f0d80d7ed51bec411fe7b50c",
+    "epochs_requested": 8,
+    "epochs_completed": 6,
+    "patience": 3,
+    "batch_size": 64,
+    "optimizer": "Adam",
+    "learning_rate": 0.0001,
+    "replay_per_batch": 4,
+    "trainable_parameters": [
+      "classifier.weight",
+      "classifier.bias"
+    ],
+    "frozen_parameters": [
+      "conv1.bias",
+      "conv1.weight",
+      "conv2.bias",
+      "conv2.weight"
+    ],
+    "normal_sampling": "one randperm without replacement per epoch; all unique TRAIN indices",
+    "replay_sampling": "seeded shuffled cycles of the three designated TRAIN hard negatives",
+    "positive_class_weight_source": "normal TRAIN negative/positive ratio; excludes replay duplication",
+    "training_loss": "class-weighted BCEWithLogitsLoss on normal+replay plus logit_anchor * MSE on original-TRAIN normal samples; classifier-only Adam update",
+    "validation_loss": "unweighted unaugmented BCEWithLogitsLoss",
+    "checkpoint_eligibility": {
+      "hard_negative_confidence_strictly_below": 0.2,
+      "validation_threshold": 0.8,
+      "tp": 21,
+      "fn": 0,
+      "fp": 0
+    },
+    "checkpoint_selection": "lowest validation BCE among eligible trained checkpoints",
+    "augmentation": "existing train.augment on TRAIN only, including replay: translation +/-2.88 px, gain 0.8-1.2, Gaussian noise sigma 0.012",
+    "convolution_weights_bitwise_equal_to_initial": true,
+    "logit_anchor": {
+      "coefficient": 0.1,
+      "loss": "mean squared student/initial-teacher logits",
+      "teacher": "detached frozen clones of initial classifier weight and bias",
+      "features": "one frozen convolution pass on the same augmented batch for teacher and student",
+      "mask": "normal samples from original 11 TRAIN groups only; excludes entire migrated group and all appended replay",
+      "source_split": "train",
+      "normal_samples_per_epoch": 67760,
+      "validation_or_test_teacher_targets": false
+    },
+    "custom_retrainer_sha256": "585fecf238fc4220a5a2d17fa551f88a2982e080bd5822954f8e5a193f961fdc",
+    "reproducibility": "The reviewed dataset and custom run artifacts are private; this repository supplies inference weights and provenance, not a publicly reproducible training run."
+  },
+  "lineage": {
+    "initial_model_sha256": "28698bc1a0d597426ed143783220aa46fd5ceb37f0d80d7ed51bec411fe7b50c",
+    "earlier_ancestor_model_sha256": "e43bcd738938511ffd27a45333e3b1f024aca62659ad8541172cde3aeac99e43",
+    "prior_gradient_sources": "current TRAIN recordings",
+    "prior_checkpoint_selection_sources": "current reused VAL recordings",
+    "current_gradient_sources": "current TRAIN, including migrated prior TEST recording",
+    "current_checkpoint_selection_sources": [
+      "current reused VAL",
+      "three designated TRAIN hard negatives"
+    ],
+    "reused_validation": true,
+    "reused_test": true,
+    "fresh_benchmark": false,
+    "migrated_previous_test_count": 6267,
+    "migrated_recording": "Entire 6267-input HUD recording moved from prior TEST to current TRAIN after false-positive inspection",
+    "rejected_validation_guided_trials": [
+      {
+        "method": "full-network updates",
+        "epochs_completed": 4,
+        "test_evaluated": false,
+        "reason": "regressed validation detections"
+      },
+      {
+        "method": "classifier-only with two replay entries",
+        "epochs_completed": 8,
+        "test_evaluated": false,
+        "reason": "missed the 0.2 hard-negative confidence margin"
+      }
+    ]
+  },
+  "evaluation_protocol": {
+    "mode": "warm_retraining_reused_recording_holdouts_negative_only_test",
+    "independent_recordings": 17,
+    "fresh_benchmark": false,
+    "test_class_coverage": {
+      "negative": 14316,
+      "positive": 0
+    },
+    "test_used_for_checkpoint_or_threshold_selection": false,
+    "validation_class_counts": {
+      "negative": 12778,
+      "positive": 21
+    },
+    "limitation": "Warm retraining from the all-session checkpoint. Its gradient sources are now TRAIN, but its checkpoint was selected on the same reused VAL recordings. One prior TEST recording (all 6267 examples) was migrated into TRAIN after inspecting its false positives. The two remaining negative-only TEST recordings were evaluated previously and are reused, so this is not a fresh benchmark. TEST was not inferred during this run until checkpoint selection was complete. No held-out positive TEST recall is available. The user fixed threshold 0.8; there was no threshold search. Three TRAIN hard negatives and VAL determine eligibility; lowest unweighted VAL BCE selects among eligible trained epochs. Only the classifier is trained; both convolution layers remain bitwise equal to initialization. The logit anchor uses the original classifier and the same augmented frozen features only on normal samples from the original 11 TRAIN groups, excluding the entire migrated group and replay entries."
+  },
+  "hard_negative_regression": {
+    "training_regression": true,
+    "threshold": 0.8,
+    "target_confidence_strictly_below": 0.2,
+    "samples": [
+      {
+        "sample": 1,
+        "previous_confidence": 0.9412255883216858,
+        "confidence_vulkan": 0.10554437339305878,
+        "tensor_sha256": "f4f224863f8523de2c99d650e4139691b5da661e7801ef44ae456fea2396d711"
+      },
+      {
+        "sample": 2,
+        "previous_confidence": 0.9524102807044983,
+        "confidence_vulkan": 0.1885557472705841,
+        "tensor_sha256": "2b57254c7b3ce1012e2596dae4a4a9ac47ef2bae969eb670a1c4cf81717862e0"
+      },
+      {
+        "sample": 3,
+        "previous_confidence": 0.8987413048744202,
+        "confidence_vulkan": 0.12196747958660126,
+        "tensor_sha256": "bc12e186513cd886ec881e090413d4192421834e0cd6972ed4798710abd2e640"
+      }
+    ],
+    "whole_migrated_recording_metrics": {
+      "count": 6267,
+      "threshold": 0.8,
+      "tp": 0,
+      "tn": 6267,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "specificity": 1.0,
+      "false_positive_rate": 0.0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "balanced_accuracy": null
+    }
+  },
+  "runtime_verification": {
+    "device": "AMD Radeon RX 6800",
+    "production_wrapper_bitness_passed": [
+      "x86",
+      "x64"
+    ],
+    "verification_inputs": 33382,
+    "max_vulkan_cpu_absolute_error": 8.698552846908569e-07,
+    "validation_requested": true,
+    "checkpoint_frozen_before_remaining_test_evaluation": true,
+    "remaining_test_used_for_selection": false,
+    "scope": "Numerical inference agreement, not an accuracy benchmark on new recordings"
+  },
+  "label_review": {
+    "sampled_nominal_false_positives_with_visible_loading": 5,
+    "remaining_gameplay_false_positive_observed": 1,
+    "faint_positive_false_negatives_observed": 2,
+    "limitation": "Five inspected label-0 cases visibly contain LOADING; no blanket conclusion or relabeling claim about all other nominal false positives is warranted."
+  },
+  "limitations": [
+    "Reused validation and negative-only test after prior model selection and two validation-guided rejected trials; not a fresh benchmark.",
+    "Validation positives are 21 adjacent frames from one contiguous loading event.",
+    "Remaining test has no positives; positive test recall, F1 and balanced accuracy are null.",
+    "The designated HUD recording and replay examples are training data, so their results are training regressions.",
+    "Full TRAIN retains 98 nominal false positives and 2 false negatives at threshold 0.8; some reviewed negative labels are erroneous.",
+    "Performance on new recordings, capture settings and platforms is unestablished; confidence is not a calibrated probability."
+  ]
+}

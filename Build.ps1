@@ -2,7 +2,7 @@
 param(
     [string]$LiveSplitRoot = (Join-Path $PSScriptRoot '..\LiveSplit'),
     [string]$PackagesRoot = (Join-Path $PSScriptRoot '..\packages'),
-    [string]$ModelPath = (Join-Path $PSScriptRoot 'ml\artifacts\demo\loading-text.twml'),
+    [string]$ModelPath = (Join-Path $PSScriptRoot 'ml\models\eng-ps2-hud-fix\loading-text.twml'),
     [string]$MSBuild,
     [string]$Dotnet,
     [string]$Python = 'python',
@@ -25,6 +25,9 @@ if (-not $MSBuild) {
 if (-not $MSBuild -or -not (Test-Path -LiteralPath $MSBuild)) { throw 'Visual Studio 2022 C++ tools and MSBuild are required.' }
 
 if ($TrainDemo) {
+    if (-not $PSBoundParameters.ContainsKey('ModelPath')) {
+        $ModelPath = Join-Path $PSScriptRoot 'ml\artifacts\demo\loading-text.twml'
+    }
     & (Join-Path $PSScriptRoot 'ml\setup.ps1') -Python $Python
     $trainingPython = Join-Path $PSScriptRoot 'ml\.venv\Scripts\python.exe'
     $demoData = Join-Path $PSScriptRoot 'ml\datasets\demo'

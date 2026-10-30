@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <LiveSplitRoot Condition="'$(LiveSplitRoot)' == ''">$(MSBuildProjectDirectory)\..\LiveSplit</LiveSplitRoot>
     <PackagesRoot Condition="'$(PackagesRoot)' == ''">$(MSBuildProjectDirectory)\..\packages</PackagesRoot>
-    <MlModelFile Condition="'$(MlModelFile)' == ''">$(MSBuildProjectDirectory)\ml\artifacts\demo\loading-text.twml</MlModelFile>
+    <MlModelFile Condition="'$(MlModelFile)' == ''">$(MSBuildProjectDirectory)\ml\models\eng-ps2-hud-fix\loading-text.twml</MlModelFile>
     <MlMetadataFile>$([System.IO.Path]::ChangeExtension('$(MlModelFile)', '.json'))</MlMetadataFile>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

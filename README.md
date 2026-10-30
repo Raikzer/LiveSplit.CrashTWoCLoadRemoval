@@ -1,13 +1,18 @@
 # LiveSplit.CrashTWoCLoadRemoval
 
-For the **2.0 pre-release** component ZIP and runtime prerequisites, see
+For the **2.1 pre-release** component ZIP, installation and runtime prerequisites,
+see [RELEASE-2.1.md](RELEASE-2.1.md). Historical 2.0 notes remain in
 [RELEASE-2.0.md](RELEASE-2.0.md).
 
-This local build adds **ENG/PS2 experimental ML**, a single-confidence loading-text
+The component includes **ENG/PS2 experimental ML**, a single-confidence loading-text
 classifier using Vulkan compute shaders. See [BUILDING-ML.md](BUILDING-ML.md) for
 building/deployment and [ml/README.md](ml/README.md) for the training pipeline.
-Bundled weights are a synthetic demonstration and have not been validated on game
-footage. The existing OCR platforms remain available.
+Source builds and the 2.1 ZIP bundle a model fine-tuned on reviewed English PS2
+game captures, with default threshold **0.800**. The HUD regression checks pass,
+but validation is limited: the reused test recordings contain no positive loads.
+See the [model card](ml/models/eng-ps2-hud-fix/README.md) for provenance and limits.
+Existing layouts keep their saved threshold; set 0.800 explicitly when upgrading.
+The existing OCR platforms remain available.
 
 The **Training** settings tab opens a capture/review window. Its Start capture
 button records 20,000 cropped frames at a requested 30 FPS by default, then opens

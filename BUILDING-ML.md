@@ -21,7 +21,10 @@ git clone --branch 1.8.37 --recursive https://github.com/LiveSplit/LiveSplit.git
 .\Build.ps1 -BuildHost
 ```
 
-The default model is the included synthetic demo. `Build.ps1` compiles and
+The default model is the included reviewed-capture HUD-fix model at
+`ml/models/eng-ps2-hud-fix/loading-text.twml`, with threshold **0.800**. Its
+[model card](ml/models/eng-ps2-hud-fix/README.md) describes the limited evaluation.
+`Build.ps1` compiles and
 validates the SPIR-V shaders, builds native DLLs for x64 and x86, and builds the
 managed component with model/runtime files in `../LiveSplit/bin/Release/Components`.
 Pass `-LiveSplitRoot`, `-PackagesRoot`, `-MSBuild`, or `-Dotnet` for other locations.
@@ -42,7 +45,7 @@ The full pipeline, locked Python environment, group-safe splits, export format,
 and measured demo results are documented in [ml/README.md](ml/README.md).
 
 ```powershell
-.\Build.ps1 -TrainDemo
+.\Build.ps1 -TrainDemo # explicitly train and install the synthetic demo instead
 # Or train on a CSV of actual captures:
 .\ml\setup.ps1
 .\ml\.venv\Scripts\python.exe .\ml\train.py C:\captures\samples.csv --output .\ml\artifacts\real --epochs 30 --patience 5
@@ -62,9 +65,12 @@ separate recordings. Correct labels and capture grouping must be checked manuall
 For larger datasets, the **Training** tab provides a 20,000-frame, 30-FPS recording
 mode and resumable Y/N/R/U review. See [TRAINING-MODE.md](TRAINING-MODE.md).
 
-The bundled demo was trained only on generated images; its held-out synthetic
-accuracy does **not** establish gameplay reliability. Its threshold is 0.52.
-Train and evaluate on representative recordings before relying on ML for timing.
+The optional synthetic demo remains in `ml/artifacts/demo`; its threshold is
+0.52 and its synthetic accuracy does **not** establish gameplay reliability.
+`-TrainDemo` selects the demo unless `-ModelPath` explicitly selects another
+model. The bundled real model uses a fixed 0.800 threshold, reused validation
+recordings and negative-only test recordings; it has no independent positive
+test recall. Check representative recordings before relying on ML for timing.
 
 Missing models, shaders, native DLLs, Vulkan devices and prediction failures show
 an error on the ML tab. The detector releases its Game Time pause and stops using

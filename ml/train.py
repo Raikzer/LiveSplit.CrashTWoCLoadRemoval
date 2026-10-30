@@ -11,7 +11,7 @@ import PIL
 import torch
 from torch import nn
 from data import read_dataset, SPLITS
-from model import LoadingNet, export_model, reference_predict
+from model import LoadingNet, export_model, read_model, reference_predict
 
 
 def metrics(labels, confidences, threshold):
@@ -19,6 +19,11 @@ def metrics(labels, confidences, threshold):
     positive = labels == 1
     tp, tn = int((predicted & positive).sum()), int((~predicted & ~positive).sum())
     fp, fn = int((predicted & ~positive).sum()), int((~predicted & positive).sum())
+    if not positive.any():
+        return {"count": len(labels), "threshold": float(threshold), "tp": tp, "tn": tn, "fp": fp, "fn": fn,
+                "accuracy": tn / len(labels), "specificity": tn / len(labels),
+                "false_positive_rate": fp / len(labels), "precision": 0.0 if fp else None,
+                "recall": None, "f1": None, "balanced_accuracy": None}
     precision = tp / max(1, tp + fp)
     recall = tp / max(1, tp + fn)
     return {"count": len(labels), "threshold": float(threshold), "tp": tp, "tn": tn, "fp": fp, "fn": fn,
@@ -48,6 +53,10 @@ def main():
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--seed", type=int, default=1234)
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--initial-model", type=Path,
+                        help="Initialize weights from a validated .twml; its source recordings must belong to train only")
+    parser.add_argument("--negative-only-test", action="store_true",
+                        help="Explicit group-exclusive splits with both-class train/val and negative-only test; no test recall")
     parser.add_argument("--temporal-holdout", action="store_true",
                         help="Opt into chronological splits within ONE session; no independent recording evaluation")
     parser.add_argument("--temporal-gap-frames", type=int, default=90,
@@ -55,6 +64,8 @@ def main():
     parser.add_argument("--synthetic-demo", action="store_true",
                         help="Mark export as demo only; required for synthetic generated data")
     args = parser.parse_args()
+    if args.negative_only_test and args.temporal_holdout:
+        parser.error("negative-only-test cannot be combined with temporal-holdout")
     if min(args.epochs, args.patience, args.batch_size, args.threads) < 1:
         parser.error("epochs, patience, batch-size and threads must be positive")
     if args.temporal_gap_frames < 1:
@@ -70,11 +81,18 @@ def main():
     if args.temporal_holdout:
         print("Single-session temporal holdout: train, validation and test share one recording. "
               "No independent recording evaluation exists; results do not establish generalization to other sessions.", flush=True)
+    if args.negative_only_test:
+        print("Independent recording holdout with negative-only test: test measures false positives only. "
+              "No held-out test recall is available; positive parity fixtures come from validation.", flush=True)
     pixels, labels, rows, indices = read_dataset(
         args.manifest, args.seed, temporal_holdout=args.temporal_holdout,
-        temporal_gap_frames=args.temporal_gap_frames)
+        temporal_gap_frames=args.temporal_gap_frames, negative_only_test=args.negative_only_test)
     x, y = torch.from_numpy(pixels), torch.from_numpy(labels)
     model = LoadingNet().cpu()
+    initial_model_sha256 = None
+    if args.initial_model is not None:
+        model.load_state_dict({key: torch.from_numpy(value) for key, value in read_model(args.initial_model).items()})
+        initial_model_sha256 = hashlib.sha256(args.initial_model.read_bytes()).hexdigest()
     train_ids = torch.from_numpy(indices["train"])
     train_labels = y[train_ids]
     positive_weight = float((train_labels == 0).sum() / (train_labels == 1).sum())
@@ -124,9 +142,11 @@ def main():
     split_metrics = {split: metrics(labels[indices[split]], probabilities[split], threshold) for split in SPLITS}
     binary = output / "loading-text.twml"
     state = export_model(model, binary)
-    # Export representative held-out tensors with predictions for independent Vulkan parity.
+    # Negative-only tests use validation for positive parity coverage, never for test metrics.
     test_ids = indices["test"]
-    chosen = [next(int(i) for i in test_ids if labels[i] == label) for label in (0, 1)]
+    positive_ids = indices["val"] if args.negative_only_test else test_ids
+    chosen = [next(int(i) for i in test_ids if labels[i] == 0),
+              next(int(i) for i in positive_ids if labels[i] == 1)]
     chosen += [int(test_ids[np.argmin(abs(probabilities["test"] - .5))])]
     chosen = list(dict.fromkeys(chosen))
     reference = np.array([reference_predict(state, pixels[i]) for i in chosen], dtype=np.float32)
@@ -143,7 +163,8 @@ def main():
             image.convert("RGB").save(sample_dir / f"{number}.png")
         np.save(sample_dir / f"{number}.npy", pixels[i], allow_pickle=False)
     (sample_dir / "expected.json").write_text(json.dumps([
-        {"sample": n, "label": int(labels[i]), "confidence": float(reference[n]), "source": rows[i]["path"]}
+        {"sample": n, "label": int(labels[i]), "confidence": float(reference[n]), "source": rows[i]["path"],
+         "source_split": rows[i]["split"]}
         for n, i in enumerate(chosen)], indent=2) + "\n", encoding="utf-8")
     provenance_rows = [{key: row[key] for key in ("path", "label", "group", "split", "tensor_sha256", "frame_index")
                         if key in row} for row in rows]
@@ -154,13 +175,21 @@ def main():
         "recommended_threshold": float(threshold), "threshold_selection": "maximum validation balanced accuracy; ties nearest 0.5",
         "metrics": split_metrics, "positive_class_weight": positive_weight,
         "evaluation_protocol": {
-            "mode": "single_session_temporal_holdout" if args.temporal_holdout else "independent_recording_holdout",
+            "mode": ("independent_recording_holdout_negative_only_test" if args.negative_only_test else
+                     "single_session_temporal_holdout" if args.temporal_holdout else "independent_recording_holdout"),
             "independent_recordings": len({row["group"] for row in rows}),
+            **({"test_class_coverage": {"negative": int((labels[test_ids] == 0).sum()), "positive": 0},
+                "validation_class_counts": {"negative": int((labels[val_ids] == 0).sum()),
+                                            "positive": int((labels[val_ids] == 1).sum())},
+                "limitation": "No held-out test recall is available because test contains no positives. Positive parity fixtures come from validation and do not establish positive test coverage."}
+               if args.negative_only_test else {}),
             **({"gap_frames": args.temporal_gap_frames,
                 "limitation": "No independent recording evaluation exists; all splits share one session and do not establish generalization to other recordings."}
                if args.temporal_holdout else {}),
         },
         "training": {"epochs_requested": args.epochs, "epochs_completed": len(history), "patience": args.patience,
+                     "initialization": "exported_model" if args.initial_model is not None else "random",
+                     "initial_model_sha256": initial_model_sha256,
                      "batch_size": args.batch_size, "threads": args.threads, "optimizer": "Adam", "learning_rate": .001,
                      "augmentation": "train only: bilinear translation +/-2.88 px, gain 0.8-1.2, Gaussian noise sigma 0.012"},
         "environment": {"python": platform.python_version(), "torch": torch.__version__, "numpy": np.__version__, "pillow": PIL.__version__, "device": "cpu"},
@@ -169,6 +198,8 @@ def main():
         "split_summary": {split: {"samples": len(ids), "positive": int(labels[ids].sum()),
                                   "groups": sorted({rows[i]["group"] for i in ids})} for split, ids in indices.items()},
         "dataset": provenance_rows, "parity_max_absolute_error": float(abs(reference - pytorch).max()),
+        "parity_samples": [{"sample": n, "label": int(labels[i]), "source": rows[i]["path"],
+                            "source_split": rows[i]["split"]} for n, i in enumerate(chosen)],
         "generator": json.loads(generator_provenance.read_text(encoding="utf-8")) if generator_provenance.exists() else None,
     }
     (output / "loading-text.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")

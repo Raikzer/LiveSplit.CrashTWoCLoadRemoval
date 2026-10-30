@@ -1,4 +1,6 @@
 import csv
+import hashlib
+import json
 import struct
 import subprocess
 import sys
@@ -11,6 +13,7 @@ import torch
 from PIL import Image
 from data import read_dataset
 from model import LoadingNet, export_model, load_pixels, preprocess_rgb, read_model, reference_predict
+from train import metrics
 
 
 class PipelineTests(unittest.TestCase):
@@ -101,6 +104,126 @@ class PipelineTests(unittest.TestCase):
                                             (0, 1, 92, 93, 184, 185)):
             row.update(group="original-session", split=split, frame_index=frame_index)
         return rows
+
+    def make_negative_only_test_dataset(self, directory):
+        rows = self.make_dataset(directory)[:6]
+        for row, split in zip(rows, ("train", "train", "val", "val", "test", "test")):
+            row["split"] = split
+            if split == "test":
+                row["label"] = 0
+        return rows
+
+    def test_negative_only_test_requires_opt_in_explicit_splits_and_exclusive_groups(self):
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder)
+            rows = self.make_negative_only_test_dataset(directory)
+            path = self.write_manifest(directory, rows)
+            with self.assertRaisesRegex(ValueError, "test split must contain both classes"):
+                read_dataset(path)
+            _, labels, loaded, indices = read_dataset(path, negative_only_test=True)
+            self.assertEqual(set(labels[indices["test"]]), {0})
+            groups = [{loaded[i]["group"] for i in indices[split]} for split in ("train", "val", "test")]
+            self.assertFalse(groups[0] & groups[1] or groups[0] & groups[2] or groups[1] & groups[2])
+            with self.assertRaisesRegex(ValueError, "cannot be combined"):
+                read_dataset(path, negative_only_test=True, temporal_holdout=True)
+            for missing in ("all", "one"):
+                changed = [row.copy() for row in rows]
+                for row in (changed if missing == "all" else changed[:1]):
+                    row["split"] = ""
+                with self.subTest(missing=missing), self.assertRaisesRegex(ValueError, "explicit"):
+                    read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+            changed = [dict(row, group="shared" if row["split"] != "test" else row["group"]) for row in rows]
+            with self.assertRaisesRegex(ValueError, "group"):
+                read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+
+    def test_negative_only_test_rejects_positive_test_and_missing_partitions(self):
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder)
+            rows = self.make_negative_only_test_dataset(directory)
+            changed = [row.copy() for row in rows]
+            changed[-1]["label"] = 1
+            with self.assertRaisesRegex(ValueError, "negatives only"):
+                read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+            for split in ("train", "val", "test"):
+                # Retain three original groups so class coverage, not group count, rejects the absent split.
+                changed = [dict(row, split="train" if split != "train" else "val")
+                           if row["split"] == split else row.copy() for row in rows]
+                with self.subTest(missing=split), self.assertRaises(ValueError):
+                    read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+            for split in ("train", "val"):
+                changed = [dict(row, label=0) if row["split"] == split else row.copy() for row in rows]
+                with self.subTest(singleclass=split), self.assertRaisesRegex(ValueError, split + " split must contain both classes"):
+                    read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+            changed = [row for row in rows if row["split"] != "test"]
+            with self.assertRaisesRegex(ValueError, "three recording groups"):
+                read_dataset(self.write_manifest(directory, changed), negative_only_test=True)
+
+    def test_negative_only_test_metrics_do_not_claim_measured_recall(self):
+        for confidences, false_positives in (([.1, .2], 0), ([.1, .8], 1)):
+            result = metrics(np.array([0, 0]), np.array(confidences), .5)
+            self.assertEqual(result["tn"], 2 - false_positives)
+            self.assertEqual(result["fp"], false_positives)
+            self.assertEqual(result["count"], 2)
+            self.assertEqual(result["tp"], 0)
+            self.assertEqual(result["fn"], 0)
+            self.assertEqual(result["accuracy"], (2 - false_positives) / 2)
+            self.assertEqual(result["specificity"], (2 - false_positives) / 2)
+            self.assertEqual(result["false_positive_rate"], false_positives / 2)
+            for name in ("recall", "f1", "balanced_accuracy"):
+                self.assertIsNone(result[name])
+            self.assertEqual(result["precision"], 0.0 if false_positives else None)
+        result = metrics(np.array([0, 1]), np.array([.1, .8]), .5)
+        self.assertEqual(result["recall"], 1.0)
+        self.assertEqual(result["balanced_accuracy"], 1.0)
+
+    def test_negative_only_test_cli_and_exported_model_initialization(self):
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder)
+            manifest = self.write_manifest(directory, self.make_negative_only_test_dataset(directory))
+            initial = LoadingNet()
+            with torch.no_grad():
+                for parameter in initial.parameters():
+                    parameter.zero_()
+                initial.classifier.bias.fill_(-2)
+            initial_path = directory / "initial.twml"
+            export_model(initial, initial_path)
+            output = directory / "output"
+            command = [sys.executable, str(Path(__file__).with_name("train.py")), str(manifest),
+                       "--output", str(output), "--epochs", "1", "--patience", "1", "--threads", "1",
+                       "--negative-only-test", "--initial-model", str(initial_path)]
+            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            self.assertIn("No held-out test recall", result.stdout)
+            metadata = json.loads((output / "loading-text.json").read_text())
+            protocol = metadata["evaluation_protocol"]
+            self.assertEqual(protocol["mode"], "independent_recording_holdout_negative_only_test")
+            self.assertEqual(protocol["independent_recordings"], 3)
+            self.assertEqual(protocol["test_class_coverage"], {"negative": 2, "positive": 0})
+            self.assertEqual(protocol["validation_class_counts"], {"negative": 1, "positive": 1})
+            self.assertIn("No held-out test recall", protocol["limitation"])
+            self.assertIsNone(metadata["metrics"]["test"]["recall"])
+            self.assertEqual(metadata["training"]["initialization"], "exported_model")
+            self.assertEqual(metadata["training"]["initial_model_sha256"], hashlib.sha256(initial_path.read_bytes()).hexdigest())
+            trained = read_model(output / "loading-text.twml")
+            # One Adam step changes this bias by at most .001; random initialization is near zero.
+            self.assertAlmostEqual(float(trained["classifier.bias"][0]), -2, delta=.002)
+            for key in trained.keys() - {"classifier.bias"}:
+                np.testing.assert_array_equal(trained[key], 0)
+            expected = json.loads((output / "parity-samples" / "expected.json").read_text())
+            self.assertEqual({(item["label"], item["source_split"]) for item in expected}, {(0, "test"), (1, "val")})
+            self.assertEqual([(item["sample"], item["source_split"]) for item in metadata["parity_samples"]],
+                             [(item["sample"], item["source_split"]) for item in expected])
+            # Invalid headers are rejected rather than silently falling back to random weights.
+            initial_path.write_bytes(b"invalid")
+            rejected = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn("Invalid model", rejected.stderr)
+
+    def test_training_cli_rejects_combined_holdout_modes(self):
+        result = subprocess.run([sys.executable, str(Path(__file__).with_name("train.py")),
+                                 "unused.csv", "--output", "unused", "--negative-only-test", "--temporal-holdout"],
+                                capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("cannot be combined", result.stderr)
 
     def test_temporal_holdout_accepts_explicit_chronology_without_inventing_groups(self):
         with tempfile.TemporaryDirectory() as folder:
