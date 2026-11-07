@@ -2,7 +2,7 @@
 param(
     [string]$LiveSplitRoot = (Join-Path $PSScriptRoot '..\LiveSplit'),
     [string]$PackagesRoot = (Join-Path $PSScriptRoot '..\packages'),
-    [string]$ModelPath = (Join-Path $PSScriptRoot 'ml\models\eng-ps2-hud-fix\loading-text.twml'),
+    [string]$ModelPath = (Join-Path $PSScriptRoot 'ml\models\eng-ps2-ghost-town\loading-text.twml'),
     [string]$MSBuild,
     [string]$Dotnet,
     [string]$Python = 'python',
@@ -40,6 +40,8 @@ if ($TrainDemo) {
 }
 if (-not (Test-Path -LiteralPath $ModelPath)) { throw 'Model file missing. Pass -ModelPath or use -TrainDemo.' }
 
+& (Join-Path $PSScriptRoot 'capture-native\build.ps1') -MSBuild $MSBuild
+if ($Test) { & (Join-Path $PSScriptRoot 'capture-native\test.ps1') -MSBuild $MSBuild }
 & (Join-Path $PSScriptRoot 'native\build.ps1') -MSBuild $MSBuild -Test:$Test
 
 if ($BuildHost -or -not (Test-Path -LiteralPath (Join-Path $LiveSplitRoot 'bin\Release\LiveSplit.Core.dll'))) {
@@ -76,5 +78,7 @@ $runtime = Join-Path $LiveSplitRoot 'bin\Release'
 if ($Test) {
     & (Join-Path $PSScriptRoot 'tests\build.ps1') -LiveSplitDirectory $runtime -Compiler (Join-Path (Split-Path -Parent $MSBuild) 'Roslyn\csc.exe')
     & (Join-Path $PSScriptRoot 'tests\training.ps1') -LiveSplitDirectory $runtime -Compiler (Join-Path (Split-Path -Parent $MSBuild) 'Roslyn\csc.exe')
+    & (Join-Path $PSScriptRoot 'tests\graphics-capture.ps1') -LiveSplitDirectory $runtime -Compiler (Join-Path (Split-Path -Parent $MSBuild) 'Roslyn\csc.exe')
+    & (Join-Path $PSScriptRoot 'tests\settings-controls.ps1') -LiveSplitDirectory $runtime -Compiler (Join-Path (Split-Path -Parent $MSBuild) 'Roslyn\csc.exe')
 }
-Write-Output "Built component, x86/x64 Vulkan runtime, shaders and model in $runtime\Components"
+Write-Output "Built component, x86/x64 Windows Graphics Capture and Vulkan runtimes, shaders and model in $runtime\Components"

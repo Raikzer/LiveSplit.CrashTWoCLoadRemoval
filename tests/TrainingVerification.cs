@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using CrashTWoCLoadDetector;
 using LiveSplit.CrashTWoCLoadRemover;
 using LiveSplit.CrashTWoCLoadRemover.Training;
 using LiveSplit.Model;
@@ -221,6 +222,30 @@ public static class TrainingVerification
         }
     }
 
+    static void FormCaptureWarmup() {
+        int attempts = 0; var transitions = new List<bool>();
+        using (var form = new TrainingCaptureForm(() => {
+            attempts++;
+            if (attempts <= 3) throw new CaptureNotReadyException("Synthetic WGC warmup");
+            return Frame();
+        }, root, "<Settings/>", transitions.Add)) {
+            ShowOffscreen(form); StartManual(form, 2);
+            var session = (TrainingSession)Get(form, "_session"); var recorder = (TrainingRecorder)Get(form, "_recorder");
+            for (int i = 0; i < 3; i++) Tick(form);
+            Check(attempts == 3 && form.IsCapturing && Get(form, "_stopTask") == null && transitions.SequenceEqual(new[] { true }),
+                "Pending capture warmup keeps the recording active without starting shutdown");
+            Check(recorder.AcceptedFrames == 0 && session.FrameCount == 0 && Directory.GetFiles(session.DirectoryPath, "*.png", SearchOption.AllDirectories).Length == 0,
+                "Pending capture frames consume no target slots and write no placeholder samples");
+            Tick(form);
+            Check(attempts == 4 && recorder.AcceptedFrames == 1 && form.IsCapturing,
+                "first ready synthetic frame is accepted after Pending warmup");
+            Tick(form); Wait(() => !form.IsCapturing, "recording reaches target normally after warmup frames become ready");
+            var restored = TrainingSession.Open(session.DirectoryPath);
+            Check(attempts == 5 && session.Complete && restored.Complete && restored.FrameCount == 2 && string.IsNullOrEmpty(restored.CaptureError)
+                && transitions.SequenceEqual(new[] { true, false }), "warmup recording persists exactly the ready-frame target without a capture error");
+        }
+    }
+
     static void FormCapture() {
         var transitions = new List<bool>(); int captures = 0;
         using (var form = new TrainingCaptureForm(() => { captures++; return Frame(); }, root, "<Settings/>", transitions.Add)) {
@@ -305,7 +330,7 @@ public static class TrainingVerification
                 messageHost.Shown += delegate {
                     messageHost.BeginInvoke(new Action(() => {
                         try {
-                            Persistence(); Recorder(); ReviewAndKeys(); FormCapture(); ComponentIntegration(); LongPaths();
+                            Persistence(); Recorder(); ReviewAndKeys(); FormCaptureWarmup(); FormCapture(); ComponentIntegration(); LongPaths();
                             Console.WriteLine("RESULT: " + checks + " training checks passed; " + skipped + " focused-keyboard sections skipped; synthetic frames only; " + (IntPtr.Size * 8) + " bit");
                             result = 0;
                         } catch (Exception ex) { Console.Error.WriteLine(ex); }

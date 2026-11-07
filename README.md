@@ -7,12 +7,30 @@ see [RELEASE-2.1.md](RELEASE-2.1.md). Historical 2.0 notes remain in
 The component includes **ENG/PS2 experimental ML**, a single-confidence loading-text
 classifier using Vulkan compute shaders. See [BUILDING-ML.md](BUILDING-ML.md) for
 building/deployment and [ml/README.md](ml/README.md) for the training pipeline.
-Source builds and the 2.1 ZIP bundle a model fine-tuned on reviewed English PS2
-game captures, with default threshold **0.800**. The HUD regression checks pass,
-but validation is limited: the reused test recordings contain no positive loads.
-See the [model card](ml/models/eng-ps2-hud-fix/README.md) for provenance and limits.
+The updated 2.1 ZIP and source builds use the
+[Ghost Town model](ml/models/eng-ps2-ghost-town/README.md), which adds one
+user-confirmed screenshot ROI as a training negative to the earlier HUD-fix
+model. The default threshold is
+**0.800**. The inferred screenshot crop already scored below threshold before
+training, so the reported false positive was not reproduced and this does not
+prove the observed pause is fixed. Evaluation uses reused holdouts with no
+positive test loads. Assembly version remains 2.1.0.0.
 Existing layouts keep their saved threshold; set 0.800 explicitly when upgrading.
 The existing OCR platforms remain available.
+
+The updated 2.1 pre-release includes these **Setup** controls:
+
+- **Use Windows Graphics Capture** selects the Windows capture API for the
+  selected window or monitor, including previews and Training mode. It defaults
+  off. See [capture requirements and behavior](WINDOWS-GRAPHICS-CAPTURE.md).
+- **Disable load remover** stops automatic OCR/ML detection, autosplitting and
+  blacklevel calibration, and releases the component's Game Time pause.
+- **Blacklevel** can be entered manually from 0 to 255 and stays synchronized
+  with calibration.
+- Four capture coordinates specify top-left X/Y and bottom-right X/Y in the
+  **400 × 160 preview**, with right/bottom boundaries exclusive. Mouse selection,
+  numeric controls and saved layout XML stay synchronized; empty regions are
+  rejected.
 
 The **Training** settings tab opens a capture/review window. Its Start capture
 button records 20,000 cropped frames at a requested 30 FPS by default, then opens
@@ -27,7 +45,7 @@ and from https://github.com/Maschell/LiveSplit.PokemonRedBlue for the base compo
 # How to use:
 *A video setup guide can be found [here](https://www.youtube.com/watch?v=shP9JsmuY5c)*
 
-- Extract *all* the contents of the TWoCLoadRemover.zip into the Components Folder of your LiveSplit folder.
+- Close LiveSplit and extract all contents of `LiveSplit.CrashTWoCLoadRemoval-2.1.zip` into the folder containing `LiveSplit.exe`, merging the complete `Components` folder.
 - Open LiveSplit -> Edit Layout -> Click the plus icon -> Control -> Crash TWoC Load Removal
 - You can specify to capture either the full primary Display (default) or an open window. This window has to be open (not minimized) but does not have to be in the foreground
 - Select the appropriate platform

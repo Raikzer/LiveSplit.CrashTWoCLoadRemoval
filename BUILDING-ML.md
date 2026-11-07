@@ -14,6 +14,11 @@ recursive submodules. The build script restores framework targeting assemblies
 and the component's Tesseract dependency locally. GPU drivers must provide Vulkan
 1.0 compute; inference needs neither the Vulkan SDK nor Python after packaging.
 
+The optional [Windows Graphics Capture backend](WINDOWS-GRAPHICS-CAPTURE.md)
+also builds a separate native bridge with Windows SDK **10.0.22621.0**, included
+in both architecture folders. It uses Direct3D 11 for capture; ML inference
+continues to use Vulkan compute. The Windows SDK is only a build prerequisite.
+
 For a fresh source checkout next to this component:
 
 ```powershell
@@ -21,9 +26,13 @@ git clone --branch 1.8.37 --recursive https://github.com/LiveSplit/LiveSplit.git
 .\Build.ps1 -BuildHost
 ```
 
-The default model is the included reviewed-capture HUD-fix model at
-`ml/models/eng-ps2-hud-fix/loading-text.twml`, with threshold **0.800**. Its
-[model card](ml/models/eng-ps2-hud-fix/README.md) describes the limited evaluation.
+The source-build and updated 2.1 release default is the Ghost Town model at
+`ml/models/eng-ps2-ghost-town/loading-text.twml`, with threshold **0.800**. Its
+[model card](ml/models/eng-ps2-ghost-town/README.md) documents the added
+user-confirmed training negative, reused holdouts and unreproduced pause report.
+The previous 2.1 package used the older HUD-fix model; to build with those weights,
+pass `-ModelPath .\ml\models\eng-ps2-hud-fix\loading-text.twml`. The assembly
+version remains 2.1.0.0; the existing 2.1 pre-release has been updated in place.
 `Build.ps1` compiles and
 validates the SPIR-V shaders, builds native DLLs for x64 and x86, and builds the
 managed component with model/runtime files in `../LiveSplit/bin/Release/Components`.
@@ -68,7 +77,7 @@ mode and resumable Y/N/R/U review. See [TRAINING-MODE.md](TRAINING-MODE.md).
 The optional synthetic demo remains in `ml/artifacts/demo`; its threshold is
 0.52 and its synthetic accuracy does **not** establish gameplay reliability.
 `-TrainDemo` selects the demo unless `-ModelPath` explicitly selects another
-model. The bundled real model uses a fixed 0.800 threshold, reused validation
+model. The source-default real model uses a fixed 0.800 threshold, reused validation
 recordings and negative-only test recordings; it has no independent positive
 test recall. Check representative recordings before relying on ML for timing.
 

@@ -4,6 +4,7 @@ using System.IO;
 using Tesseract;
 using CrashTWoCLoadDetector;
 using LiveSplit.CrashTWoCLoadRemover;
+using LiveSplit.Model;
 
 namespace LiveSplit.UI.Components
 {
@@ -24,9 +25,34 @@ namespace LiveSplit.UI.Components
             ResetRecognitionTransition();
         }
 
+        private void OnLoadRemoverEnabledChanged(object sender, EventArgs args)
+        {
+            ResetRecognitionTransition();
+            DisposeRecognitionBackend();
+            recognitionKey = null;
+            recognitionReady = false;
+            if (!settings.LoadRemoverEnabled)
+                settings.UpdateMlStatus(null, "Load remover disabled. Enable it on Setup to resume detection.");
+            else InitializeGameTimeIfNeeded();
+        }
+
+        private void InitializeGameTimeIfNeeded()
+        {
+            if (timer == null || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
+            var state = timer.CurrentState;
+            if (!state.IsGameTimeInitialized && (state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused))
+                timer.InitializeGameTime();
+        }
+
+        private void OnDetectionConfigurationChanged(object sender, EventArgs args)
+        {
+            ResetRecognitionTransition();
+            if (!recognitionReady && !settings.CaptureGeometryChanging) recognitionKey = null;
+        }
+
         private bool EnsureRecognitionBackend()
         {
-            if (disposed) return false;
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return false;
             string key = settings.platform + (IsMachineLearningPlatform ? "\n" + settings.MlModelPath : "");
             if (recognitionKey == key) return recognitionReady;
             bool switching = recognitionKey != null;
@@ -70,15 +96,37 @@ namespace LiveSplit.UI.Components
             isLoading = false;
             isBlackScreen = false;
             wasBlackScreen = false;
+            isFadeIn = false;
             waitOnFadeIn = false;
             waitOnLoad = false;
             waitFrames = 0;
             lowestBit = 0;
             specialLoad = false;
             isCmpFinished = false;
+            TWoCState = CrashTWoCState.RUNNING;
+            runningFrames = 0;
+            pausedFrames = 0;
+            transitionStart = DateTime.MinValue;
             settings.isCalibratingBlacklevel = false;
             settings.cmpBlackLevel = 100;
+            settings.UpdateBlacklevelLabel();
             if (timer != null) timer.CurrentState.IsGameTimePaused = false;
+        }
+
+        private void CaptureFailed(Exception error, bool pending)
+        {
+            bool calibrating = settings.isCalibratingBlacklevel;
+            int comparisonBlacklevel = settings.cmpBlackLevel;
+            ResetRecognitionTransition();
+            if (pending && calibrating)
+            {
+                settings.isCalibratingBlacklevel = true;
+                settings.cmpBlackLevel = comparisonBlacklevel;
+                settings.UpdateBlacklevelLabel();
+            }
+            string message = pending ? "Waiting for capture: " + error.Message : "Capture unavailable: " + error.Message;
+            settings.UpdateCaptureStatus(message, !pending);
+            settings.UpdateMlStatus(null, message, !pending);
         }
 
         private void RecognitionFailed(Exception error)
@@ -118,6 +166,7 @@ namespace LiveSplit.UI.Components
 
         private void OnMlPreviewRequested(object sender, EventArgs args)
         {
+            if (!settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
             if (!IsMachineLearningPlatform)
             {
                 settings.UpdateMlStatus(null, "Select ENG/PS2 experimental ML on Setup first.");
@@ -125,11 +174,15 @@ namespace LiveSplit.UI.Components
             }
             if (!EnsureRecognitionBackend()) return;
             try { using (Bitmap capture = settings.CaptureImage()) PredictLoadingConfidence(capture); }
+            catch (CaptureNotReadyException ex) { CaptureFailed(ex, true); }
+            catch (CaptureUnavailableException ex) { CaptureFailed(ex, false); }
             catch (Exception ex) { RecognitionFailed(ex); }
         }
 
         private void OnMlReloadRequested(object sender, EventArgs args)
         {
+            settings.ResetGraphicsCapture();
+            if (!settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
             recognitionKey = null;
             ResetRecognitionTransition();
             EnsureRecognitionBackend();

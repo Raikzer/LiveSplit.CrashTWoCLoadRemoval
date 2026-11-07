@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <LiveSplitRoot Condition="'$(LiveSplitRoot)' == ''">$(MSBuildProjectDirectory)\..\LiveSplit</LiveSplitRoot>
     <PackagesRoot Condition="'$(PackagesRoot)' == ''">$(MSBuildProjectDirectory)\..\packages</PackagesRoot>
-    <MlModelFile Condition="'$(MlModelFile)' == ''">$(MSBuildProjectDirectory)\ml\models\eng-ps2-hud-fix\loading-text.twml</MlModelFile>
+    <MlModelFile Condition="'$(MlModelFile)' == ''">$(MSBuildProjectDirectory)\ml\models\eng-ps2-ghost-town\loading-text.twml</MlModelFile>
     <MlMetadataFile>$([System.IO.Path]::ChangeExtension('$(MlModelFile)', '.json'))</MlMetadataFile>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -73,6 +73,10 @@
     <Compile Include="ComponentSettings.designer.cs">
       <DependentUpon>ComponentSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="ComponentSettings.GraphicsCapture.cs">
+      <DependentUpon>ComponentSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\**\*.cs" />
     <Compile Include="ComponentSettings.MachineLearning.cs">
       <DependentUpon>ComponentSettings.cs</DependentUpon>
     </Compile>
@@ -119,6 +123,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="capture-native\bin\x64\TwocWindowsGraphicsCapture.dll" Condition="Exists('capture-native\bin\x64\TwocWindowsGraphicsCapture.dll')">
+      <Link>x64\TwocWindowsGraphicsCapture.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="capture-native\bin\Win32\TwocWindowsGraphicsCapture.dll" Condition="Exists('capture-native\bin\Win32\TwocWindowsGraphicsCapture.dll')">
+      <Link>x86\TwocWindowsGraphicsCapture.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="native\build\x64\TwocLoadingVulkan.dll" Condition="Exists('native\build\x64\TwocLoadingVulkan.dll')">
       <Link>x64\TwocLoadingVulkan.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

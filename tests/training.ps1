@@ -20,7 +20,7 @@ foreach ($architecture in @('x64', 'x86')) {
     Copy-Item "$LiveSplitDirectory\Components\LiveSplit.CrashTWoCLoadRemoval.dll" $runtime -Force
     Copy-Item "$LiveSplitDirectory\Components\Tesseract.dll" $runtime -Force
     $program = Join-Path $runtime 'TrainingVerification.exe'
-    & $Compiler /nologo /target:exe "/platform:$architecture" "/out:$program" /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:System.Xml.dll /r:System.Xml.Linq.dll "/r:$runtime\LiveSplit.Core.dll" "/r:$runtime\LiveSplit.CrashTWoCLoadRemoval.dll" "$PSScriptRoot\TrainingVerification.cs"
+    & $Compiler /nologo /target:exe "/platform:$architecture" "/out:$program" /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:System.Xml.dll /r:System.Xml.Linq.dll "/r:$runtime\LiveSplit.Core.dll" "/r:$runtime\UpdateManager.dll" "/r:$runtime\LiveSplit.CrashTWoCLoadRemoval.dll" "$PSScriptRoot\TrainingVerification.cs"
     if ($LASTEXITCODE -ne 0) { throw "Training test compile failed ($architecture)" }
     $programArguments = if ($RequireKeyboardFocus) { @('--require-keyboard-focus') } else { @() }
     & $program @programArguments 2>&1 | Tee-Object -FilePath (Join-Path $OutputDirectory "training-$architecture.log")

@@ -101,9 +101,15 @@ namespace LiveSplit.UI.Components
             settings.MlPreviewRequested += OnMlPreviewRequested;
             settings.MlReloadRequested += OnMlReloadRequested;
             settings.TrainingCaptureStateChanged += OnTrainingCaptureStateChanged;
+            settings.LoadRemoverEnabledChanged += OnLoadRemoverEnabledChanged;
+            settings.DetectionConfigurationChanged += OnDetectionConfigurationChanged;
             lastTime = DateTime.Now;
             segmentTimeStart = DateTime.Now;
             timer = new TimerModel { CurrentState = state };
+            timerStarted = state.CurrentPhase == TimerPhase.Running;
+            timerStart = DateTime.Now;
+            if ((state.CurrentPhase == TimerPhase.Running || state.CurrentPhase == TimerPhase.Paused) && state.CurrentTime.RealTime.HasValue)
+                timerStart -= state.CurrentTime.RealTime.Value - state.Run.Offset;
             timer.CurrentState.OnStart += timer_OnStart;
             timer.CurrentState.OnReset += timer_OnReset;
             timer.CurrentState.OnSkipSplit += timer_OnSkipSplit;
@@ -117,6 +123,7 @@ namespace LiveSplit.UI.Components
 
         private void InitTesseract()
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
             OcrNativeRuntime.EnsureLoaded();
             curLanguage = settings.platform;
             if (settings.platform == "ENG/PS2" || settings.platform == "ENG/XBOX&GC")
@@ -175,6 +182,7 @@ namespace LiveSplit.UI.Components
 
         private void CaptureLoads()
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
             try
             {
                 bool isLoad;
@@ -209,16 +217,19 @@ namespace LiveSplit.UI.Components
                     }
                 }
             }
+            catch (CaptureNotReadyException ex) { CaptureFailed(ex, true); }
+            catch (CaptureUnavailableException ex) { CaptureFailed(ex, false); }
             catch (Exception ex)
             {
                 if (IsMachineLearningPlatform) { RecognitionFailed(ex); return; }
-                isLoading = false;
+                ResetRecognitionTransition();
                 Console.WriteLine("Error: " + ex.ToString());
             }
         }
 
         private bool CaptureLoadsXBOX()
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return false;
             bool isLoad = false;
             if ((timerStart.Ticks - liveSplitState.Run.Offset.Ticks) <= DateTime.Now.Ticks)
             {
@@ -329,6 +340,7 @@ namespace LiveSplit.UI.Components
 
         private bool CaptureLoadsPS2()
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return false;
             Bitmap capture = settings.CaptureImage();
             try { return ProcessPs2Capture(capture); }
             finally { capture.Dispose(); }
@@ -336,6 +348,7 @@ namespace LiveSplit.UI.Components
 
         private bool ProcessPs2Capture(Bitmap capture)
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return false;
             bool isLoad = false;
             framesSinceLastManualSplit++;
             lastTime = DateTime.Now;
@@ -396,6 +409,7 @@ namespace LiveSplit.UI.Components
 
         private void CalibrateBlacklevel()
         {
+            if (disposed || !settings.LoadRemoverEnabled || settings.TrainingCaptureActive) return;
             Bitmap capture = settings.CaptureImage();
             try
             {
@@ -500,14 +514,14 @@ namespace LiveSplit.UI.Components
         void timer_OnStart(object sender, EventArgs e)
         {
             InitNumberOfLoadsFromState();
-            timer.InitializeGameTime();
+            if (settings.LoadRemoverEnabled && !settings.TrainingCaptureActive) timer.InitializeGameTime();
             runningFrames = 0;
             framesSinceLastManualSplit = 0;
             pausedFrames = 0;
             timerStarted = true;
             timerStart = DateTime.Now;
 
-            ReloadLogFile();
+            if (settings.LoadRemoverEnabled && !settings.TrainingCaptureActive) ReloadLogFile();
             //StartCaptureThread();
             //highResTimer.Start();
         }
@@ -544,42 +558,40 @@ namespace LiveSplit.UI.Components
 
         private bool SplitsAreDifferent(LiveSplitState newState)
         {
-            //If GameName / Category is different
-            if (GameName != newState.Run.GameName || GameCategory != newState.Run.CategoryName)
+            bool different = GameName != newState.Run.GameName || GameCategory != newState.Run.CategoryName
+                || NumberOfSplits != newState.Run.Count || SplitNames.Count != newState.Run.Count;
+            GameName = newState.Run.GameName;
+            GameCategory = newState.Run.CategoryName;
+            if (!different)
             {
-                GameName = newState.Run.GameName;
-                GameCategory = newState.Run.CategoryName;
-                return true;
+                for (int splitIdx = 0; splitIdx < newState.Run.Count; splitIdx++)
+                {
+                    if (newState.Run[splitIdx].Name != SplitNames[splitIdx])
+                    {
+                        different = true;
+                        break;
+                    }
+                }
             }
-
-            //If number of splits is different
-            if (newState.Run.Count != liveSplitState.Run.Count)
+            if (different)
             {
                 NumberOfSplits = newState.Run.Count;
-                return true;
+                SplitNames = new List<string>();
+                foreach (var split in newState.Run) SplitNames.Add(split.Name);
+                ResizeNumberOfLoadsForSplitCount(NumberOfSplits);
             }
+            return different;
+        }
 
-            //Check if any split name is different.
-            for (int splitIdx = 0; splitIdx < newState.Run.Count; splitIdx++)
-            {
-                if (newState.Run[splitIdx].Name != SplitNames[splitIdx])
-                {
-
-                    SplitNames = new List<string>();
-
-                    foreach (var split in newState.Run)
-                    {
-                        SplitNames.Add(split.Name);
-                    }
-
-                    return true;
-                }
-
-            }
-
-
-
-            return false;
+        private void ResizeNumberOfLoadsForSplitCount(int splitCount)
+        {
+            if (NumberOfLoadsPerSplit.Count == splitCount + 1) return;
+            // The final value protects the end-of-run index; it is never a real split count.
+            if (NumberOfLoadsPerSplit.Count > 0) NumberOfLoadsPerSplit.RemoveAt(NumberOfLoadsPerSplit.Count - 1);
+            if (NumberOfLoadsPerSplit.Count > splitCount)
+                NumberOfLoadsPerSplit.RemoveRange(splitCount, NumberOfLoadsPerSplit.Count - splitCount);
+            while (NumberOfLoadsPerSplit.Count < splitCount) NumberOfLoadsPerSplit.Add(0);
+            NumberOfLoadsPerSplit.Add(99999);
         }
 
         private bool LanguageIsDifferent()
@@ -588,14 +600,14 @@ namespace LiveSplit.UI.Components
         }
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            if (settings.TrainingCaptureActive) return;
-            if (SplitsAreDifferent(state))
-            {
-                settings.ChangeAutoSplitSettingsToGameName(GameName, GameCategory);
-
-                ReloadLogFile();
-            }
+            if (disposed || settings.TrainingCaptureActive) return;
+            bool splitsChanged = SplitsAreDifferent(state);
             liveSplitState = state;
+            if (splitsChanged)
+                settings.ChangeAutoSplitSettingsToGameName(GameName, GameCategory);
+            if (!settings.LoadRemoverEnabled) return;
+            if (splitsChanged) ReloadLogFile();
+            InitializeGameTimeIfNeeded();
             if (!EnsureRecognitionBackend()) return;
             /*
                   liveSplitState = state;
@@ -616,6 +628,8 @@ namespace LiveSplit.UI.Components
             if (settings.isCalibratingBlacklevel)
             {
                 try { CalibrateBlacklevel(); }
+                catch (CaptureNotReadyException ex) { CaptureFailed(ex, true); }
+                catch (CaptureUnavailableException ex) { CaptureFailed(ex, false); }
                 catch (Exception ex) { RecognitionFailed(ex); }
             }
 
@@ -677,6 +691,7 @@ namespace LiveSplit.UI.Components
             if (disposed) return;
             disposed = true;
             settings.CloseTrainingMode();
+            settings.ResetGraphicsCapture();
             timer.CurrentState.OnStart -= timer_OnStart;
             timer.CurrentState.OnReset -= timer_OnReset;
             timer.CurrentState.OnSkipSplit -= timer_OnSkipSplit;
@@ -687,6 +702,8 @@ namespace LiveSplit.UI.Components
             settings.MlPreviewRequested -= OnMlPreviewRequested;
             settings.MlReloadRequested -= OnMlReloadRequested;
             settings.TrainingCaptureStateChanged -= OnTrainingCaptureStateChanged;
+            settings.LoadRemoverEnabledChanged -= OnLoadRemoverEnabledChanged;
+            settings.DetectionConfigurationChanged -= OnDetectionConfigurationChanged;
             ResetRecognitionTransition();
             DisposeRecognitionBackend();
 

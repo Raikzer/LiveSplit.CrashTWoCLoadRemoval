@@ -30,6 +30,10 @@ namespace LiveSplit.UI.Components
 
         public int blacklevel = 100;
 
+        public bool LoadRemoverEnabled { get { return !disableLoadRemover.Checked; } }
+        public event EventHandler LoadRemoverEnabledChanged;
+        public event EventHandler DetectionConfigurationChanged;
+
         public int cmpBlackLevel = 100;
 
         public bool RemoveFadeouts = false;
@@ -72,6 +76,14 @@ namespace LiveSplit.UI.Components
         private float cropOffsetY = -115.0f;
 
         private bool drawingPreview = false;
+        private CheckBox disableLoadRemover;
+        private NumericUpDown blacklevelValue;
+        private bool synchronizingBlacklevel;
+        private NumericUpDown captureLeft;
+        private NumericUpDown captureTop;
+        private NumericUpDown captureRight;
+        private NumericUpDown captureBottom;
+        private bool synchronizingCaptureRegion;
 
         private List<Control> dynamicAutoSplitterControls;
 
@@ -121,6 +133,8 @@ namespace LiveSplit.UI.Components
         {
             this.capturePreview = capturePreview;
             InitializeComponent();
+            InitializeSetupControls();
+            InitializeGraphicsCaptureSettings();
             InitializeMachineLearningSettings();
 
             //RemoveFadeins = chkRemoveFadeIns.Checked;
@@ -149,7 +163,7 @@ namespace LiveSplit.UI.Components
 
         #region Public Methods
 
-        public Bitmap CaptureImage()
+        private Bitmap CaptureImageLegacy()
         {
             Bitmap b;
 
@@ -190,6 +204,7 @@ namespace LiveSplit.UI.Components
 
                 if (processCaptureIndex != -1)
                 {
+                    processList[processCaptureIndex].Refresh();
                     handle = processList[processCaptureIndex].MainWindowHandle;
                 }
                 //Capture from specific process
@@ -203,69 +218,7 @@ namespace LiveSplit.UI.Components
             return b;
         }
 
-        public Bitmap CaptureImagePostLoad()
-        {
-            ImageCaptureInfo imageCaptureInfo = this.imageCaptureInfo;
-            imageCaptureInfo.cropOffsetX = 500.0f;
-            imageCaptureInfo.cropOffsetY = -420.0f;
-            imageCaptureInfo.captureSizeX = 400;
-            imageCaptureInfo.captureSizeY = 200;
-            imageCaptureInfo.resizeSizeXEng = 100;
-            imageCaptureInfo.resizeSizeYEng = 50;
-
-            Bitmap b = new Bitmap(1, 1);
-
-            //Full screen capture
-            if (processCaptureIndex < 0)
-            {
-                Screen selected_screen = Screen.AllScreens[-processCaptureIndex - 1];
-                Rectangle screenRect = selected_screen.Bounds;
-
-                screenRect.Width = (int)(screenRect.Width * scalingValueFloat);
-                screenRect.Height = (int)(screenRect.Height * scalingValueFloat);
-
-                Point screenCenter = new Point(screenRect.Width / 2, screenRect.Height / 2);
-
-                //Change size according to selected crop
-                screenRect.Width = (int)(imageCaptureInfo.crop_coordinate_right - imageCaptureInfo.crop_coordinate_left);
-                screenRect.Height = (int)(imageCaptureInfo.crop_coordinate_bottom - imageCaptureInfo.crop_coordinate_top);
-
-                //Compute crop coordinates and width/ height based on resolution
-                ImageCapture.SizeAdjustedCropAndOffset(screenRect.Width, screenRect.Height, ref imageCaptureInfo);
-
-                //Adjust for crop offset
-                imageCaptureInfo.center_of_frame_x += imageCaptureInfo.crop_coordinate_left;
-                imageCaptureInfo.center_of_frame_y += imageCaptureInfo.crop_coordinate_top;
-
-                //Adjust for selected screen offset
-                imageCaptureInfo.center_of_frame_x += selected_screen.Bounds.X;
-                imageCaptureInfo.center_of_frame_y += selected_screen.Bounds.Y;
-
-                b = ImageCapture.CaptureFromDisplay(ref imageCaptureInfo, useResize: true);
-            }
-            else
-            {
-                IntPtr handle = new IntPtr(0);
-
-                if (processCaptureIndex >= processList.Length)
-                    return b;
-
-                if (processCaptureIndex != -1)
-                {
-                    handle = processList[processCaptureIndex].MainWindowHandle;
-                }
-                //Capture from specific process
-                processList[processCaptureIndex].Refresh();
-                if ((int)handle == 0)
-                    return b;
-
-                b = ImageCapture.PrintWindow(handle, ref imageCaptureInfo, useCrop: true, useResize: true);
-            }
-
-            return b;
-        }
-
-        public Bitmap CaptureImageFullPreview(ref ImageCaptureInfo imageCaptureInfo, bool useCrop = false)
+        private Bitmap CaptureImageFullPreviewLegacy(ref ImageCaptureInfo imageCaptureInfo, bool useCrop = false)
         {
             Bitmap b = new Bitmap(1, 1);
 
@@ -321,6 +274,7 @@ namespace LiveSplit.UI.Components
 
                 if (processCaptureIndex != -1)
                 {
+                    processList[processCaptureIndex].Refresh();
                     handle = processList[processCaptureIndex].MainWindowHandle;
                 }
                 //Capture from specific process
@@ -378,6 +332,7 @@ namespace LiveSplit.UI.Components
                     foreach (XmlElement number_of_loads in game_element)
                     {
                         var up_down_controls = tabPage2.Controls.Find(number_of_loads.LocalName, true);
+                        if (up_down_controls == null || up_down_controls.Length == 0) continue;
 
                         if (usedSplitNames.ContainsKey(number_of_loads.LocalName) == false)
                         {
@@ -390,6 +345,7 @@ namespace LiveSplit.UI.Components
 
                         //var up_down = tabPage2.Controls.Find(number_of_loads.LocalName, true).FirstOrDefault() as NumericUpDown;
 
+                        if (usedSplitNames[number_of_loads.LocalName] >= up_down_controls.Length) continue;
                         NumericUpDown up_down = (NumericUpDown)up_down_controls[usedSplitNames[number_of_loads.LocalName]];
 
                         if (up_down != null)
@@ -454,6 +410,8 @@ namespace LiveSplit.UI.Components
             }
 
             settingsNode.AppendChild(ToElement(document, "blacklevel", blacklevel.ToString()));
+            settingsNode.AppendChild(ToElement(document, "LoadRemoverEnabled", LoadRemoverEnabled));
+            settingsNode.AppendChild(ToElement(document, "UseWindowsGraphicsCapture", UseWindowsGraphicsCapture));
 
             settingsNode.AppendChild(ToElement(document, "ScalingPercent", trackBar1.Value));
 
@@ -519,7 +477,16 @@ namespace LiveSplit.UI.Components
 
         public void SetSettings(XmlNode settings)
         {
+            applyingCaptureSettings = true;
+            try
+            {
             var element = (XmlElement)settings;
+            bool graphicsCapture;
+            useWindowsGraphicsCapture.Checked = element["UseWindowsGraphicsCapture"] != null
+                && bool.TryParse(element["UseWindowsGraphicsCapture"].InnerText, out graphicsCapture) && graphicsCapture;
+            bool enabled;
+            disableLoadRemover.Checked = element["LoadRemoverEnabled"] != null
+                && bool.TryParse(element["LoadRemoverEnabled"].InnerText, out enabled) && !enabled;
             LoadMachineLearningSettings(element);
             if (!element.IsEmpty)
             {
@@ -537,8 +504,7 @@ namespace LiveSplit.UI.Components
                 {
                     String selectedCaptureTitle = element["SelectedCaptureTitle"].InnerText;
                     selectedCaptureID = selectedCaptureTitle;
-                    UpdateIndexToCaptureID();
-                    RefreshCaptureWindowList();
+                    RefreshCaptureWindowList(true);
                 }
 
                 if (element["platform"] != null)
@@ -557,7 +523,9 @@ namespace LiveSplit.UI.Components
 
                 if (element["blacklevel"] != null)
                 {
-                    blacklevel = Convert.ToInt32(element["blacklevel"].InnerText);
+                    int savedBlacklevel;
+                    blacklevel = int.TryParse(element["blacklevel"].InnerText, out savedBlacklevel)
+                        && savedBlacklevel >= 0 && savedBlacklevel <= 255 ? savedBlacklevel : 100;
                 }
 
                 if (element["ScalingPercent"] != null)
@@ -568,19 +536,16 @@ namespace LiveSplit.UI.Components
                 if (element["CaptureRegion"] != null)
                 {
                     var element_region = element["CaptureRegion"];
-                    if (element_region["X"] != null && element_region["Y"] != null && element_region["Width"] != null && element_region["Height"] != null)
+                    int captureRegionX, captureRegionY, captureRegionWidth, captureRegionHeight;
+                    if (element_region["X"] != null && element_region["Y"] != null && element_region["Width"] != null && element_region["Height"] != null
+                        && int.TryParse(element_region["X"].InnerText, out captureRegionX)
+                        && int.TryParse(element_region["Y"].InnerText, out captureRegionY)
+                        && int.TryParse(element_region["Width"].InnerText, out captureRegionWidth)
+                        && int.TryParse(element_region["Height"].InnerText, out captureRegionHeight))
                     {
-                        int captureRegionX = Convert.ToInt32(element_region["X"].InnerText);
-                        int captureRegionY = Convert.ToInt32(element_region["Y"].InnerText);
-                        int captureRegionWidth = Convert.ToInt32(element_region["Width"].InnerText);
-                        int captureRegionHeight = Convert.ToInt32(element_region["Height"].InnerText);
-
-                        selectionRectanglePreviewBox = new Rectangle(captureRegionX, captureRegionY, captureRegionWidth, captureRegionHeight);
-                        selectionTopLeft = new Point(captureRegionX, captureRegionY);
-                        selectionBottomRight = new Point(captureRegionX + captureRegionWidth, captureRegionY + captureRegionHeight);
-
-                        //RefreshCaptureWindowList();
+                        SetCaptureRegion(new Rectangle(captureRegionX, captureRegionY, captureRegionWidth, captureRegionHeight));
                     }
+                    else SetCaptureRegion(new Rectangle(Point.Empty, previewPictureBox.Size));
                 }
 
                 /*foreach (Split[] category in SplitsByCategory)
@@ -660,6 +625,12 @@ namespace LiveSplit.UI.Components
                 DrawPreview();
             }
             UpdateBlacklevelLabel();
+            }
+            finally { applyingCaptureSettings = false; }
+            ResetGraphicsCapture();
+            UpdateCaptureBackendControls();
+            NotifyDetectionConfigurationChanged();
+            DrawPreview();
         }
 
         #endregion Public Methods
@@ -681,6 +652,14 @@ namespace LiveSplit.UI.Components
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (refreshingCaptureSources) return;
+            ResetGraphicsCapture();
+            NotifyDetectionConfigurationChanged();
+            if (processListComboBox.SelectedIndex < 0)
+            {
+                UpdateCaptureStatus("The selected capture source is unavailable.", true);
+                return;
+            }
             if (processListComboBox.SelectedIndex < numScreens)
             {
                 processCaptureIndex = -processListComboBox.SelectedIndex - 1;
@@ -693,7 +672,7 @@ namespace LiveSplit.UI.Components
             //selectionTopLeft = new Point(0, 0);
             //selectionBottomRight = new Point(previewPictureBox.Width, previewPictureBox.Height);
 
-            selectionRectanglePreviewBox = new Rectangle(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X - selectionTopLeft.X, selectionBottomRight.Y - selectionTopLeft.Y);
+            SetCaptureRegion(Rectangle.FromLTRB(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X, selectionBottomRight.Y));
 
             //Console.WriteLine("SELECTED ITEM: {0}", processListComboBox.SelectedItem.ToString());
             DrawPreview();
@@ -751,25 +730,32 @@ namespace LiveSplit.UI.Components
 
         private void DrawCaptureRectangleBitmap()
         {
+            if (previewImage == null) return;
             Bitmap capture_image = (Bitmap)previewImage.Clone();
             //Draw selection rectangle
             using (Graphics g = Graphics.FromImage(capture_image))
             {
-                Pen drawing_pen = new Pen(Color.Magenta, 8.0f);
-                drawing_pen.Alignment = PenAlignment.Inset;
-                g.DrawRectangle(drawing_pen, selectionRectanglePreviewBox);
+                using (Pen drawing_pen = new Pen(Color.Magenta, 8.0f))
+                {
+                    drawing_pen.Alignment = PenAlignment.Inset;
+                    g.DrawRectangle(drawing_pen, selectionRectanglePreviewBox);
+                }
             }
 
+            var oldPreview = previewPictureBox.Image;
             previewPictureBox.Image = capture_image;
+            if (oldPreview != null) oldPreview.Dispose();
         }
 
         private void DrawPreview()
         {
-            if (!capturePreview) return;
+            if (!capturePreview || applyingCaptureSettings || refreshingCaptureSources) return;
+            StopCapturePreviewRetry();
             try
             {
 
 
+                ClearCapturePreview();
                 ImageCaptureInfo copy = imageCaptureInfo;
                 copy.captureSizeX = previewPictureBox.Width;
                 copy.captureSizeY = previewPictureBox.Height;
@@ -807,10 +793,13 @@ namespace LiveSplit.UI.Components
                 copy.captureSizeY = captureSize.Height;
 
                 //Show matching bins for preview
-                var capture = CaptureImage();
+                using (var capture = CaptureImage()) { }
             }
             catch (Exception ex)
             {
+                ClearCapturePreview();
+                UpdateCaptureStatus(ex.Message, !(ex is CaptureNotReadyException));
+                if (ex is CaptureNotReadyException) RetryPendingCapturePreview();
                 Console.WriteLine("Error: " + ex.ToString());
             }
         }
@@ -824,9 +813,7 @@ namespace LiveSplit.UI.Components
         {
             imageCaptureInfo = new ImageCaptureInfo();
 
-            selectionTopLeft = new Point(0, 0);
-            selectionBottomRight = new Point(previewPictureBox.Width, previewPictureBox.Height);
-            selectionRectanglePreviewBox = new Rectangle(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X - selectionTopLeft.X, selectionBottomRight.Y - selectionTopLeft.Y);
+            SetCaptureRegion(new Rectangle(Point.Empty, previewPictureBox.Size));
 
             imageCaptureInfo.featureVectorResolutionX = featureVectorResolutionX;
             imageCaptureInfo.featureVectorResolutionY = featureVectorResolutionY;
@@ -876,18 +863,19 @@ namespace LiveSplit.UI.Components
             //processListComboBox.SelectedIndex = 0;
         }
 
-        private void RefreshCaptureWindowList()
+        private void RefreshCaptureWindowList(bool preserveSelection = false)
         {
+            refreshingCaptureSources = true;
             try
             {
                 Process[] processListtmp = Process.GetProcesses();
                 List<Process> processes_with_name = new List<Process>();
 
-                if (captureIDs != null)
+                if (!preserveSelection && captureIDs != null)
                 {
                     if (processListComboBox.SelectedIndex < captureIDs.Count && processListComboBox.SelectedIndex >= 0)
                     {
-                        selectedCaptureID = processListComboBox.SelectedItem.ToString();
+                        selectedCaptureID = captureIDs[processListComboBox.SelectedIndex];
                     }
                 }
 
@@ -913,15 +901,15 @@ namespace LiveSplit.UI.Components
                     }
                 }
 
-                UpdateIndexToCaptureID();
-
-                //processListComboBox.SelectedIndex = 0;
                 processList = processes_with_name.ToArray();
+                UpdateIndexToCaptureID();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.ToString());
             }
+            finally { refreshingCaptureSources = false; }
+            comboBox1_SelectedIndexChanged(this, EventArgs.Empty);
         }
 
         public string removeInvalidXMLCharacters(string in_string)
@@ -1032,7 +1020,7 @@ namespace LiveSplit.UI.Components
                 selectionBottomRight = new Point(x, y);
             }
 
-            selectionRectanglePreviewBox = new Rectangle(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X - selectionTopLeft.X, selectionBottomRight.Y - selectionTopLeft.Y);
+            SetCaptureRegion(Rectangle.FromLTRB(selectionTopLeft.X, selectionTopLeft.Y, selectionBottomRight.X, selectionBottomRight.Y));
         }
 
         private XmlElement ToElement<T>(XmlDocument document, String name, T value)
@@ -1055,26 +1043,23 @@ namespace LiveSplit.UI.Components
 
             scalingValueFloat = ((float)scalingValue) / 100.0f;
 
-            scalingLabel.Text = "Scaling: " + trackBar1.Value.ToString() + "%";
+            UpdateCaptureBackendControls();
+            NotifyDetectionConfigurationChanged();
 
             DrawPreview();
         }
 
         private void UpdateIndexToCaptureID()
         {
-            //Find matching window, set selected index to index in dropdown items
-            int item_index = 0;
-            for (item_index = 0; item_index < processListComboBox.Items.Count; item_index++)
+            if (String.IsNullOrEmpty(selectedCaptureID))
             {
-                String item = processListComboBox.Items[item_index].ToString();
-                if (item.Contains(selectedCaptureID))
-                {
-                    processListComboBox.SelectedIndex = item_index;
-                    //processListComboBox.Text = processListComboBox.SelectedItem.ToString();
-
-                    break;
-                }
+                processListComboBox.SelectedIndex = numScreens > 0 ? 0 : -1;
+                return;
             }
+            int matchingIndex = captureIDs == null ? -1
+                : captureIDs.FindIndex(id => String.Equals(id, selectedCaptureID, StringComparison.Ordinal));
+            processListComboBox.SelectedIndex = matchingIndex >= 0 && matchingIndex < processListComboBox.Items.Count
+                ? matchingIndex : -1;
         }
 
         private void updatePreviewButton_Click(object sender, EventArgs e)
@@ -1118,6 +1103,8 @@ namespace LiveSplit.UI.Components
 
         private void CalibrateBlacklevelButton_Click(object sender, EventArgs e)
         {
+            if (!LoadRemoverEnabled || TrainingCaptureActive) return;
+            NotifyDetectionConfigurationChanged();
             isCalibratingBlacklevel = true;
             blacklevel = 100;
             cmpBlackLevel = 100;
@@ -1126,16 +1113,114 @@ namespace LiveSplit.UI.Components
 
         public void UpdateBlacklevelLabel ()
         {
-            if (blacklevel == 100)
+            if (IsDisposed) return;
+            synchronizingBlacklevel = true;
+            try { blacklevelValue.Value = Math.Max(0, Math.Min(255, blacklevel)); }
+            finally { synchronizingBlacklevel = false; }
+            blacklevelLabel.Text = isCalibratingBlacklevel ? "Calibrating: wait for loading text..." : "Black level: 0–255";
+            blacklevelLabel.ForeColor = SystemColors.ControlText;
+            calibrateBlacklevelButton.Enabled = LoadRemoverEnabled && !TrainingCaptureActive;
+        }
+
+        private void InitializeSetupControls()
+        {
+            tabPage1.AutoScroll = true;
+            disableLoadRemover = new CheckBox { Name = "DisableLoadRemover", Text = "Disable load remover", AutoSize = true, Location = new Point(30, 62) };
+            disableLoadRemover.CheckedChanged += (sender, args) =>
             {
-                blacklevelLabel.Text = "NOT SET";
-                blacklevelLabel.ForeColor = Color.Red;
-            }
-            else
+                if (!LoadRemoverEnabled) ResetGraphicsCapture();
+                isCalibratingBlacklevel = false;
+                cmpBlackLevel = 100;
+                UpdateBlacklevelLabel();
+                if (LoadRemoverEnabledChanged != null) LoadRemoverEnabledChanged(this, EventArgs.Empty);
+            };
+            tabPage1.Controls.Add(disableLoadRemover);
+            panel1.Location = new Point(30, 88);
+            label8.Location = new Point(30, 151);
+            blacklevelValue = new NumericUpDown { Name = "BlacklevelValue", Minimum = 0, Maximum = 255, Value = blacklevel, Location = new Point(95, 147), Size = new Size(70, 22) };
+            blacklevelValue.ValueChanged += (sender, args) =>
             {
-                blacklevelLabel.Text = blacklevel.ToString();
-                blacklevelLabel.ForeColor = Color.Black;
+                if (synchronizingBlacklevel) return;
+                blacklevel = (int)blacklevelValue.Value;
+                isCalibratingBlacklevel = false;
+                cmpBlackLevel = 100;
+                NotifyDetectionConfigurationChanged();
+                UpdateBlacklevelLabel();
+            };
+            tabPage1.Controls.Add(blacklevelValue);
+            chkSaveDetectionLog.Location = new Point(185, 151);
+            calibrateBlacklevelButton.Location = new Point(304, 147);
+            blacklevelLabel.Location = new Point(30, 177);
+            tabPage1.Controls.Add(new Label { Text = "Capture boundaries (400 × 160 preview coordinates):", AutoSize = true, Location = new Point(30, 204) });
+            tabPage1.Controls.Add(new Label { Text = "Top-left X:", AutoSize = true, Location = new Point(30, 232) });
+            tabPage1.Controls.Add(new Label { Text = "Y:", AutoSize = true, Location = new Point(180, 232) });
+            tabPage1.Controls.Add(new Label { Text = "Bottom-right X:", AutoSize = true, Location = new Point(30, 261) });
+            tabPage1.Controls.Add(new Label { Text = "Y:", AutoSize = true, Location = new Point(180, 261) });
+            captureLeft = CreateCaptureBoundaryControl("CaptureLeft", previewPictureBox.Width, 0, 112, 228);
+            captureTop = CreateCaptureBoundaryControl("CaptureTop", previewPictureBox.Height, 0, 202, 228);
+            captureRight = CreateCaptureBoundaryControl("CaptureRight", previewPictureBox.Width, previewPictureBox.Width, 112, 257);
+            captureBottom = CreateCaptureBoundaryControl("CaptureBottom", previewPictureBox.Height, previewPictureBox.Height, 202, 257);
+            label2.Location = new Point(28, 291);
+            label11.Location = new Point(30, 312);
+            previewPictureBox.Location = new Point(30, 333);
+            label4.Location = new Point(28, 501);
+            croppedPreviewPictureBox.Location = new Point(30, 524);
+            lblVersion.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            lblVersion.Location = new Point(390, 694);
+            tabPage1.AutoScrollMinSize = new Size(0, 717);
+        }
+
+        private NumericUpDown CreateCaptureBoundaryControl(string name, int maximum, int value, int x, int y)
+        {
+            var control = new NumericUpDown { Name = name, Minimum = 0, Maximum = maximum, Value = value, Increment = 1, Location = new Point(x, y), Size = new Size(62, 22) };
+            control.ValueChanged += CaptureBoundaryValueChanged;
+            tabPage1.Controls.Add(control);
+            return control;
+        }
+
+        private void CaptureBoundaryValueChanged(object sender, EventArgs args)
+        {
+            if (synchronizingCaptureRegion) return;
+            if (captureLeft.Value >= captureRight.Value || captureTop.Value >= captureBottom.Value)
+            {
+                SynchronizeCaptureBoundaryControls();
+                return;
             }
+            SetCaptureRegion(Rectangle.FromLTRB((int)captureLeft.Value, (int)captureTop.Value, (int)captureRight.Value, (int)captureBottom.Value));
+            DrawPreview();
+        }
+
+        private void SetCaptureRegion(Rectangle region)
+        {
+            int left = Math.Max(0, Math.Min(previewPictureBox.Width - 1, region.X));
+            int top = Math.Max(0, Math.Min(previewPictureBox.Height - 1, region.Y));
+            int right = (int)Math.Max(left + 1L, Math.Min(previewPictureBox.Width, (long)region.X + Math.Max(1, region.Width)));
+            int bottom = (int)Math.Max(top + 1L, Math.Min(previewPictureBox.Height, (long)region.Y + Math.Max(1, region.Height)));
+            var validRegion = Rectangle.FromLTRB(left, top, right, bottom);
+            bool changed = selectionRectanglePreviewBox != validRegion;
+            selectionRectanglePreviewBox = validRegion;
+            selectionTopLeft = validRegion.Location;
+            selectionBottomRight = new Point(right, bottom);
+            SynchronizeCaptureBoundaryControls();
+            if (changed) NotifyDetectionConfigurationChanged();
+        }
+
+        private void SynchronizeCaptureBoundaryControls()
+        {
+            synchronizingCaptureRegion = true;
+            try
+            {
+                captureLeft.Value = selectionRectanglePreviewBox.Left;
+                captureTop.Value = selectionRectanglePreviewBox.Top;
+                captureRight.Value = selectionRectanglePreviewBox.Right;
+                captureBottom.Value = selectionRectanglePreviewBox.Bottom;
+            }
+            finally { synchronizingCaptureRegion = false; }
+        }
+
+        private void NotifyDetectionConfigurationChanged()
+        {
+            if (!applyingCaptureSettings && DetectionConfigurationChanged != null) DetectionConfigurationChanged(this, EventArgs.Empty);
         }
 
     }

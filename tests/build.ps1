@@ -35,7 +35,7 @@ foreach ($architecture in @('x64', 'x86')) {
         if (Test-Path $nativeBuild) { Copy-Item $nativeBuild "$runtime\Components\$nativeArchitecture\TwocLoadingVulkan.dll" -Force }
     }
     $program = Join-Path $runtime 'ManagedMlVerification.exe'
-    & $Compiler /nologo /target:exe "/platform:$architecture" "/out:$program" /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:System.Xml.dll /r:System.Web.Extensions.dll "/r:$runtime\LiveSplit.Core.dll" "/r:$runtime\LiveSplit.CrashTWoCLoadRemoval.dll" "/r:$runtime\Tesseract.dll" "$PSScriptRoot\ManagedMlVerification.cs"
+    & $Compiler /nologo /target:exe "/platform:$architecture" "/out:$program" /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:System.Xml.dll /r:System.Web.Extensions.dll "/r:$runtime\LiveSplit.Core.dll" "/r:$runtime\UpdateManager.dll" "/r:$runtime\LiveSplit.CrashTWoCLoadRemoval.dll" "/r:$runtime\Tesseract.dll" "$PSScriptRoot\ManagedMlVerification.cs"
     if ($LASTEXITCODE -ne 0) { throw "C# compile failed ($architecture)" }
     & $program 2>&1 | Tee-Object -FilePath (Join-Path $OutputDirectory "managed-$architecture.log")
     if ($LASTEXITCODE -ne 0) { throw "Managed verification failed ($architecture); see $OutputDirectory\managed-$architecture.log" }

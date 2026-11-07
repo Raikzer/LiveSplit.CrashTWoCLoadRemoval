@@ -42,6 +42,7 @@
       <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>$(MSBuildThisFileDirectory)src\TwocLoadingVulkan.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/PDBALTPATH:TwocLoadingVulkan.pdb %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup><ClCompile Include="src\TwocLoadingVulkan.cpp" /></ItemGroup>

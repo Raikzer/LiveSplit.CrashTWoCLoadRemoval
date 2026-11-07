@@ -4,13 +4,18 @@ The model returns one floating confidence in `[0,1]` for the English **LOADING**
 text. It does not recognize or return text. The native experimental runtime uses
 Vulkan; Python/PyTorch here are offline training and verification tools.
 
-Source builds default to `models/eng-ps2-hud-fix/loading-text.twml`, a custom
-offline fine-tune on reviewed English PS2 captures at fixed threshold **0.800**.
-Its [model card](models/eng-ps2-hud-fix/README.md) records training provenance,
-HUD regression results and limited, reused holdouts. The test recordings contain
-no positives, so positive test recall is unavailable. The generic `train.py`
-instructions below do not reproduce these custom fine-tuned weights; the dataset
-and custom run artifacts remain private.
+Source builds and the updated **2.1 pre-release** default to `models/eng-ps2-ghost-town/loading-text.twml`,
+a custom offline fine-tune at fixed threshold **0.800**. Its
+[model card](models/eng-ps2-ghost-town/README.md) records the added user-confirmed
+screenshot training negative, ancestry, method and limits. This replaces the
+[HUD-fix model](models/eng-ps2-hud-fix/README.md) in the earlier 2.1 ZIP. The screenshot
+crop already scored below threshold before retraining: the reported false
+positive was not reproduced, so these weights do not establish a fix for the
+observed pause. There are 17 recordings plus one screenshot source group, not
+18 independent recordings. VAL and negative-only TEST are reused; positive test
+recall is unavailable. The generic `train.py` instructions below do not reproduce
+these custom fine-tuned weights; the dataset and custom run artifacts remain
+private.
 
 The separate `artifacts/demo/loading-text.twml` remains **synthetic demo only**;
 use `Build.ps1 -TrainDemo` to select it explicitly. Its metrics describe artificial

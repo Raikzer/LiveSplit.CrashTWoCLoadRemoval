@@ -1,3 +1,4 @@
+using CrashTWoCLoadDetector;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -264,6 +265,7 @@ namespace LiveSplit.CrashTWoCLoadRemover.Training
                 if (recorder.TryEnqueue(frame)) frame = null;
                 if (recorder.AcceptedFrames >= _session.TargetFrames) BeginStop(null);
             }
+            catch (CaptureNotReadyException) { /* A warmup or minimized frame is not a training sample. */ }
             catch (Exception ex) { BeginStop(ex.Message); }
             finally { if (frame != null) frame.Dispose(); }
         }

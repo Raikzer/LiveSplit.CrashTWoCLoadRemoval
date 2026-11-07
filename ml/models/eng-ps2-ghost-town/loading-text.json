@@ -1,0 +1,278 @@
+{
+  "format_version": 1,
+  "metadata_scope": "compact public metadata; excludes private images, session identifiers, per-frame manifests and run artifacts",
+  "release_status": "updated 2.1 prerelease and source-build default; replaces the earlier 2.1 HUD-fix model",
+  "synthetic_demo": false,
+  "synthetic_demo_only": false,
+  "intended_use": "Experimental English PS2 LOADING ROI classification with an added user-confirmed Ghost Town TRAIN negative; limited validation",
+  "model_sha256": "dad00c11aa5e642e6b3af8ac369f0bb66f6e27806fce7a4f0d933f78b1266574",
+  "model_bytes": 41892,
+  "recommended_threshold": 0.8,
+  "deployment_threshold": 0.8,
+  "threshold_selection": "user_fixed",
+  "seed": 1234,
+  "best_epoch": 1,
+  "best_validation_loss": 4.09897584177088e-05,
+  "positive_class_weight": 60.896321070234116,
+  "metrics": {
+    "train": {
+      "count": 74028,
+      "threshold": 0.8,
+      "tp": 1194,
+      "tn": 72732,
+      "fp": 100,
+      "fn": 2,
+      "accuracy": 0.9986221429729292,
+      "precision": 0.9227202472952086,
+      "recall": 0.9983277591973244,
+      "f1": 0.9590361445783133,
+      "balanced_accuracy": 0.9984773681751121
+    },
+    "val": {
+      "count": 12799,
+      "threshold": 0.8,
+      "tp": 21,
+      "tn": 12778,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "balanced_accuracy": 1.0
+    },
+    "test": {
+      "count": 14316,
+      "threshold": 0.8,
+      "tp": 0,
+      "tn": 14316,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "specificity": 1.0,
+      "false_positive_rate": 0.0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "balanced_accuracy": null
+    }
+  },
+  "split_summary": {
+    "train": {
+      "samples": 74028,
+      "positive": 1196,
+      "negative": 72832,
+      "source_groups": 13
+    },
+    "val": {
+      "samples": 12799,
+      "positive": 21,
+      "negative": 12778,
+      "source_groups": 3
+    },
+    "test": {
+      "samples": 14316,
+      "positive": 0,
+      "negative": 14316,
+      "source_groups": 2
+    }
+  },
+  "dataset_summary": {
+    "independent_recordings": 17,
+    "user_image_source_groups": 1,
+    "source_groups": 18,
+    "globally_deduplicated_model_inputs": 101143,
+    "validation_positive_events": 1,
+    "private_dataset": true
+  },
+  "training": {
+    "method": "custom offline classifier-only fine-tune; generic train.py does not reproduce these weights",
+    "initialization": "exported_model",
+    "initial_model_sha256": "2c167317cf777da5f23dd9a5a659279466a3394650c450d58a96f902e546994d",
+    "epochs_requested": 6,
+    "epochs_completed": 3,
+    "maximum_epochs": 6,
+    "patience": 2,
+    "batch_size": 64,
+    "threads": 6,
+    "optimizer": "Adam",
+    "learning_rate": 0.0001,
+    "replay_per_batch": 4,
+    "trainable_parameters": [
+      "classifier.weight",
+      "classifier.bias"
+    ],
+    "frozen_parameters": [
+      "conv1.bias",
+      "conv1.weight",
+      "conv2.bias",
+      "conv2.weight"
+    ],
+    "normal_sampling": "one randperm without replacement per epoch; all unique TRAIN indices",
+    "replay_sampling": "seeded shuffled cycles of the four designated TRAIN hard negatives",
+    "positive_class_weight_source": "normal TRAIN negative/positive ratio; excludes replay duplication",
+    "training_loss": "class-weighted BCEWithLogitsLoss on normal+replay plus logit_anchor * MSE on original-TRAIN normal samples; classifier-only Adam update",
+    "validation_loss": "unweighted unaugmented BCEWithLogitsLoss",
+    "checkpoint_eligibility": {
+      "hard_negative_confidence_strictly_below": 0.2,
+      "hard_negative_count": 4,
+      "validation_threshold": 0.8,
+      "tp": 21,
+      "fn": 0,
+      "fp": 0
+    },
+    "checkpoint_selection": "lowest validation BCE among eligible trained checkpoints",
+    "augmentation": "existing train.augment on TRAIN only, including replay: translation +/-2.88 px, gain 0.8-1.2, Gaussian noise sigma 0.012",
+    "convolution_weights_bitwise_equal_to_initial": true,
+    "logit_anchor": {
+      "coefficient": 0.1,
+      "loss": "mean squared student/initial-teacher logits",
+      "teacher": "detached frozen clones of initial classifier weight and bias",
+      "features": "one frozen convolution pass on the same augmented batch for teacher and student",
+      "mask": "normal samples from original 11 TRAIN groups only; excludes entire migrated group, Ghost Town group and all appended replay",
+      "source_split": "train",
+      "normal_samples_per_epoch": 67760,
+      "validation_or_test_teacher_targets": false
+    },
+    "replay_sources": "three historical HUD TRAIN negatives and one user-confirmed Ghost Town TRAIN ROI",
+    "custom_retrainer_sha256": "1435c2fbd92c7c18b2fcc842cc508fb9c3204c3695aa6a737173a21dc3618b8f",
+    "reproducibility": "The dataset and custom run artifacts remain private; inference weights and provenance are supplied, not a publicly reproducible training run."
+  },
+  "lineage": {
+    "initial_model_sha256": "2c167317cf777da5f23dd9a5a659279466a3394650c450d58a96f902e546994d",
+    "earlier_ancestor_model_sha256": [
+      "28698bc1a0d597426ed143783220aa46fd5ceb37f0d80d7ed51bec411fe7b50c",
+      "e43bcd738938511ffd27a45333e3b1f024aca62659ad8541172cde3aeac99e43"
+    ],
+    "prior_gradient_sources": "current TRAIN recordings",
+    "prior_checkpoint_selection_sources": "current reused VAL recordings and three designated historical HUD TRAIN hard negatives",
+    "current_gradient_sources": "current TRAIN, including migrated prior TEST recording and the new user-confirmed Ghost Town ROI",
+    "current_checkpoint_selection_sources": [
+      "current reused VAL",
+      "four designated TRAIN hard negatives"
+    ],
+    "reused_validation": true,
+    "reused_test": true,
+    "fresh_benchmark": false,
+    "migrated_previous_test_count": 6267,
+    "migrated_recording": "Entire 6267-input historical HUD recording moved from prior TEST to TRAIN after false-positive inspection",
+    "earlier_validation_guided_rejected_trials": {
+      "count": 2,
+      "test_evaluated": false,
+      "scope": "earlier HUD-fix lineage"
+    }
+  },
+  "evaluation_protocol": {
+    "mode": "warm_retraining_reused_recording_holdouts_negative_only_test",
+    "independent_recordings": 17,
+    "source_groups": 18,
+    "user_screenshot_train_groups": 1,
+    "fresh_benchmark": false,
+    "test_class_coverage": {
+      "negative": 14316,
+      "positive": 0
+    },
+    "test_used_for_checkpoint_or_threshold_selection": false,
+    "validation_class_counts": {
+      "negative": 12778,
+      "positive": 21
+    },
+    "limitation": "Warm retraining from the HUD-fix checkpoint. Its gradient sources are now TRAIN, but its checkpoint was selected on the same reused VAL recordings. One prior TEST recording (all 6267 examples) was migrated into TRAIN after inspecting its false positives. The two remaining negative-only TEST recordings were evaluated previously and are reused, so this is not a fresh benchmark. TEST was not inferred during this run until checkpoint selection was complete. No held-out positive TEST recall is available. The user fixed threshold 0.8; there was no threshold search. Four TRAIN hard negatives (three historical HUD frames and one user-confirmed Ghost Town ROI) and VAL determine eligibility; lowest unweighted VAL BCE selects among eligible trained epochs. Only the classifier is trained; both convolution layers remain bitwise equal to initialization. The logit anchor uses the original classifier and the same augmented frozen features only on normal samples from the original 11 TRAIN groups, excluding the entire migrated group, the new Ghost Town group, and replay entries. The new screenshot is not an independent recording holdout. Its inferred runtime ROI already scores below threshold at initialization, so the reported false positive is not reproduced and retraining does not establish fix causation."
+  },
+  "user_negative_preparation": {
+    "protocol": "user_confirmed_ghost_town_train_negative",
+    "source_sha256": "b0e5068a68ae1f838eeea8a188354acf2000505559f7e0c6a20c7e47181854d1",
+    "source_shape": [
+      985,
+      743
+    ],
+    "derived_roi_sha256": "ad37515d918b45192957d5dd68195e171b68501c243d23eee168150cf50046bc",
+    "runtime_roi": {
+      "x": 285,
+      "y": 16,
+      "width": 550,
+      "height": 550,
+      "viewport": "inferred full game viewport",
+      "resize": "Windows GDI+ ImageCapture.ResizeImage 100x100 HighQualityBicubic TileFlipXY; then model.py preprocess_rgb 96x96"
+    },
+    "canonical_roi_baseline_confidence": 2.329317430849187e-05,
+    "reported_false_positive_reproduced": false,
+    "diagnostic_limitation": "Reported false positive is NOT reproduced under the inferred full gameplay viewport. A paused timer may latch an earlier frame or use a different crop; this training does not establish fix causation.",
+    "label": 0,
+    "split": "train",
+    "source_group_type": "one user screenshot, not an independent recording holdout"
+  },
+  "hard_negative_regression": {
+    "training_regression": true,
+    "threshold": 0.8,
+    "target_confidence_strictly_below": 0.2,
+    "samples": [
+      {
+        "sample": 1,
+        "kind": "historical HUD",
+        "initial_confidence_cpu": 0.10554379224777222,
+        "confidence_vulkan": 0.039588719606399536
+      },
+      {
+        "sample": 2,
+        "kind": "historical HUD",
+        "initial_confidence_cpu": 0.18855570256710052,
+        "confidence_vulkan": 0.0813705325126648
+      },
+      {
+        "sample": 3,
+        "kind": "historical HUD",
+        "initial_confidence_cpu": 0.12196701020002365,
+        "confidence_vulkan": 0.05312711000442505
+      },
+      {
+        "sample": 4,
+        "kind": "user-confirmed Ghost Town ROI",
+        "initial_confidence_cpu": 2.3293150661629625e-05,
+        "confidence_vulkan": 2.980641511385329e-05
+      }
+    ],
+    "whole_migrated_hud_recording_metrics": {
+      "count": 6267,
+      "threshold": 0.8,
+      "tp": 0,
+      "tn": 6267,
+      "fp": 0,
+      "fn": 0,
+      "accuracy": 1.0,
+      "specificity": 1.0,
+      "false_positive_rate": 0.0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "balanced_accuracy": null
+    },
+    "reported_false_positive_reproduced": false,
+    "diagnostic_limitation": "Reported false positive is NOT reproduced under the inferred full gameplay viewport. A paused timer may latch an earlier frame or use a different crop; this training does not establish fix causation."
+  },
+  "runtime_verification": {
+    "device": "AMD Radeon RX 6800",
+    "validation_requested": true,
+    "vulkan_predictions": 33386,
+    "unique_vulkan_inputs": 33383,
+    "max_vulkan_cpu_absolute_error": 1.0132789611816406e-06,
+    "production_wrapper_bitness_passed": [
+      "x86",
+      "x64"
+    ],
+    "png_and_tensor_fixture_count_per_architecture": 6,
+    "checkpoint_frozen_before_remaining_test_evaluation": true,
+    "remaining_test_used_for_selection": false,
+    "scope": "Numerical inference agreement, not accuracy on new recordings or proof that the reported pause is fixed"
+  },
+  "limitations": [
+    "The inferred screenshot ROI was already below threshold at initialization; the reported false positive was not reproduced and retraining does not establish fix causation.",
+    "The assumed full-game viewport may differ from the user configuration; an earlier latched pause frame is another unverified possibility.",
+    "Eighteen source groups mean seventeen recordings plus one screenshot group, not eighteen independent recordings.",
+    "Reused VAL and negative-only TEST after prior model selection and earlier validation-guided trials; not a fresh benchmark.",
+    "VAL positives are 21 adjacent frames from one contiguous event; TEST has no positives and positive test recall is null.",
+    "The new negative and historical HUD recording are TRAIN regression inputs.",
+    "Full TRAIN retains 100 nominal false positives and 2 false negatives versus 98 and 2 in the initial model; no broad accuracy improvement claim.",
+    "Generalization to new recordings and capture settings remains unestablished; confidence is not a calibrated probability."
+  ]
+}

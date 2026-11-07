@@ -169,6 +169,19 @@ public static class ManagedMlVerification
             var capture = (CrashTWoCLoadDetector.ImageCaptureInfo)Get(settings, "imageCaptureInfo");
             Check(capture.resizeState == CrashTWoCLoadDetector.ResizeState.ENG && capture.resizeSizeXEng == 100 && capture.resizeSizeYEng == 100, "ML selection uses ENG capture resize (100x100)");
             Check(Ensure(component) && Get(component, "engine") == null, "ML initializes without an OCR engine");
+            var beforeDisable = (VulkanLoadingClassifier)Get(component, "mlClassifier");
+            var disableLoadRemover = (CheckBox)settings.Controls.Find("DisableLoadRemover", true).Single();
+            state.IsGameTimePaused = true; Set(component, "waitOnLoad", true); Set(component, "waitFrames", 42);
+            disableLoadRemover.Checked = true;
+            Check(!state.IsGameTimePaused && Get(component, "mlClassifier") == null && Get(component, "engine") == null
+                && Get(component, "recognitionKey") == null && !(bool)Get(component, "recognitionReady")
+                && !(bool)Get(component, "waitOnLoad") && (int)Get(component, "waitFrames") == 0,
+                "disabling an initialized ML backend immediately releases game time and clears backend/recognition state");
+            try { beforeDisable.PredictTensor(new float[9216]); Check(false, "disabled ML disposed"); }
+            catch (ObjectDisposedException) { Check(true, "disable disposes the initialized ML context"); }
+            disableLoadRemover.Checked = false;
+            Check(Get(component, "mlClassifier") == null && Ensure(component) && !ReferenceEquals(beforeDisable, Get(component, "mlClassifier")),
+                "re-enabling initializes a fresh ML backend on demand");
             var first = (VulkanLoadingClassifier)Get(component, "mlClassifier");
             Select(settings, "ENG/PS2"); Check(Ensure(component), "ML can switch back to legacy OCR");
             try { first.PredictTensor(new float[9216]); Check(false, "old ML disposed"); } catch (ObjectDisposedException) { Check(true, "switch to legacy disposes ML context"); }
@@ -199,15 +212,16 @@ public static class ManagedMlVerification
                 Call(component, "ProcessPs2Capture", black); Call(component, "ProcessPs2Capture", white);
                 Check(!(bool)Call(component, "ProcessPs2Capture", white) && !state.IsGameTimePaused, "negative GPU prediction keeps game time running");
             }
-            // Exercise the production Update/CaptureLoads catch boundary using invalid-source 1x1 capture.
+            // Exercise the production Update/CaptureLoads catch boundary with an unavailable source.
             // Full XML round trips can restore the original display selection. Override it here.
             Set(settings, "processCaptureIndex", int.MaxValue); Set(settings, "processList", new Process[0]);
             state.IsGameTimePaused = true; Set(component, "timerStarted", true); Set(component, "GameName", state.Run.GameName); Set(component, "GameCategory", state.Run.CategoryName);
             Set(component, "NumberOfSplits", state.Run.Count); Set(component, "SplitNames", state.Run.Select(x => x.Name).ToList());
+            var captureBackend = Get(component, "mlClassifier");
             component.Update(null, state, 0, 0, LayoutMode.Vertical);
             Console.WriteLine("INVALID CAPTURE STATUS: " + Status(settings));
-            Check(!state.IsGameTimePaused && !(bool)Get(component, "recognitionReady") && Status(settings).Contains("Capture source is unavailable"), "invalid capture flows through production catch, releases game time, and shows failure");
-            Check(!Ensure(component), "capture failure is cached until reload"); Reload(component); Check((bool)Get(component, "recognitionReady"), "reload recovers from capture failure");
+            Check(!state.IsGameTimePaused && (bool)Get(component, "recognitionReady") && Status(settings).Contains("Capture unavailable"), "invalid capture releases game time and shows a capture-specific error while preserving recognition");
+            Check(captureBackend != null && Ensure(component) && ReferenceEquals(captureBackend, Get(component, "mlClassifier")), "capture failure keeps the valid model available for the next frame"); Reload(component); Check((bool)Get(component, "recognitionReady"), "explicit reload still rebuilds recognition after a capture failure");
             state.IsGameTimePaused = true; Call(component, "RecognitionFailed", new InvalidOperationException("injected post-call GPU failure"));
             Check(!state.IsGameTimePaused && Get(component, "mlClassifier") == null && Status(settings).Contains("injected post-call GPU failure"), "post-call failure disposes context, releases game time and appears in status");
             component.Dispose(); component.Dispose(); settings.Dispose();
